@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tic_tac_teo_client;
+package TicTacTeoClient;
 
 import java.net.URL;
 import java.util.ResourceBundle;
