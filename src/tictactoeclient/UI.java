@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -16,6 +15,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import static javax.swing.JOptionPane.showMessageDialog;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 
 public class UI extends AnchorPane {
 
@@ -33,15 +36,18 @@ public class UI extends AnchorPane {
     private Socket soc;
     private DataInputStream dis;
     private PrintStream print;
+    String jsonString ;
 
     public UI() {
-//    try {
-//            this.soc = new Socket("127.0.0.1",5005);
-//            this.dis=new DataInputStream(soc.getInputStream());
-//            this.print=new PrintStream(soc.getOutputStream());
-//        } catch (IOException ex) {
-//            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+    try {
+            this.soc = new Socket("127.0.0.1",5005);
+            this.dis=new DataInputStream(soc.getInputStream());
+            this.print=new PrintStream(soc.getOutputStream());
+        } catch (IOException ex) {
+            
+            showMessageDialog(null, "Lost Connection To The Server");
+
+        }
 
         borderPane = new BorderPane();
         pane = new Pane();
@@ -87,15 +93,7 @@ public class UI extends AnchorPane {
 
         passwordTextField.setLayoutX(26.0);
         passwordTextField.setLayoutY(137.0);
-        passwordTextField.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
-                  
-              // print.println(message.getText());
-              // message.clear();
-//                        String serverReply=dis.readLine();
-//                        System.out.println(serverReply);
-                         
-        });
-
+        
         yourNameText.setLayoutX(26.0);
         yourNameText.setLayoutY(71.0);
         yourNameText.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
@@ -114,6 +112,29 @@ public class UI extends AnchorPane {
         joinNowButton.setStyle("-fx-background-color: blue;");
         joinNowButton.setText("Join now");
         joinNowButton.setTextFill(javafx.scene.paint.Color.WHITE);
+        
+        joinNowButton.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
+          jsonString="{\"player\":{\"name\":\""+yourNameTextField.getText()+"\""
+                     + ","
+                     + "\"password\":\""+passwordTextField.getText()+"\"}}";   
+           print.println(jsonString);
+           passwordTextField.clear();
+           yourNameTextField.clear();
+           String serverReply = null;
+        try {
+           serverReply = dis.readLine();
+        } catch (IOException ex) {
+            
+           showMessageDialog(null, "Server Doesn't Respond");
+
+        }
+           //JsonObject jsonObject = new Gson().fromJson(serverReply, JsonObject.class);
+           
+                
+            showMessageDialog(null, "signed up seccessfully");
+
+                         
+        });
 
         alreadyHaveAnAccountText.setFill(javafx.scene.paint.Color.valueOf("#683e3e"));
         alreadyHaveAnAccountText.setLayoutX(8.0);
