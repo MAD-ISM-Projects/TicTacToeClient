@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package TicTacTeoClient;
+package tictactoeclient;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,15 +15,18 @@ import javafx.stage.Stage;
  *
  * @author Ramez
  */
-public class TicTacTeoClient extends Application {
+public class TicTacToeClient extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        Parent root = new UI();
+        root.setId("pane");
         
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root,270,500);
+        scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
         
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
