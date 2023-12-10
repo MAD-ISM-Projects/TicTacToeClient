@@ -35,13 +35,13 @@ public class UI extends AnchorPane {
     private PrintStream print;
 
     public UI() {
-    try {
-            this.soc = new Socket("127.0.0.1",5005);
-            this.dis=new DataInputStream(soc.getInputStream());
-            this.print=new PrintStream(soc.getOutputStream());
-        } catch (IOException ex) {
-            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//    try {
+//            this.soc = new Socket("127.0.0.1",5005);
+//            this.dis=new DataInputStream(soc.getInputStream());
+//            this.print=new PrintStream(soc.getOutputStream());
+//        } catch (IOException ex) {
+//            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
         borderPane = new BorderPane();
         pane = new Pane();
