@@ -39,15 +39,7 @@ public class UI extends AnchorPane {
     String jsonString ;
 
     public UI() {
-    try {
-            this.soc = new Socket("127.0.0.1",5005);
-            this.dis=new DataInputStream(soc.getInputStream());
-            this.print=new PrintStream(soc.getOutputStream());
-        } catch (IOException ex) {
-            
-            showMessageDialog(null, "Lost Connection To The Server");
 
-        }
 
         borderPane = new BorderPane();
         pane = new Pane();
@@ -114,24 +106,29 @@ public class UI extends AnchorPane {
         joinNowButton.setTextFill(javafx.scene.paint.Color.WHITE);
         
         joinNowButton.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
-          jsonString="{\"player\":{\"name\":\""+yourNameTextField.getText()+"\""
+        try {
+            this.soc = new Socket("127.0.0.1",5005);
+            this.dis=new DataInputStream(soc.getInputStream());
+            this.print=new PrintStream(soc.getOutputStream());
+            jsonString="{\"player\":{\"name\":\""+yourNameTextField.getText()+"\""
                      + ","
                      + "\"password\":\""+passwordTextField.getText()+"\"}}";   
            print.println(jsonString);
            passwordTextField.clear();
            yourNameTextField.clear();
            String serverReply = null;
-        try {
            serverReply = dis.readLine();
+           showMessageDialog(null, "signed up seccessfully");
         } catch (IOException ex) {
             
-           showMessageDialog(null, "Server Doesn't Respond");
+            showMessageDialog(null, "Lost Connection To The Server");
 
         }
+          
            //JsonObject jsonObject = new Gson().fromJson(serverReply, JsonObject.class);
            
                 
-            showMessageDialog(null, "signed up seccessfully");
+            
 
                          
         });
@@ -167,6 +164,7 @@ public class UI extends AnchorPane {
         pane.getChildren().add(logInButton);
         pane.getChildren().add(line);
         getChildren().add(borderPane);
+
 
     }
 }
