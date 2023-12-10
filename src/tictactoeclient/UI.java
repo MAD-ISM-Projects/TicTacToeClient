@@ -1,5 +1,13 @@
 package tictactoeclient;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -22,8 +30,18 @@ public class UI extends AnchorPane {
     protected final Text alreadyHaveAnAccountText;
     protected final Button logInButton;
     protected final Line line;
+    private Socket soc;
+    private DataInputStream dis;
+    private PrintStream print;
 
     public UI() {
+    try {
+            this.soc = new Socket("127.0.0.1",5005);
+            this.dis=new DataInputStream(soc.getInputStream());
+            this.print=new PrintStream(soc.getOutputStream());
+        } catch (IOException ex) {
+            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         borderPane = new BorderPane();
         pane = new Pane();
@@ -69,6 +87,14 @@ public class UI extends AnchorPane {
 
         passwordTextField.setLayoutX(26.0);
         passwordTextField.setLayoutY(137.0);
+        passwordTextField.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
+                  
+              // print.println(message.getText());
+              // message.clear();
+//                        String serverReply=dis.readLine();
+//                        System.out.println(serverReply);
+                         
+        });
 
         yourNameText.setLayoutX(26.0);
         yourNameText.setLayoutY(71.0);
