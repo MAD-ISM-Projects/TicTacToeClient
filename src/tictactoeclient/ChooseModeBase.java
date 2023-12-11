@@ -77,7 +77,13 @@ public class ChooseModeBase extends AnchorPane {
         btn_Single.setText("Single mode");
         btn_Single.setTextFill(javafx.scene.paint.Color.valueOf("#8b76a4"));
         btn_Single.setFont(new Font("Times New Roman", 19.0));
-
+        btn_Single.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent e){
+                Navigator.navigateTo(new selectLevelBase(), e);
+            }
+        });
+        
         btn_multi.setLayoutX(315.0);
         btn_multi.setLayoutY(415.0);
         btn_multi.setMnemonicParsing(false);
