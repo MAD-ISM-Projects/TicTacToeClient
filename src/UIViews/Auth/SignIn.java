@@ -1,4 +1,4 @@
-package tictactoeclient;
+package UIViews.Auth;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -20,37 +20,37 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 
-public class UI extends AnchorPane {
+public class SignIn extends AnchorPane {
 
     protected final BorderPane borderPane;
     protected final Pane pane;
-    protected final Text signUpText;
+    protected final Text signInText;
     protected final TextField yourNameTextField;
     protected final PasswordField passwordTextField;
     protected final Text yourNameText;
     protected final Text passwordText;
     protected final Button joinNowButton;
-    protected final Text alreadyHaveAnAccountText;
-    protected final Button logInButton;
+    protected final Text dontHaveAnAccountText;
+    protected final Button signUpButton;
     protected final Line line;
     private Socket soc;
     private DataInputStream dis;
     private PrintStream print;
     String jsonString ;
 
-    public UI() {
+    public SignIn() {
 
 
         borderPane = new BorderPane();
         pane = new Pane();
-        signUpText = new Text();
+        signInText = new Text();
         yourNameTextField = new TextField();
         passwordTextField = new PasswordField();
         yourNameText = new Text();
         passwordText = new Text();
         joinNowButton = new Button();
-        alreadyHaveAnAccountText = new Text();
-        logInButton = new Button();
+        dontHaveAnAccountText = new Text();
+        signUpButton = new Button();
         line = new Line();
 
         setId("pane");
@@ -72,13 +72,13 @@ public class UI extends AnchorPane {
         pane.setPrefWidth(300.0);
         pane.setStyle("-fx-background-color: white;");
 
-        signUpText.setFill(javafx.scene.paint.Color.valueOf("#3115e8"));
-        signUpText.setLayoutX(26.0);
-        signUpText.setLayoutY(22.0);
-        signUpText.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
-        signUpText.setStrokeWidth(0.0);
-        signUpText.setStyle("-fx-font-size: 20;");
-        signUpText.setText("Sign Up");
+        signInText.setFill(javafx.scene.paint.Color.valueOf("#3115e8"));
+        signInText.setLayoutX(26.0);
+        signInText.setLayoutY(22.0);
+        signInText.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
+        signInText.setStrokeWidth(0.0);
+        signInText.setStyle("-fx-font-size: 20;");
+        signInText.setText("Sign In");
 
         yourNameTextField.setLayoutX(26.0);
         yourNameTextField.setLayoutY(75.0);
@@ -133,19 +133,19 @@ public class UI extends AnchorPane {
                          
         });
 
-        alreadyHaveAnAccountText.setFill(javafx.scene.paint.Color.valueOf("#683e3e"));
-        alreadyHaveAnAccountText.setLayoutX(8.0);
-        alreadyHaveAnAccountText.setLayoutY(219.0);
-        alreadyHaveAnAccountText.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
-        alreadyHaveAnAccountText.setStrokeWidth(0.0);
-        alreadyHaveAnAccountText.setText("Already have an account");
+        dontHaveAnAccountText.setFill(javafx.scene.paint.Color.valueOf("#683e3e"));
+        dontHaveAnAccountText.setLayoutX(8.0);
+        dontHaveAnAccountText.setLayoutY(219.0);
+        dontHaveAnAccountText.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
+        dontHaveAnAccountText.setStrokeWidth(0.0);
+        dontHaveAnAccountText.setText("Don't have an account?");
 
-        logInButton.setLayoutX(149.0);
-        logInButton.setLayoutY(202.0);
-        logInButton.setMnemonicParsing(false);
-        logInButton.setStyle("-fx-background-color: white;");
-        logInButton.setText("Log In");
-        logInButton.setTextFill(javafx.scene.paint.Color.valueOf("#083aee"));
+        signUpButton.setLayoutX(149.0);
+        signUpButton.setLayoutY(202.0);
+        signUpButton.setMnemonicParsing(false);
+        signUpButton.setStyle("-fx-background-color: white;");
+        signUpButton.setText("Sign Up");
+        signUpButton.setTextFill(javafx.scene.paint.Color.valueOf("#083aee"));
 
         line.setEndX(100.0);
         line.setLayoutX(107.0);
@@ -154,14 +154,14 @@ public class UI extends AnchorPane {
         line.setStroke(javafx.scene.paint.Color.valueOf("#dad8d8"));
         borderPane.setCenter(pane);
 
-        pane.getChildren().add(signUpText);
+        pane.getChildren().add(signInText);
         pane.getChildren().add(yourNameTextField);
         pane.getChildren().add(passwordTextField);
         pane.getChildren().add(yourNameText);
         pane.getChildren().add(passwordText);
         pane.getChildren().add(joinNowButton);
-        pane.getChildren().add(alreadyHaveAnAccountText);
-        pane.getChildren().add(logInButton);
+        pane.getChildren().add(dontHaveAnAccountText);
+        pane.getChildren().add(signUpButton);
         pane.getChildren().add(line);
         getChildren().add(borderPane);
 

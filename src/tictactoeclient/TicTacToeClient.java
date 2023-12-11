@@ -5,6 +5,8 @@
  */
 package tictactoeclient;
 
+import UIViews.Auth.SignIn;
+import UIViews.Auth.SignUp;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,7 +21,7 @@ public class TicTacToeClient extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = new UI();
+        Parent root = new SignIn();
         root.setId("pane");
         
         Scene scene = new Scene(root,270,500);
