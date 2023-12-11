@@ -59,7 +59,7 @@ public class UI extends AnchorPane {
         setMinHeight(USE_PREF_SIZE);
         setMinWidth(USE_PREF_SIZE);
         setPrefHeight(800.0);
-        setPrefWidth(230.0);
+        setPrefWidth(600.0);
         getStylesheets().add("/tictactoeclient/style.css");
 
         borderPane.setLayoutX(27.0);

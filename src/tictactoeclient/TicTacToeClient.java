@@ -6,7 +6,7 @@
 package tictactoeclient;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
+//import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -19,11 +19,11 @@ public class TicTacToeClient extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = new UI();
+        Parent root = new StartpageBase();
         root.setId("pane");
         
-        Scene scene = new Scene(root,270,500);
-        scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
+        Scene scene = new Scene(root,800,550);
+        //scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
         
         stage.setScene(scene);
         stage.setResizable(false);
