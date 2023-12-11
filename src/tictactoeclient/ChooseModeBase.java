@@ -90,7 +90,7 @@ public class ChooseModeBase extends AnchorPane {
         btn_multi.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent e){
-                Navigator.navigateTo(new StartpageBase(), e);
+                Navigator.navigateTo(new SetPlayersBase(), e);
             }
         });
         btn_online.setLayoutX(315.0);
