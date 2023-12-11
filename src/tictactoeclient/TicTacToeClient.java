@@ -24,7 +24,7 @@ public class TicTacToeClient extends Application {
         Parent root = new SignIn();
         root.setId("pane");
         
-        Scene scene = new Scene(root,270,500);
+        Scene scene = new Scene(root,280,500);
         scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
         
         stage.setScene(scene);

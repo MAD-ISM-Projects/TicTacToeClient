@@ -18,6 +18,8 @@ import javafx.scene.text.Text;
 import static javax.swing.JOptionPane.showMessageDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 
 public class SignUp extends AnchorPane {
@@ -110,7 +112,7 @@ public class SignUp extends AnchorPane {
             this.soc = new Socket("127.0.0.1",5005);
             this.dis=new DataInputStream(soc.getInputStream());
             this.print=new PrintStream(soc.getOutputStream());
-            jsonString="{\"player\":{\"name\":\""+yourNameTextField.getText()+"\""
+            jsonString="{\"request\":\"signUp\",\"player\":{\"name\":\""+yourNameTextField.getText()+"\""
                      + ","
                      + "\"password\":\""+passwordTextField.getText()+"\"}}";   
            print.println(jsonString);
@@ -118,7 +120,7 @@ public class SignUp extends AnchorPane {
            yourNameTextField.clear();
            String serverReply = null;
            serverReply = dis.readLine();
-           showMessageDialog(null, "signed up seccessfully");
+           showMessageDialog(null, (Integer.parseInt(serverReply)!=0)?"signed up seccessfully":"already signed up");
         } catch (IOException ex) {
             
             showMessageDialog(null, "Lost Connection To The Server");
@@ -146,6 +148,17 @@ public class SignUp extends AnchorPane {
         logInButton.setStyle("-fx-background-color: white;");
         logInButton.setText("Log In");
         logInButton.setTextFill(javafx.scene.paint.Color.valueOf("#083aee"));
+        logInButton.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
+      
+                    Scene newScene = new Scene(new SignIn(),280,500);
+
+                    // Get the current stage
+                    Stage currentStage = (Stage)this.getScene().getWindow();
+
+                    // Set the new scene on the stage
+                    currentStage.setScene(newScene);               
+                         
+        });
 
         line.setEndX(100.0);
         line.setLayoutX(107.0);
