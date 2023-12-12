@@ -1,5 +1,7 @@
 package tictactoeclient;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -7,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import services.Navigator;
 
 public  class SetPlayersBase extends AnchorPane {
 
@@ -75,6 +78,12 @@ public  class SetPlayersBase extends AnchorPane {
         startButton.setText("Start");
         startButton.setTextFill(javafx.scene.paint.Color.WHITE);
         startButton.setFont(new Font("Times New Roman", 19.0));
+        startButton.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent e){
+                Navigator.navigateTo(new BordBane(), e);
+            }
+        });
 
         playerName2.setLayoutX(315.0);
         playerName2.setLayoutY(399.0);
