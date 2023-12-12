@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #34365C;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TicTacTeoClient.authentication.MultiModeController">
+   <children>
+      <ImageView fx:id="mode_image" fitHeight="200.0" fitWidth="200.0" layoutX="300.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../xoImg.png" />
+         </image>
+      </ImageView>
+      <Text fx:id="text_tic" fill="WHITE" layoutX="312.0" layoutY="276.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tic">
+         <font>
+            <Font name="Times New Roman Italic" size="40.0" />
+         </font>
+      </Text>
+      <Text fx:id="text_tac" fill="#ff8fda" layoutX="370.0" layoutY="276.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tac">
+         <font>
+            <Font name="Times New Roman Italic" size="40.0" />
+         </font>
+      </Text>
+      <Text fx:id="text_toe" fill="WHITE" layoutX="436.0" layoutY="276.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Toe">
+         <font>
+            <Font name="Times New Roman Italic" size="40.0" />
+         </font>
+      </Text>
+      <Button fx:id="btn_Single" layoutX="315.0" layoutY="359.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="170.0" style="-fx-background-radius: 10;" text="Single mode" textFill="#8b76a4">
+         <font>
+            <Font name="Times New Roman" size="19.0" />
+         </font>
+      </Button>
+      <Button fx:id="btn_multi" layoutX="315.0" layoutY="415.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="170.0" style="-fx-background-radius: 10;" text="Multi mode" textFill="#8b76a4">
+         <font>
+            <Font name="Times New Roman" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="btn_online" layoutX="315.0" layoutY="470.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="170.0" style="-fx-background-radius: 10;" text="online" textFill="#8b76a4">
+         <font>
+            <Font name="Times New Roman" size="19.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

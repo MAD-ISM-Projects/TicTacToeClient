@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import servcies.Navigator;
 
 public  class StartpageBase extends AnchorPane {
 
@@ -53,7 +54,7 @@ public  class StartpageBase extends AnchorPane {
         startButton.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent e){
-               // Navigator.navigateTo(new Screen2(), e);
+                Navigator.navigateTo(new ChooseModeBase(), e);
             }
         });
         label.setLayoutX(126);
