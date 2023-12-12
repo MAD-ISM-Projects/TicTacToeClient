@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package serves;
+package servcies;
 
 import java.awt.event.MouseEvent;
 import javafx.event.ActionEvent;
