@@ -81,7 +81,7 @@ public  class SetPlayersBase extends AnchorPane {
         startButton.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent e){
-                Navigator.navigateTo(new BordBane(), e);
+                Navigator.navigateTo(new BordBase(), e);
             }
         });
 
