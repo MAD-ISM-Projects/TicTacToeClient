@@ -22,7 +22,6 @@ public class TicTacToeClient extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = new SignIn();
-        root.setId("pane");
         
         Scene scene = new Scene(root,280,500);
         scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
