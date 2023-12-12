@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import servcies.Navigator;
+import services.Navigator;
 
 public class ChooseModeBase extends AnchorPane {
 

@@ -16,8 +16,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import static javax.swing.JOptionPane.showMessageDialog;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 
 public class UI extends AnchorPane {
