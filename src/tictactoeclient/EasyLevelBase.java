@@ -63,7 +63,7 @@ public class EasyLevelBase extends AnchorPane {
         scorePlayer1 = new Text();
         scorePlayer2 = new Text();
         recordGame = new Button();
-        player1 = new DTOPlayer("Raneem",Mark.X);
+        player1 = new DTOPlayer("You",Mark.X);
         player2 = new DTOPlayer("PC",Mark.O);
 
         setMaxHeight(USE_PREF_SIZE);

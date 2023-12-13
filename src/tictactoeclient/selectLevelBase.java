@@ -23,7 +23,7 @@ public  class selectLevelBase extends AnchorPane {
         HardButton = new Button();
 
         setId("AnchorPane");
-        setPrefHeight(600.0);
+        setPrefHeight(550.0);
         setPrefWidth(800.0);
         setStyle("-fx-background-color: #34365C;");
 
@@ -44,7 +44,9 @@ public  class selectLevelBase extends AnchorPane {
         EasyButton.setStyle("-fx-background-color: #8B91B5;");
         EasyButton.setText("Easy");
         EasyButton.setTextFill(javafx.scene.paint.Color.WHITE);
-
+        EasyButton.setOnAction(e->{
+            Navigator.navigateTo(new EasyLevelBase(),e);
+        });
         HardImage.setFitHeight(200.0);
         HardImage.setFitWidth(200.0);
         HardImage.setLayoutX(496.0);
@@ -61,11 +63,8 @@ public  class selectLevelBase extends AnchorPane {
         HardButton.setStyle("-fx-background-color: #8B91B5;");
         HardButton.setText("Hard");
         HardButton.setTextFill(javafx.scene.paint.Color.WHITE);
-        HardButton.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent e){
+        HardButton.setOnAction(e->{
                 Navigator.navigateTo(new SingleHardModeBase(), e);
-            }
         });
         getChildren().add(EeasyImage);
         getChildren().add(EasyButton);

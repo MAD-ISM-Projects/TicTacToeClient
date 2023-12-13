@@ -7,6 +7,7 @@ package tictactoeclient;
 
 import Recorder.GamePlayManager;
 import Recorder.GamePlay;
+import WinnerScreen.WinnerScreenBase;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,6 +25,8 @@ import static javafx.scene.layout.Region.USE_PREF_SIZE;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import services.Navigator;
+import services.Saver;
 import tictactoeclient.Enum.Mark;
 
 /**
@@ -52,8 +55,8 @@ public class BordBase extends AnchorPane {
     protected DTOPlayer player1;
     protected DTOPlayer player2;
     protected boolean isPlayerTurn=false;
-    static int scoreP1=0;
-    static int scoreP2=0;
+    public static int scoreP1=0;
+    public static int scoreP2=0;
     String currentGamePlaySteps="";
     int stepper=0;
     String gamePlayId = "GamePlay";
@@ -77,8 +80,8 @@ public class BordBase extends AnchorPane {
         scorePlayer1 = new Text();
         scorePlayer2 = new Text();
         recordGame = new Button();
-        player1 = new DTOPlayer("Raneem",Mark.X);
-        player2 = new DTOPlayer("Mayar",Mark.O);
+        player1 = new DTOPlayer(Saver.saverObject.getPlayer1Name(),Mark.X);
+        player2 = new DTOPlayer(Saver.saverObject.getPlayer2Name(),Mark.O);
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -160,26 +163,32 @@ public class BordBase extends AnchorPane {
         scoreBtnX.setLayoutY(170.0);
         scoreBtnX.setMnemonicParsing(false);
         scoreBtnX.setText(Integer.toString(scoreP1));
-        scoreBtnX.setDisable(true);
+        scoreBtnX.setStyle("-fx-background-color:#ff8fda; -fx-text-fill:#FFFFFF;");
+        scoreBtnX.setFont(new Font("System Bold", 18.0));
+
         scoreBtnO.setLayoutX(676.0);
         scoreBtnO.setLayoutY(170.0);
         scoreBtnO.setMnemonicParsing(false);
         scoreBtnO.setText(Integer.toString(scoreP2));
-        scoreBtnO.setDisable(true);
-        
-        scorePlayer1.setFill(javafx.scene.paint.Color.valueOf("#aea5b8"));
+        scoreBtnO.setStyle("-fx-background-color:#ff8fda;  -fx-text-fill:#FFFFFF;");
+        scoreBtnO.setFont(new Font("System Bold", 18.0));
+
+        scorePlayer1.setFill(javafx.scene.paint.Color.valueOf("#FFFFFF"));
         scorePlayer1.setLayoutX(59.0);
         scorePlayer1.setLayoutY(191.0);
         scorePlayer1.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         scorePlayer1.setStrokeWidth(0.0);
         scorePlayer1.setText("Score");
+        scorePlayer1.setFont(new Font("System Bold", 18.0));
 
-        scorePlayer2.setFill(javafx.scene.paint.Color.valueOf("#aea5b8"));
+        scorePlayer2.setFill(javafx.scene.paint.Color.valueOf("#FFFFFF"));
         scorePlayer2.setLayoutX(622.0);
         scorePlayer2.setLayoutY(191.0);
         scorePlayer2.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         scorePlayer2.setStrokeWidth(0.0);
         scorePlayer2.setText("Score");
+        scorePlayer2.setFont(new Font("System Bold", 18.0));
+
 
         recordGame.setLayoutX(640.0);
         recordGame.setLayoutY(471.0);
@@ -220,22 +229,22 @@ public class BordBase extends AnchorPane {
     private Button createButton(int index){    
                 Button btn = new Button();
                 btn.setMnemonicParsing(false);
-                btn.setOpacity(0.7);
+                btn.setOpacity(0.9);
                 btn.setPrefHeight(100.0);
                 btn.setPrefWidth(100.0);
-                btn.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 46;");
+                btn.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 36;");
                 btn.setOnAction(
                         e->{
                             int btnIndex=index;
                             doPlay(btn,btnIndex);
                             if(isWin()){
                                 if(isPlayerTurn){
-                                     showAlert(player1);
+                                    Navigator.navigateTo(new WinnerScreenBase(player1.getName()),e);
                                      isPlayerTurn=!isPlayerTurn;
                                      BordBase.scoreP1++;
                                 }
                                 else{
-                                    showAlert(player2);
+                                    Navigator.navigateTo(new WinnerScreenBase(player2.getName()), e);
                                     BordBase.scoreP2++;
                                 }
                                if(manager!=null) manager.saveGamePlay(gamePlayId, players, currentGamePlaySteps);
@@ -280,7 +289,13 @@ public class BordBase extends AnchorPane {
     private void doPlay(Button btn,int btnIndex){
         if(btn.getText().isEmpty()){   
             currentGamePlaySteps+=btnIndex;
-            btn.setText(isPlayerTurn()?player1.getMark().toString():player2.getMark().toString());          
+            if(isPlayerTurn()){
+                btn.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 36;");
+                btn.setText(player1.getMark().toString());
+            }else{
+                btn.setStyle("-fx-background-color: #FFFFFF; -fx-text-fill:#ff8fda; -fx-font-size: 36;");    
+                btn.setText(player2.getMark().toString());
+            }
         }
     }
     private boolean TicTac(List<Node> buttons){
@@ -334,11 +349,5 @@ public class BordBase extends AnchorPane {
             button.setText("");
             button.setDisable(false);
         }
-    }
-    public void showAlert(DTOPlayer player){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Winner");
-        alert.setHeaderText(player.getName()+" Win");
-        alert.showAndWait();
     }
 }

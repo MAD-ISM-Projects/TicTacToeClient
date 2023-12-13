@@ -2,6 +2,7 @@ package tictactoeclient;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -10,6 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import services.Navigator;
+import services.Saver;
 
 public  class SetPlayersBase extends AnchorPane {
 
@@ -30,9 +32,12 @@ public  class SetPlayersBase extends AnchorPane {
         startButton = new Button();
         playerName2 = new TextField();
         playerName1 = new TextField();
+        playerName1.setPromptText("Player X Name");
+        playerName2.setPromptText("Player O Name");
+        
 
         setId("AnchorPane");
-        setPrefHeight(600.0);
+        setPrefHeight(550.0);
         setPrefWidth(800.0);
         setStyle("-fx-background-color: #34365C;");
 
@@ -78,12 +83,32 @@ public  class SetPlayersBase extends AnchorPane {
         startButton.setText("Start");
         startButton.setTextFill(javafx.scene.paint.Color.WHITE);
         startButton.setFont(new Font("Times New Roman", 19.0));
-        startButton.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
+        
+startButton.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent e){
-                Navigator.navigateTo(new BordBase(), e);
+                if(playerName1.getText().isEmpty()&&playerName2.getText().isEmpty()){
+                    Alert a = new Alert(Alert.AlertType.INFORMATION);
+                    a.setContentText("Please Enter players Name");
+                    a.show();
+                }
+                else if(playerName1.getText().isEmpty()){
+                    Alert a = new Alert(Alert.AlertType.INFORMATION);
+                    a.setContentText("Player1 name is required");
+                    a.show();
+                }else if(playerName2.getText().isEmpty()){
+                    Alert a = new Alert(Alert.AlertType.INFORMATION);
+                    a.setContentText("Player2 name is required");
+                    a.show();
+                }else{
+                    Saver saver=Saver.saverObject();
+                    saver.setPlayer1Name(playerName1.getText());
+                    saver.setPlayer2Name(playerName2.getText());
+                    Navigator.navigateTo(new BordBase(),e);
+                }
             }
         });
+
 
         playerName2.setLayoutX(315.0);
         playerName2.setLayoutY(399.0);

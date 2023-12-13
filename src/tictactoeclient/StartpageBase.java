@@ -36,16 +36,12 @@ public  class StartpageBase extends AnchorPane {
         xoImage = new ImageView();
 
         setId("AnchorPane");
-        setPrefHeight(500.0);
-        setPrefWidth(850.0);
+        setPrefHeight(550.0);
+        setPrefWidth(800.0);
         setStyle("-fx-background-color: #34365C;");
         startButton.setLayoutX(98.0);
         startButton.setLayoutY(334.0);
-        startButton.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            }
-        });
+        
         startButton.setPrefHeight(51.0);
         startButton.setPrefWidth(145.0);
         startButton.setStyle("-fx-background-radius: 15;");

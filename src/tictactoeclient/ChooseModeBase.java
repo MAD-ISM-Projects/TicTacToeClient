@@ -32,7 +32,7 @@ public class ChooseModeBase extends AnchorPane {
         btn_online = new Button();
 
         setId("AnchorPane");
-        setPrefHeight(600.0);
+        setPrefHeight(550.0);
         setPrefWidth(800.0);
         setStyle("-fx-background-color: #34365C;");
 
