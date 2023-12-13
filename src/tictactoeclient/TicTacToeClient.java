@@ -5,6 +5,8 @@
  */
 package tictactoeclient;
 
+import java.util.Map;
+
 import javafx.application.Application;
 //import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,11 +21,13 @@ public class TicTacToeClient extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
+
         Parent root = new StartpageBase();
         root.setId("pane");
         
         Scene scene = new Scene(root,800,550);
         //scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
+
         
         stage.setScene(scene);
         stage.setResizable(false);
@@ -35,6 +39,7 @@ public class TicTacToeClient extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+
     }
     
 }
