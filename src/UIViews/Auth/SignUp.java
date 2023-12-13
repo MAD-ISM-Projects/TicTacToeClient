@@ -1,4 +1,4 @@
-package tictactoeclient;
+package UIViews.Auth;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -16,9 +16,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import static javax.swing.JOptionPane.showMessageDialog;
+<<<<<<< HEAD:src/tictactoeclient/UI.java
+=======
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+>>>>>>> a4ddc649c48c203da37c29f8dddf7da8486378fd:src/UIViews/Auth/SignUp.java
 
 
-public class UI extends AnchorPane {
+public class SignUp extends AnchorPane {
 
     protected final BorderPane borderPane;
     protected final Pane pane;
@@ -36,7 +43,7 @@ public class UI extends AnchorPane {
     private PrintStream print;
     String jsonString ;
 
-    public UI() {
+    public SignUp() {
 
 
         borderPane = new BorderPane();
@@ -108,7 +115,7 @@ public class UI extends AnchorPane {
             this.soc = new Socket("127.0.0.1",5005);
             this.dis=new DataInputStream(soc.getInputStream());
             this.print=new PrintStream(soc.getOutputStream());
-            jsonString="{\"player\":{\"name\":\""+yourNameTextField.getText()+"\""
+            jsonString="{\"request\":\"signUp\",\"player\":{\"name\":\""+yourNameTextField.getText()+"\""
                      + ","
                      + "\"password\":\""+passwordTextField.getText()+"\"}}";   
            print.println(jsonString);
@@ -116,7 +123,7 @@ public class UI extends AnchorPane {
            yourNameTextField.clear();
            String serverReply = null;
            serverReply = dis.readLine();
-           showMessageDialog(null, "signed up seccessfully");
+           showMessageDialog(null, (Integer.parseInt(serverReply)!=0)?"signed up seccessfully":"already signed up");
         } catch (IOException ex) {
             
             showMessageDialog(null, "Lost Connection To The Server");
@@ -144,6 +151,17 @@ public class UI extends AnchorPane {
         logInButton.setStyle("-fx-background-color: white;");
         logInButton.setText("Log In");
         logInButton.setTextFill(javafx.scene.paint.Color.valueOf("#083aee"));
+        logInButton.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
+      
+                    Scene newScene = new Scene(new SignIn(),280,500);
+
+                    // Get the current stage
+                    Stage currentStage = (Stage)this.getScene().getWindow();
+
+                    // Set the new scene on the stage
+                    currentStage.setScene(newScene);               
+                         
+        });
 
         line.setEndX(100.0);
         line.setLayoutX(107.0);

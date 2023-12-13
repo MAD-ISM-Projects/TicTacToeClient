@@ -1,1 +1,9 @@
-{}
+{
+  "GamePlay": {
+    "players": {
+      "player1": "Raneem",
+      "player2": "Mayar"
+    },
+    "steps": "254781360"
+  }
+}
