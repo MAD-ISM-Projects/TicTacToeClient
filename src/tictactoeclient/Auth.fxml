@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="492.0" prefWidth="254.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane layoutX="27.0" layoutY="156.0" prefHeight="233.0" prefWidth="200.0">
+         <center>
+            <Pane prefHeight="229.0" prefWidth="192.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+               <children>
+                  <Text fx:id="signUpText" fill="#3115e8" layoutX="26.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20;" text="Sign Up" />
+                  <TextField fx:id="yourNameTextField" layoutX="26.0" layoutY="75.0" />
+                  <PasswordField fx:id="passwordTextField" layoutX="26.0" layoutY="137.0" />
+                  <Text fx:id="yourNameText" layoutX="26.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Name" />
+                  <Text fx:id="passwordText" layoutX="26.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
+                  <Button fx:id="joinNowButton" layoutX="72.0" layoutY="175.0" mnemonicParsing="false" style="-fx-background-color: blue;" text="Join now" textFill="WHITE" />
+                  <Text fx:id="alreadyHaveAnAccountText" fill="#683e3e" layoutX="8.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Already have an account" />
+                  <Button fx:id="logInButton" layoutX="149.0" layoutY="202.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Log In" textFill="#083aee" />
+                  <Line endX="100.0" layoutX="107.0" layoutY="204.0" startX="-100.0" stroke="#dad8d8" />
+               </children>
+            </Pane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
