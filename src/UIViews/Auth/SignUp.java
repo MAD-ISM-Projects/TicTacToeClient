@@ -16,13 +16,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import static javax.swing.JOptionPane.showMessageDialog;
-<<<<<<< HEAD:src/tictactoeclient/UI.java
-=======
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
->>>>>>> a4ddc649c48c203da37c29f8dddf7da8486378fd:src/UIViews/Auth/SignUp.java
+
 
 
 public class SignUp extends AnchorPane {
