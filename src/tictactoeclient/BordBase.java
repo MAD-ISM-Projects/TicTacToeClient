@@ -5,9 +5,14 @@
  */
 package tictactoeclient;
 
+import Recorder.GamePlayManager;
+import Recorder.GamePlay;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javafx.event.ActionEvent;
 import tictactoeclient.Models.DTOPlayer;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -49,6 +54,11 @@ public class BordBase extends AnchorPane {
     protected boolean isPlayerTurn=false;
     static int scoreP1=0;
     static int scoreP2=0;
+    String currentGamePlaySteps="";
+    int stepper=0;
+    String gamePlayId = "GamePlay";
+    Map<String, String> players;
+    GamePlayManager manager;
     public BordBase() {
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -180,6 +190,14 @@ public class BordBase extends AnchorPane {
         recordGame.setText("Record");
         recordGame.setTextFill(javafx.scene.paint.Color.WHITE);
         recordGame.setFont(new Font("System Bold", 18.0));
+        recordGame.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
+            manager = new GamePlayManager();
+            players = new HashMap<>();
+            players.put("player1", player1Name.getText());
+            players.put("player2", player2Name.getText());                       
+        });
+
+
 
         gridPane.getColumnConstraints().add(columnConstraints);
         gridPane.getColumnConstraints().add(columnConstraints0);
@@ -199,7 +217,7 @@ public class BordBase extends AnchorPane {
         getChildren().add(scorePlayer2);
         getChildren().add(recordGame);
     }
-    private Button createButton(){    
+    private Button createButton(int index){    
                 Button btn = new Button();
                 btn.setMnemonicParsing(false);
                 btn.setOpacity(0.7);
@@ -208,7 +226,8 @@ public class BordBase extends AnchorPane {
                 btn.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 46;");
                 btn.setOnAction(
                         e->{
-                            doPlay(btn);
+                            int btnIndex=index;
+                            doPlay(btn,btnIndex);
                             if(isWin()){
                                 if(isPlayerTurn){
                                      showAlert(player1);
@@ -219,18 +238,31 @@ public class BordBase extends AnchorPane {
                                     showAlert(player2);
                                     BordBase.scoreP2++;
                                 }
+                               if(manager!=null) manager.saveGamePlay(gamePlayId, players, currentGamePlaySteps);
+                               else {
+                                    //we need to flush all the steps to re-record 
+                                    currentGamePlaySteps="";                 
+                               }
                                    
                                 resetGame();
                             }else if(isDraw()==true){
+                                    //we need to flush all the steps to re-record 
+                                    currentGamePlaySteps="";
                                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                                     alert.setTitle("Draw");
                                     alert.setHeaderText("No Winner");
                                     alert.showAndWait();   
+                                    if(manager!=null) manager.saveGamePlay(gamePlayId, players, currentGamePlaySteps);
+                                    else {
+                                         //we need to flush all the steps to re-record 
+                                         currentGamePlaySteps="";                 
+                                    }
                                     resetGame();
                                     isPlayerTurn=!isPlayerTurn;
                             }
                             scoreBtnX.setText(Integer.toString(scoreP1));
                             scoreBtnO.setText(Integer.toString(scoreP2));
+                            System.out.println("steps: "+currentGamePlaySteps);
                         }
                         
                 );
@@ -240,13 +272,14 @@ public class BordBase extends AnchorPane {
     private void showBoard(){
         for(int row=0;row<3;row++){
             for(int col=0;col<3;col++){
-                Button btn = createButton();
+                Button btn = createButton(stepper++);
                 gridPane.add(btn,col,row);
             }
         }
     }
-    private void doPlay(Button btn){
-        if(btn.getText().isEmpty()){
+    private void doPlay(Button btn,int btnIndex){
+        if(btn.getText().isEmpty()){   
+            currentGamePlaySteps+=btnIndex;
             btn.setText(isPlayerTurn()?player1.getMark().toString():player2.getMark().toString());          
         }
     }
