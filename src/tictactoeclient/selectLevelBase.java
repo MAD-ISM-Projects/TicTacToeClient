@@ -1,9 +1,12 @@
 package tictactoeclient;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import services.Navigator;
 
 public  class selectLevelBase extends AnchorPane {
 
@@ -58,7 +61,12 @@ public  class selectLevelBase extends AnchorPane {
         HardButton.setStyle("-fx-background-color: #8B91B5;");
         HardButton.setText("Hard");
         HardButton.setTextFill(javafx.scene.paint.Color.WHITE);
-
+        HardButton.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent e){
+                Navigator.navigateTo(new SingleHardModeBase(), e);
+            }
+        });
         getChildren().add(EeasyImage);
         getChildren().add(EasyButton);
         getChildren().add(HardImage);
