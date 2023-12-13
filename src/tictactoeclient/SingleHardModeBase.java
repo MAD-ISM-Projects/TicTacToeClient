@@ -1,5 +1,8 @@
 package tictactoeclient;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -45,6 +48,8 @@ public  class SingleHardModeBase extends AnchorPane {
     private boolean playerTurn;
     private int scorePlayerX = 0;
     private int scorePlayerO = 0;
+    private static final int MAX_DEPTH = 3; 
+
     public SingleHardModeBase() {
 
         gridPane = new GridPane();
@@ -309,26 +314,33 @@ public  class SingleHardModeBase extends AnchorPane {
        System.out.println("Recording the game...");
        // You might want to save the game state, moves, or any relevant information.
    }
-        private int[] minimax(char[][] board, char player) {
-                int[] bestMove = new int[]{-1, -1};
-                int bestScore = (player == 'O') ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        if (board[i][j] == 0) {
-                            board[i][j] = player;
-                            int score = minimaxHelper(board, 0, false);
-                            board[i][j] = 0;
+    private int[] minimax(char[][] board, char player, int depth) {
+        int[] bestMove = new int[]{-1, -1};
+        int bestScore = (player == 'O') ? Integer.MIN_VALUE : Integer.MAX_VALUE;
 
-                            if ((player == 'O' && score > bestScore) || (player == 'X' && score < bestScore)) {
-                                bestScore = score;
-                                bestMove[0] = i;
-                                bestMove[1] = j;
-                            }
-                        }
-                    }
+        // Shuffle the list of available moves
+        List<int[]> availableMoves = getAvailableMoves(board);
+        Collections.shuffle(availableMoves);
+
+        for (int[] move : availableMoves) {
+            int i = move[0];
+            int j = move[1];
+
+            if (board[i][j] == 0) {
+                board[i][j] = player;
+                int score = minimaxHelper(board, depth + 1, Integer.MIN_VALUE, Integer.MAX_VALUE, false);
+                board[i][j] = 0;
+
+                if ((player == 'O' && score > bestScore) || (player == 'X' && score < bestScore)) {
+                    bestScore = score;
+                    bestMove[0] = i;
+                    bestMove[1] = j;
                 }
-                return bestMove;
             }
+        }
+
+        return bestMove;
+    }
 
     private void handleButtonClick(int row, int col) {
         Button clickedButton = getButton(row, col);
@@ -341,9 +353,22 @@ public  class SingleHardModeBase extends AnchorPane {
             playerTurn = true;
         }
     }
+private List<int[]> getAvailableMoves(char[][] board) {
+    List<int[]> availableMoves = new ArrayList<>();
 
-   private void computerMove() {
-    int[] bestMove = minimax(board, 'O');
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            if (board[i][j] == 0) {
+                availableMoves.add(new int[]{i, j});
+            }
+        }
+    }
+
+    return availableMoves;
+}
+
+  private void computerMove() {
+    int[] bestMove = minimax(board, 'O', 0);  // Assuming the initial depth is 0
     int row = bestMove[0];
     int col = bestMove[1];
     board[row][col] = 'O';
@@ -351,7 +376,7 @@ public  class SingleHardModeBase extends AnchorPane {
     checkGameStatus();
 }
 
-    private int minimaxHelper(char[][] board, int depth, boolean isMaximizing) {
+    private int minimaxHelper(char[][] board, int depth, int alpha, int beta, boolean isMaximizing) {
         char result = isWinner();
         if (result == 'X') {
             return -1;
@@ -361,34 +386,60 @@ public  class SingleHardModeBase extends AnchorPane {
             return 0;
         }
 
+        if (depth >= MAX_DEPTH) {
+            return heuristicEvaluation(board);
+        }
+
+        // Shuffle the list of available moves
+        List<int[]> availableMoves = getAvailableMoves(board);
+        Collections.shuffle(availableMoves);
+
         if (isMaximizing) {
             int bestScore = Integer.MIN_VALUE;
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    if (board[i][j] == 0) {
-                        board[i][j] = 'O';
-                        int score = minimaxHelper(board, depth + 1, false);
-                        board[i][j] = 0;
-                        bestScore = Math.max(score, bestScore);
+            for (int[] move : availableMoves) {
+                int i = move[0];
+                int j = move[1];
+
+                if (board[i][j] == 0) {
+                    board[i][j] = 'O';
+                    int score = minimaxHelper(board, depth + 1, alpha, beta, false);
+                    board[i][j] = 0;
+                    bestScore = Math.max(score, bestScore);
+                    alpha = Math.max(score, alpha);
+
+                    if (beta <= alpha) {
+                        break;
                     }
                 }
             }
             return bestScore;
         } else {
             int bestScore = Integer.MAX_VALUE;
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    if (board[i][j] == 0) {
-                        board[i][j] = 'X';
-                        int score = minimaxHelper(board, depth + 1, true);
-                        board[i][j] = 0;
-                        bestScore = Math.min(score, bestScore);
+            for (int[] move : availableMoves) {
+                int i = move[0];
+                int j = move[1];
+
+                if (board[i][j] == 0) {
+                    board[i][j] = 'X';
+                    int score = minimaxHelper(board, depth + 1, alpha, beta, true);
+                    board[i][j] = 0;
+                    bestScore = Math.min(score, bestScore);
+                    beta = Math.min(score, beta);
+
+                    if (beta <= alpha) {
+                        break;
                     }
                 }
             }
             return bestScore;
         }
     }
+     private int heuristicEvaluation(char[][] board) {
+        // Implement your heuristic evaluation logic here
+        // This is a placeholder, you can customize it based on your strategy
+        return 0;
+    }
+
    private void checkGameStatus() {
         char winner = getWinner();
 
