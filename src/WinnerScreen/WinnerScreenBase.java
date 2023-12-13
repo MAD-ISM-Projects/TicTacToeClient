@@ -15,6 +15,8 @@ import javafx.util.Duration;
 import services.Navigator;
 import tictactoeclient.BordBase;
 import tictactoeclient.ChooseModeBase;
+import tictactoeclient.EasyLevelBase;
+import tictactoeclient.MyFont;
 import tictactoeclient.StartpageBase;
 
 public  class WinnerScreenBase extends BorderPane {
@@ -45,7 +47,7 @@ public  class WinnerScreenBase extends BorderPane {
     protected final Label PlayerNameLabelWinner;
     protected final Label WinnerStatus;
     static String videoPath;
-    public WinnerScreenBase(String name , int num) {
+    public WinnerScreenBase(String name , int num,int page) {
 
         mv = new MediaView();
         gridPane = new GridPane();
@@ -176,10 +178,19 @@ public  class WinnerScreenBase extends BorderPane {
         button0.setStyle("-fx-background-radius: 10;");
         button0.setText("Play Again");
         button0.setTextFill(javafx.scene.paint.Color.valueOf("#81778d"));
-        button0.setFont(new Font("Times New Roman", 16.0));
+        button0.setFont(new Font(MyFont.MY_FONT, 16.0));
         setBottom(gridPane);
         button0.setOnAction(e->{
+            if(page==1){
+                
             Navigator.navigateTo(new BordBase(),e);
+            }else if(page == 2){
+                 Navigator.navigateTo(new EasyLevelBase(),e);
+            }else if (page == 3){
+                //navigat to hard mode ya mayar
+             // Navigator.navigateTo(new EasyLevelBase(),e);
+
+            }
         });
 
         BorderPane.setAlignment(gridPane0, javafx.geometry.Pos.CENTER);
@@ -232,15 +243,15 @@ public  class WinnerScreenBase extends BorderPane {
         GridPane.setColumnIndex(PlayerNameLabelWinner, 2);
         GridPane.setRowIndex(PlayerNameLabelWinner, 1);
         PlayerNameLabelWinner.setPrefHeight(46.0);
-        PlayerNameLabelWinner.setPrefWidth(200);
+        PlayerNameLabelWinner.setPrefWidth(100);
         PlayerNameLabelWinner.setText(name);
         PlayerNameLabelWinner.setTextFill(javafx.scene.paint.Color.WHITE);
-        PlayerNameLabelWinner.setFont(new Font("Times New Roman Italic", 40.0));
+        PlayerNameLabelWinner.setFont(new Font(MyFont.MY_FONT, 40.0));
 
         GridPane.setColumnIndex(WinnerStatus, 3);
         GridPane.setRowIndex(WinnerStatus, 1);
         WinnerStatus.setPrefHeight(58.0);
-        WinnerStatus.setPrefWidth(400.0);
+        WinnerStatus.setPrefWidth(200.0);
         if(num==1){
             WinnerStatus.setText(" Winner!");
         }else if(num==2){
@@ -251,7 +262,7 @@ public  class WinnerScreenBase extends BorderPane {
 
         }
         WinnerStatus.setTextFill(javafx.scene.paint.Color.valueOf("#d31b9c"));
-        WinnerStatus.setFont(new Font("Times New Roman Italic", 40.0));
+        WinnerStatus.setFont(new Font(MyFont.MY_FONT, 40.0));
         setTop(gridPane0);
 
         gridPane.getColumnConstraints().add(columnConstraints);
