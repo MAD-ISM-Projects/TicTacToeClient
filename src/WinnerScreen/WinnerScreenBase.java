@@ -7,8 +7,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
+import services.Navigator;
+import tictactoeclient.BordBase;
+import tictactoeclient.ChooseModeBase;
+import tictactoeclient.StartpageBase;
 
 public  class WinnerScreenBase extends BorderPane {
 
@@ -38,7 +45,7 @@ public  class WinnerScreenBase extends BorderPane {
     protected final Label PlayerNameLabelWinner;
     protected final Label WinnerStatus;
 
-    public WinnerScreenBase() {
+    public WinnerScreenBase(String name) {
 
         mv = new MediaView();
         gridPane = new GridPane();
@@ -65,18 +72,26 @@ public  class WinnerScreenBase extends BorderPane {
         rowConstraints4 = new RowConstraints();
         PlayerNameLabelWinner = new Label();
         WinnerStatus = new Label();
+        
+        String videoPath="win.mp4";
+        Media media = new Media(WinnerScreen.JavaProject.class.getResource(videoPath).toExternalForm());
+      //  Media media =new Media(videoPath);
+        MediaPlayer mediaPlayer=new MediaPlayer(media);
+        mv.setMediaPlayer(mediaPlayer);
+         mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
+        mediaPlayer.play();
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
         setMinWidth(USE_PREF_SIZE);
-        setPrefHeight(400.0);
-        setPrefWidth(600.0);
+        setPrefHeight(550.0);
+        setPrefWidth(800.0);
         setStyle("-fx-background-color: #34365C;");
 
         BorderPane.setAlignment(mv, javafx.geometry.Pos.CENTER);
-        mv.setFitHeight(200.0);
-        mv.setFitWidth(300.0);
+        mv.setFitHeight(400.0);
+        mv.setFitWidth(600.0);
         BorderPane.setMargin(mv, new Insets(0.0, 0.0, 50.0, 0.0));
         setCenter(mv);
 
@@ -137,6 +152,11 @@ public  class WinnerScreenBase extends BorderPane {
         button.setStyle("-fx-background-radius: 10;");
         button.setText("Back");
         button.setTextFill(javafx.scene.paint.Color.valueOf("#81778d"));
+        button.setOnAction(e->{
+            Navigator.navigateTo(new ChooseModeBase(),e);
+            BordBase.scoreP1=0;
+            BordBase.scoreP2=0;
+        });
 
         GridPane.setColumnIndex(button0, 4);
         GridPane.setRowIndex(button0, 1);
@@ -148,6 +168,9 @@ public  class WinnerScreenBase extends BorderPane {
         button0.setTextFill(javafx.scene.paint.Color.valueOf("#81778d"));
         button0.setFont(new Font("Times New Roman", 16.0));
         setBottom(gridPane);
+        button0.setOnAction(e->{
+            Navigator.navigateTo(new BordBase(),e);
+        });
 
         BorderPane.setAlignment(gridPane0, javafx.geometry.Pos.CENTER);
 
@@ -199,16 +222,16 @@ public  class WinnerScreenBase extends BorderPane {
         GridPane.setColumnIndex(PlayerNameLabelWinner, 2);
         GridPane.setRowIndex(PlayerNameLabelWinner, 1);
         PlayerNameLabelWinner.setPrefHeight(46.0);
-        PlayerNameLabelWinner.setPrefWidth(128.0);
-        PlayerNameLabelWinner.setText("Winner");
+        PlayerNameLabelWinner.setPrefWidth(200);
+        PlayerNameLabelWinner.setText(name);
         PlayerNameLabelWinner.setTextFill(javafx.scene.paint.Color.WHITE);
         PlayerNameLabelWinner.setFont(new Font("Times New Roman Italic", 40.0));
 
         GridPane.setColumnIndex(WinnerStatus, 3);
         GridPane.setRowIndex(WinnerStatus, 1);
         WinnerStatus.setPrefHeight(58.0);
-        WinnerStatus.setPrefWidth(158.0);
-        WinnerStatus.setText("Winner!");
+        WinnerStatus.setPrefWidth(400.0);
+        WinnerStatus.setText(" Winner!");
         WinnerStatus.setTextFill(javafx.scene.paint.Color.valueOf("#d31b9c"));
         WinnerStatus.setFont(new Font("Times New Roman Italic", 40.0));
         setTop(gridPane0);
