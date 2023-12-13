@@ -309,6 +309,26 @@ public  class SingleHardModeBase extends AnchorPane {
        System.out.println("Recording the game...");
        // You might want to save the game state, moves, or any relevant information.
    }
+        private int[] minimax(char[][] board, char player) {
+                int[] bestMove = new int[]{-1, -1};
+                int bestScore = (player == 'O') ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        if (board[i][j] == 0) {
+                            board[i][j] = player;
+                            int score = minimaxHelper(board, 0, false);
+                            board[i][j] = 0;
+
+                            if ((player == 'O' && score > bestScore) || (player == 'X' && score < bestScore)) {
+                                bestScore = score;
+                                bestMove[0] = i;
+                                bestMove[1] = j;
+                            }
+                        }
+                    }
+                }
+                return bestMove;
+            }
 
     private void handleButtonClick(int row, int col) {
         Button clickedButton = getButton(row, col);
@@ -322,41 +342,55 @@ public  class SingleHardModeBase extends AnchorPane {
         }
     }
 
-    private void computerMove() {
-        int[] bestMove = minimax(board, 'O');
-        int row = bestMove[0];
-        int col = bestMove[1];
-        board[row][col] = 'O';
-        getButton(row, col).setText("O");
-        checkGameStatus();
-    }
+   private void computerMove() {
+    int[] bestMove = minimax(board, 'O');
+    int row = bestMove[0];
+    int col = bestMove[1];
+    board[row][col] = 'O';
+    getButton(row, col).setText("O");
+    checkGameStatus();
+}
 
-   private int[] minimax(char[][] board, char player) {
-            int[] bestMove = new int[]{-1, -1};
-            int bestScore = (player == 'O') ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+    private int minimaxHelper(char[][] board, int depth, boolean isMaximizing) {
+        char result = isWinner();
+        if (result == 'X') {
+            return -1;
+        } else if (result == 'O') {
+            return 1;
+        } else if (result == 'T') {
+            return 0;
+        }
+
+        if (isMaximizing) {
+            int bestScore = Integer.MIN_VALUE;
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
                     if (board[i][j] == 0) {
-                        board[i][j] = player;
-                        int score = minimaxHelper(board, 0, false);
+                        board[i][j] = 'O';
+                        int score = minimaxHelper(board, depth + 1, false);
                         board[i][j] = 0;
-
-                        if ((player == 'O' && score > bestScore) || (player == 'X' && score < bestScore))
-                        {
-                            bestScore = score;
-                            bestMove[0] = i;
-                            bestMove[1] = j;
-                        }
+                        bestScore = Math.max(score, bestScore);
                     }
                 }
             }
-            return bestMove;
+            return bestScore;
+        } else {
+            int bestScore = Integer.MAX_VALUE;
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (board[i][j] == 0) {
+                        board[i][j] = 'X';
+                        int score = minimaxHelper(board, depth + 1, true);
+                        board[i][j] = 0;
+                        bestScore = Math.min(score, bestScore);
+                    }
+                }
+            }
+            return bestScore;
         }
-        private int minimaxHelper(char[][] board, int depth, boolean isMaximizing) {
-            return 0;
-         }
-    private void checkGameStatus() {
-        char winner = isWinner();
+    }
+   private void checkGameStatus() {
+        char winner = getWinner();
 
         if (winner != 0) {
             announceWinner(winner);
@@ -364,7 +398,21 @@ public  class SingleHardModeBase extends AnchorPane {
             announceTie();
         }
     }
-	
+	private char getWinner() {
+       char winner = isWinner();
+    
+        if (winner != 0) {
+            return winner;
+        }
+
+        // Check if the board is full
+        if (isBoardFull()) {
+            return 'T'; // 'T' represents a tie
+        }
+
+        // No winner yet
+        return 0;
+       }
           private char isWinner() {
             // Check rows
             for (int i = 0; i < 3; i++) {
@@ -398,25 +446,26 @@ public  class SingleHardModeBase extends AnchorPane {
             return true; // All cells are filled, the board is full
         }
        
-        private void announceWinner(char winner) {
-            String winnerName = (winner == 'X') ? "Player X" : "Player O";
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Game Over");
-            alert.setHeaderText(null);
-            alert.setContentText(winnerName + " wins!");
-            updateScores(winner);
-            alert.showAndWait();
-              resetBoard();
-        }
         private void announceTie() {
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Game Over");
-            alert.setHeaderText(null);
-            alert.setContentText("It's a tie!");
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Game Over");
+                alert.setHeaderText(null);
+                alert.setContentText("It's a tie!");
 
-            alert.showAndWait();
-              resetBoard();
-        }
+                alert.showAndWait();
+                resetBoard();
+            }
+
+            private void announceWinner(char winner) {
+                String winnerName = (winner == 'X') ? "Player X" : "Player O";
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Game Over");
+                alert.setHeaderText(null);
+                alert.setContentText(winnerName + " wins!");
+                updateScores(winner);
+                alert.showAndWait();
+                resetBoard();
+            }
         private Button getButton(int row, int col) {
             return (Button) gridPane.getChildren().get(row * 3 + col);
         }
@@ -445,4 +494,5 @@ public  class SingleHardModeBase extends AnchorPane {
             scoreBtnO.setText(Integer.toString(scorePlayerO));
         }
       }
+        
 }
