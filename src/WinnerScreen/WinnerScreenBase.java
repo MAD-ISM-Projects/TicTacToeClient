@@ -44,8 +44,8 @@ public  class WinnerScreenBase extends BorderPane {
     protected final RowConstraints rowConstraints4;
     protected final Label PlayerNameLabelWinner;
     protected final Label WinnerStatus;
-
-    public WinnerScreenBase(String name) {
+    static String videoPath;
+    public WinnerScreenBase(String name , int num) {
 
         mv = new MediaView();
         gridPane = new GridPane();
@@ -72,8 +72,18 @@ public  class WinnerScreenBase extends BorderPane {
         rowConstraints4 = new RowConstraints();
         PlayerNameLabelWinner = new Label();
         WinnerStatus = new Label();
+        if (num == 1){
+             videoPath = "win.mp4";
         
-        String videoPath="win.mp4";
+        }else if (num == 2){
+            //vid loser 
+             videoPath = "loser.mp4";
+        }else if(num == 3){
+            //draw vid
+             videoPath = "draw.mp4";
+        }
+        
+        //String videoPath="win.mp4";
         Media media = new Media(WinnerScreen.JavaProject.class.getResource(videoPath).toExternalForm());
       //  Media media =new Media(videoPath);
         MediaPlayer mediaPlayer=new MediaPlayer(media);
@@ -231,7 +241,15 @@ public  class WinnerScreenBase extends BorderPane {
         GridPane.setRowIndex(WinnerStatus, 1);
         WinnerStatus.setPrefHeight(58.0);
         WinnerStatus.setPrefWidth(400.0);
-        WinnerStatus.setText(" Winner!");
+        if(num==1){
+            WinnerStatus.setText(" Winner!");
+        }else if(num==2){
+                    WinnerStatus.setText(" Loser!");
+
+        }else if(num==3){
+                    WinnerStatus.setText(" Draw!");
+
+        }
         WinnerStatus.setTextFill(javafx.scene.paint.Color.valueOf("#d31b9c"));
         WinnerStatus.setFont(new Font("Times New Roman Italic", 40.0));
         setTop(gridPane0);
