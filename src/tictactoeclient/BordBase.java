@@ -59,7 +59,6 @@ public class BordBase extends AnchorPane {
     public static int scoreP2=0;
     String currentGamePlaySteps="";
     int stepper=0;
-    String gamePlayId = "GamePlay";
     Map<String, String> players;
     GamePlayManager manager;
     static int winner = 0;
@@ -254,11 +253,11 @@ public class BordBase extends AnchorPane {
                                     Navigator.navigateTo(new WinnerScreenBase(player2.getName(),winner,page), e);
                                     BordBase.scoreP2++;
                                 }
-                               if(manager!=null) manager.saveGamePlay(gamePlayId, players, currentGamePlaySteps);
-                               else {
-                                    //we need to flush all the steps to re-record 
+                               if(manager!=null)
+                              manager.saveGamePlay(players, currentGamePlaySteps);
+                               
                                     currentGamePlaySteps="";                 
-                               }
+                              
                                    
                                 resetGame();
                             }else if(isDraw()==true){
@@ -267,11 +266,10 @@ public class BordBase extends AnchorPane {
                                     BordBase.winner = 3;
                                     Navigator.navigateTo(new WinnerScreenBase("NoName",winner,page), e);
                                        
-                                    if(manager!=null) manager.saveGamePlay(gamePlayId, players, currentGamePlaySteps);
-                                    else {
-                                         //we need to flush all the steps to re-record 
-                                         currentGamePlaySteps="";                 
-                                    }
+                                    if(manager!=null) manager.saveGamePlay(players, currentGamePlaySteps);
+            
+                                     currentGamePlaySteps="";                 
+
                                     resetGame();
                                     isPlayerTurn=!isPlayerTurn;
                             }

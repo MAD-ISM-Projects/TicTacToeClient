@@ -5,10 +5,13 @@ import java.util.Map;
 public class GamePlay {
     private Map<String, String> players;
     private String steps;
+   // public static int gamePlayID=0;
 
     public GamePlay(Map<String, String> players, String steps) {
         this.players = players;
         this.steps = steps;
+    //    gamePlayID++;
+  //      gamePlayID=gamePlayID/10;
     }
 
     public Map<String, String> getPlayers() {
