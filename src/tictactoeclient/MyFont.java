@@ -7,8 +7,9 @@ package tictactoeclient;
 
 /**
  *
- * @author NEW LAP
+ * @author U S B
  */
-public class Font {
-    
+public class MyFont {
+      public static final String MY_FONT = "Times New Roman Italic";
+
 }

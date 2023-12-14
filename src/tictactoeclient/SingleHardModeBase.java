@@ -192,7 +192,7 @@ public  class SingleHardModeBase extends AnchorPane {
         player2.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         player2.setStrokeWidth(0.0);
         player2.setText("Computer");
-        player2.setFont(new Font("Times New Roman Italic", 36.0));
+        player2.setFont(new Font(MyFont.MY_FONT, 36.0));
 
         ticText.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));
         ticText.setLayoutX(272.0);
@@ -200,7 +200,7 @@ public  class SingleHardModeBase extends AnchorPane {
         ticText.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         ticText.setStrokeWidth(0.0);
         ticText.setText("Tic");
-        ticText.setFont(new Font("Lucida Handwriting Italic", 36.0));
+        ticText.setFont(new Font(MyFont.MY_FONT, 36.0));
 
         tacText.setFill(javafx.scene.paint.Color.WHITE);
         tacText.setLayoutX(348.0);
@@ -208,7 +208,7 @@ public  class SingleHardModeBase extends AnchorPane {
         tacText.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         tacText.setStrokeWidth(0.0);
         tacText.setText("Tac");
-        tacText.setFont(new Font("Lucida Handwriting Italic", 36.0));
+        tacText.setFont(new Font(MyFont.MY_FONT, 36.0));
 
         toeText.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));
         toeText.setLayoutX(434.0);
@@ -216,7 +216,7 @@ public  class SingleHardModeBase extends AnchorPane {
         toeText.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         toeText.setStrokeWidth(0.0);
         toeText.setText("Toe");
-        toeText.setFont(new Font("Lucida Handwriting Italic", 36.0));
+        toeText.setFont(new Font(MyFont.MY_FONT, 36.0));
 
         scoreBtnX.setLayoutX(113.0);
         scoreBtnX.setLayoutY(170.0);
@@ -250,7 +250,7 @@ public  class SingleHardModeBase extends AnchorPane {
         recordGame.setStyle("-fx-background-color: #ff8fda;");
         recordGame.setText("Record");
         recordGame.setTextFill(javafx.scene.paint.Color.WHITE);
-        recordGame.setFont(new Font("System Bold", 18.0));
+        recordGame.setFont(new Font(MyFont.MY_FONT, 18.0));
 
         gridPane.getColumnConstraints().add(columnConstraints);
         gridPane.getColumnConstraints().add(columnConstraints0);

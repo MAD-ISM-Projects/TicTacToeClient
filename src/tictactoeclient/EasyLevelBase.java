@@ -1,5 +1,6 @@
 package tictactoeclient;
 
+import WinnerScreen.WinnerScreenBase;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +15,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import static tictactoeclient.BordBase.scoreP1;
+import services.Navigator;
+
 import tictactoeclient.Enum.Mark;
 import tictactoeclient.Models.DTOPlayer;
 
@@ -36,12 +38,16 @@ public class EasyLevelBase extends AnchorPane {
     protected final Button scoreBtnO;
     protected final Text scorePlayer1;
     protected final Text scorePlayer2;
+    public static int scoreP1=0;
+    public static int scoreP2=0;
     protected final Button recordGame;
     protected boolean isPlayerTurn=false;
     protected DTOPlayer player1;
     protected DTOPlayer player2;
-    protected Button[][] bord=new Button[3][3];  
+    protected Button[][] bord=new Button[3][3]; 
+    static int page2;
     Mark mark;
+    public static int win;
     
 
     public EasyLevelBase() {
@@ -65,6 +71,7 @@ public class EasyLevelBase extends AnchorPane {
         recordGame = new Button();
         player1 = new DTOPlayer("You",Mark.X);
         player2 = new DTOPlayer("PC",Mark.O);
+        
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -109,7 +116,7 @@ public class EasyLevelBase extends AnchorPane {
         player1Name.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         player1Name.setStrokeWidth(0.0);
         player1Name.setText(player1.getName());
-        player1Name.setFont(new Font("Times New Roman Italic", 36.0));
+        player1Name.setFont(new Font(MyFont.MY_FONT, 36.0));
 
         player2Name.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));
         player2Name.setLayoutX(620.0);
@@ -117,7 +124,7 @@ public class EasyLevelBase extends AnchorPane {
         player2Name.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         player2Name.setStrokeWidth(0.0);
         player2Name.setText(player2.getName());
-        player2Name.setFont(new Font("Times New Roman Italic", 36.0));
+        player2Name.setFont(new Font(MyFont.MY_FONT, 36.0));
         showBoard();
         ticText.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));
         ticText.setLayoutX(272.0);
@@ -125,7 +132,7 @@ public class EasyLevelBase extends AnchorPane {
         ticText.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         ticText.setStrokeWidth(0.0);
         ticText.setText("Tic");
-        ticText.setFont(new Font("Lucida Handwriting Italic", 36.0));
+        ticText.setFont(new Font(MyFont.MY_FONT, 36.0));
 
         tacText.setFill(javafx.scene.paint.Color.WHITE);
         tacText.setLayoutX(348.0);
@@ -133,7 +140,7 @@ public class EasyLevelBase extends AnchorPane {
         tacText.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         tacText.setStrokeWidth(0.0);
         tacText.setText("Tac");
-        tacText.setFont(new Font("Lucida Handwriting Italic", 36.0));
+        tacText.setFont(new Font(MyFont.MY_FONT, 36.0));
 
         toeText.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));
         toeText.setLayoutX(434.0);
@@ -141,17 +148,22 @@ public class EasyLevelBase extends AnchorPane {
         toeText.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         toeText.setStrokeWidth(0.0);
         toeText.setText("Toe");
-        toeText.setFont(new Font("Lucida Handwriting Italic", 36.0));
+        toeText.setFont(new Font(MyFont.MY_FONT, 36.0));
 
         scoreBtnX.setLayoutX(113.0);
         scoreBtnX.setLayoutY(170.0);
         scoreBtnX.setMnemonicParsing(false);
-        scoreBtnX.setText("1");
+        scoreBtnX.setText(Integer.toString(scoreP1));
+        scoreBtnX.setStyle("-fx-background-color:#ff8fda; -fx-text-fill:#FFFFFF;");
+        scoreBtnX.setFont(new Font("System Bold", 18.0));
 
         scoreBtnO.setLayoutX(676.0);
         scoreBtnO.setLayoutY(170.0);
         scoreBtnO.setMnemonicParsing(false);
-        scoreBtnO.setText("0");
+        scoreBtnO.setText(Integer.toString(scoreP2));
+        scoreBtnO.setStyle("-fx-background-color:#ff8fda;  -fx-text-fill:#FFFFFF;");
+        scoreBtnO.setFont(new Font("System Bold", 18.0));
+
 
         scorePlayer1.setFill(javafx.scene.paint.Color.valueOf("#aea5b8"));
         scorePlayer1.setLayoutX(59.0);
@@ -204,32 +216,40 @@ public class EasyLevelBase extends AnchorPane {
                 btn.setPrefHeight(100.0);
                 btn.setPrefWidth(100.0);
                 btn.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 46;");
-                btn.setOnAction(
-                        e->{
+                btn.setOnAction( e->{
                             isPlayerTurn();
-                            if(btn.getText().isEmpty()&&!isWin()){
+                            if(btn.getText().isEmpty() && !isWin()){
                                 btn.setText(player1.getMark().toString());
                                 if(!isWin())
                                 easyLevel();
                             }
                             if(isWin()){
                                 if(isPlayerTurn){
-                                     showAlert(player1);
-                                     isPlayerTurn=!isPlayerTurn;
+                                    win=1;
+                                    page2=2;
+                                    Navigator.navigateTo(new WinnerScreenBase(player1.getName(),win,page2), e);
+                                    isPlayerTurn=!isPlayerTurn;
+                                     BordBase.scoreP1++;
                                 }
                                 else{
-                                    showAlert(player2);
+                                      win=2;
+                                     page2=2;
+                                    Navigator.navigateTo(new WinnerScreenBase(player1.getName(),win,page2), e);
+                                     
+                                    BordBase.scoreP2++;
+
                                 }
                                 resetGame();
                             }else if(isDraw()==true){
-                                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                    alert.setTitle("Draw");
-                                    alert.setHeaderText("No Winner");
-                                    alert.showAndWait();   
+                                    win=3;
+                                    page2=2;
+                                    Navigator.navigateTo(new WinnerScreenBase("Drawer",win,page2), e);
+
                                     resetGame();
                                     isPlayerTurn=!isPlayerTurn;
                             }
-
+                            scoreBtnX.setText(Integer.toString(scoreP1));
+                            scoreBtnO.setText(Integer.toString(scoreP2));
                         }
                         
                 );
@@ -238,9 +258,9 @@ public class EasyLevelBase extends AnchorPane {
     }
     private void showBoard(){
         for(int row=0;row<3;row++){
-            for(int col=0;col<3;col++){
+            for(int col = 0; col < 3; col++){
                 Button btn = createButton();
-                gridPane.add(btn,col,row);
+                gridPane.add(btn, col, row);
                 bord[col][row]=btn;
             }
         }
@@ -265,7 +285,7 @@ public class EasyLevelBase extends AnchorPane {
             btn.setDisable(true);
         
     }
-    private boolean TicTac(List<Node> buttons){
+ private boolean TicTac(List<Node> buttons){
         String mark=(isPlayerTurn?player1.getMark().toString():player2.getMark().toString());
         for(Node btn: buttons){
             Button button = (Button) btn;
@@ -317,10 +337,5 @@ public class EasyLevelBase extends AnchorPane {
             button.setDisable(false);
         }
     }
-    public void showAlert(DTOPlayer player){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Winner");
-        alert.setHeaderText(player.getName()+" Win");
-        alert.showAndWait();
-    }
+
 }

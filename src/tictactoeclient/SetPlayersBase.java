@@ -34,6 +34,11 @@ public  class SetPlayersBase extends AnchorPane {
         playerName1 = new TextField();
         playerName1.setPromptText("Player X Name");
         playerName2.setPromptText("Player O Name");
+        playerName1.setPrefWidth(187);
+        playerName2.setPrefWidth(187);
+        playerName1.setPrefHeight(30.0);
+        playerName2.setPrefHeight(30.0);
+
         
 
         setId("AnchorPane");
@@ -56,7 +61,7 @@ public  class SetPlayersBase extends AnchorPane {
         text_tic.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text_tic.setStrokeWidth(0.0);
         text_tic.setText("Tic");
-        text_tic.setFont(new Font("Times New Roman Italic", 40.0));
+        text_tic.setFont(new Font(MyFont.MY_FONT, 40.0));
 
         text_tac.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));
         text_tac.setLayoutX(370.0);
@@ -64,7 +69,7 @@ public  class SetPlayersBase extends AnchorPane {
         text_tac.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text_tac.setStrokeWidth(0.0);
         text_tac.setText("Tac");
-        text_tac.setFont(new Font("Times New Roman Italic", 40.0));
+        text_tac.setFont(new Font(MyFont.MY_FONT, 40.0));
 
         text_toe.setFill(javafx.scene.paint.Color.WHITE);
         text_toe.setLayoutX(436.0);
@@ -72,7 +77,7 @@ public  class SetPlayersBase extends AnchorPane {
         text_toe.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text_toe.setStrokeWidth(0.0);
         text_toe.setText("Toe");
-        text_toe.setFont(new Font("Times New Roman Italic", 40.0));
+        text_toe.setFont(new Font(MyFont.MY_FONT, 40.0));
 
         startButton.setLayoutX(315.0);
         startButton.setLayoutY(461.0);
@@ -82,9 +87,9 @@ public  class SetPlayersBase extends AnchorPane {
         startButton.setStyle("-fx-background-radius: 10; -fx-background-color: #8b91d5;");
         startButton.setText("Start");
         startButton.setTextFill(javafx.scene.paint.Color.WHITE);
-        startButton.setFont(new Font("Times New Roman", 19.0));
+        startButton.setFont(new Font(MyFont.MY_FONT, 19.0));
         
-startButton.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
+        startButton.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent e){
                 if(playerName1.getText().isEmpty()&&playerName2.getText().isEmpty()){

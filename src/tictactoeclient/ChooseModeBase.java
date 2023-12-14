@@ -50,7 +50,7 @@ public class ChooseModeBase extends AnchorPane {
         text_tic.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text_tic.setStrokeWidth(0.0);
         text_tic.setText("Tic");
-        text_tic.setFont(new Font("Times New Roman Italic", 40.0));
+        text_tic.setFont(new Font(MyFont.MY_FONT, 40.0));
 
         text_tac.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));
         text_tac.setLayoutX(370.0);
@@ -58,7 +58,7 @@ public class ChooseModeBase extends AnchorPane {
         text_tac.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text_tac.setStrokeWidth(0.0);
         text_tac.setText("Tac");
-        text_tac.setFont(new Font("Times New Roman Italic", 40.0));
+        text_tac.setFont(new Font(MyFont.MY_FONT, 40.0));
 
         text_toe.setFill(javafx.scene.paint.Color.WHITE);
         text_toe.setLayoutX(436.0);
@@ -66,7 +66,7 @@ public class ChooseModeBase extends AnchorPane {
         text_toe.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text_toe.setStrokeWidth(0.0);
         text_toe.setText("Toe");
-        text_toe.setFont(new Font("Times New Roman Italic", 40.0));
+        text_toe.setFont(new Font(MyFont.MY_FONT, 40.0));
 
         btn_Single.setLayoutX(315.0);
         btn_Single.setLayoutY(359.0);
@@ -76,7 +76,7 @@ public class ChooseModeBase extends AnchorPane {
         btn_Single.setStyle("-fx-background-radius: 10;");
         btn_Single.setText("Single mode");
         btn_Single.setTextFill(javafx.scene.paint.Color.valueOf("#8b76a4"));
-        btn_Single.setFont(new Font("Times New Roman", 19.0));
+        btn_Single.setFont(new Font(MyFont.MY_FONT, 19.0));
         btn_Single.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent e){
@@ -92,7 +92,7 @@ public class ChooseModeBase extends AnchorPane {
         btn_multi.setStyle("-fx-background-radius: 10;");
         btn_multi.setText("Multi mode");
         btn_multi.setTextFill(javafx.scene.paint.Color.valueOf("#8b76a4"));
-        btn_multi.setFont(new Font("Times New Roman", 18.0));
+        btn_multi.setFont(new Font(MyFont.MY_FONT, 18.0));
         btn_multi.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent e){
@@ -107,7 +107,7 @@ public class ChooseModeBase extends AnchorPane {
         btn_online.setStyle("-fx-background-radius: 10;");
         btn_online.setText("online");
         btn_online.setTextFill(javafx.scene.paint.Color.valueOf("#8b76a4"));
-        btn_online.setFont(new Font("Times New Roman", 19.0));
+        btn_online.setFont(new Font(MyFont.MY_FONT, 19.0));
 
         getChildren().add(mode_image);
         getChildren().add(text_tic);

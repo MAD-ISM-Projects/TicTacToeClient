@@ -66,7 +66,7 @@ public  class StartpageBase extends AnchorPane {
         tictoeText.setStrokeWidth(0.0);
         tictoeText.setText("Tic       Toe");
         tictoeText.setWrappingWidth(324.765625);
-        tictoeText.setFont(new Font("Times New Roman Bold Italic", 70.0));
+        tictoeText.setFont(new Font(MyFont.MY_FONT, 70.0));
 
         miniText.setFill(javafx.scene.paint.Color.valueOf("#8b91b5"));
         miniText.setLayoutX(65.0);
@@ -75,7 +75,7 @@ public  class StartpageBase extends AnchorPane {
         miniText.setStrokeWidth(0.0);
         miniText.setText("mini ");
         miniText.setWrappingWidth(93.9999908208847);
-        miniText.setFont(new Font("Times New Roman Italic", 45.0));
+        miniText.setFont(new Font(MyFont.MY_FONT, 45.0));
 
         gamText.setFill(javafx.scene.paint.Color.valueOf("#8b91b5"));
         gamText.setLayoutX(159.0);
@@ -84,7 +84,7 @@ public  class StartpageBase extends AnchorPane {
         gamText.setStrokeWidth(0.0);
         gamText.setText("Game");
         gamText.setWrappingWidth(151.94921875);
-        gamText.setFont(new Font("Times New Roman Bold Italic", 55.0));
+        gamText.setFont(new Font(MyFont.MY_FONT, 55.0));
 
         text.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));
         text.setLayoutX(126.0);
@@ -92,7 +92,7 @@ public  class StartpageBase extends AnchorPane {
         text.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text.setStrokeWidth(0.0);
         text.setText("Tac");
-        text.setFont(new Font("Times New Roman Bold Italic", 70.0));
+        text.setFont(new Font(MyFont.MY_FONT, 70.0));
 
         imageView.setFitHeight(248.0);
         imageView.setFitWidth(345.0);
