@@ -13,12 +13,16 @@ public class GamePlayManager {
     private final String filePath;
     private final Gson gson;
     private Map<String, GamePlay> gamePlays;
+    public static int index;
 
     public GamePlayManager() {
         this.filePath = "src/Recorder/Records.json"; 
         this.gson = new GsonBuilder().setPrettyPrinting().create();
         this.gamePlays = new HashMap<>();
         loadGamePlays();
+    }
+    static{
+        index=0;
     }
 
     private void loadGamePlays() {
@@ -39,16 +43,17 @@ public class GamePlayManager {
         }
     }
 
-    public void saveGamePlay(String gamePlayId, Map<String, String> players, String steps) {
+    public void saveGamePlay(Map<String, String> players, String steps) {
         GamePlay gamePlay = new GamePlay(players, steps);
-        gamePlays.put(gamePlayId, gamePlay);
+        gamePlays.put("GamePlay "+GamePlayManager.index, gamePlay);
+        GamePlayManager.index++;
         updateFile();
     }
 
     private void updateFile() {
         try (Writer writer = new FileWriter(filePath)) {
             gson.toJson(gamePlays, writer);
-            ((FileWriter) writer).flush();  // Add this line to flush the data to the file
+            ((FileWriter) writer).flush();  
             System.out.println("Saved game plays to file: " + filePath);
         } catch (IOException e) {
             e.printStackTrace();
