@@ -120,7 +120,7 @@ public  class SingleHardModeBase extends AnchorPane {
         btn0.setOpacity(0.7);
         btn0.setPrefHeight(100.0);
         btn0.setPrefWidth(100.0);
-        btn0.setStyle("-fx-background-color: #FFFFFF;");
+        btn0.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 46;");
         GridPane.setMargin(btn0, new Insets(0.0));
 
         GridPane.setColumnIndex(btn1, 1);
@@ -128,21 +128,21 @@ public  class SingleHardModeBase extends AnchorPane {
         btn1.setOpacity(0.7);
         btn1.setPrefHeight(100.0);
         btn1.setPrefWidth(100.0);
-        btn1.setStyle("-fx-background-color: #FFFFFF;");
+        btn1.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 46;");
 
         GridPane.setColumnIndex(btn2, 2);
         btn2.setMnemonicParsing(false);
         btn2.setOpacity(0.7);
         btn2.setPrefHeight(100.0);
         btn2.setPrefWidth(100.0);
-        btn2.setStyle("-fx-background-color: #FFFFFF;");
+        btn2.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 46;");
 
         GridPane.setRowIndex(btn3, 1);
         btn3.setMnemonicParsing(false);
         btn3.setOpacity(0.7);
         btn3.setPrefHeight(100.0);
         btn3.setPrefWidth(100.0);
-        btn3.setStyle("-fx-background-color: #FFFFFF;");
+        btn3.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 46;");
 
         GridPane.setColumnIndex(btn4, 1);
         GridPane.setRowIndex(btn4, 1);
@@ -150,7 +150,7 @@ public  class SingleHardModeBase extends AnchorPane {
         btn4.setOpacity(0.7);
         btn4.setPrefHeight(100.0);
         btn4.setPrefWidth(100.0);
-        btn4.setStyle("-fx-background-color: #FFFFFF;");
+        btn4.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 46;");
 
         GridPane.setColumnIndex(btn5, 2);
         GridPane.setRowIndex(btn5, 1);
@@ -158,14 +158,14 @@ public  class SingleHardModeBase extends AnchorPane {
         btn5.setOpacity(0.7);
         btn5.setPrefHeight(100.0);
         btn5.setPrefWidth(100.0);
-        btn5.setStyle("-fx-background-color: #FFFFFF;");
+        btn5.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 46;");
 
         GridPane.setRowIndex(btn6, 2);
         btn6.setMnemonicParsing(false);
         btn6.setOpacity(0.7);
         btn6.setPrefHeight(100.0);
         btn6.setPrefWidth(100.0);
-        btn6.setStyle("-fx-background-color: #FFFFFF;");
+        btn6.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 46;");
 
         GridPane.setColumnIndex(btn7, 1);
         GridPane.setRowIndex(btn7, 2);
@@ -173,7 +173,7 @@ public  class SingleHardModeBase extends AnchorPane {
         btn7.setOpacity(0.7);
         btn7.setPrefHeight(100.0);
         btn7.setPrefWidth(100.0);
-        btn7.setStyle("-fx-background-color: #FFFFFF;");
+        btn7.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 46;");
 
         GridPane.setColumnIndex(btn8, 2);
         GridPane.setRowIndex(btn8, 2);
@@ -181,8 +181,8 @@ public  class SingleHardModeBase extends AnchorPane {
         btn8.setOpacity(0.7);
         btn8.setPrefHeight(100.0);
         btn8.setPrefWidth(100.0);
-        btn8.setStyle("-fx-background-color: #FFFFFF;");
-
+        btn8.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 46;");
+        
         player1.setFill(javafx.scene.paint.Color.valueOf("#fcfcfc"));
         player1.setLayoutX(50.0);
         player1.setLayoutY(150.0);
@@ -301,6 +301,7 @@ public  class SingleHardModeBase extends AnchorPane {
             btn6.setOnAction(e -> handleButtonClick(2, 0));
             btn7.setOnAction(e -> handleButtonClick(2, 1));
             btn8.setOnAction(e -> handleButtonClick(2, 2));
+         
           recordGame.setOnAction(new EventHandler<ActionEvent>() {
               @Override
               public void handle(ActionEvent event) {
