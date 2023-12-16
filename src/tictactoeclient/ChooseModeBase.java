@@ -108,7 +108,12 @@ public class ChooseModeBase extends AnchorPane {
         btn_online.setText("online");
         btn_online.setTextFill(javafx.scene.paint.Color.valueOf("#8b76a4"));
         btn_online.setFont(new Font(MyFont.MY_FONT, 19.0));
-
+        btn_online.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent e){
+                Navigator.navigateTo(new SignUp(), e);
+            }
+        });
         getChildren().add(mode_image);
         getChildren().add(text_tic);
         getChildren().add(text_tac);

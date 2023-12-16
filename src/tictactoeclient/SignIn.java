@@ -16,13 +16,11 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import static javax.swing.JOptionPane.showMessageDialog;
 import services.Navigator;
-
 public class SignIn extends AnchorPane {
 
     protected final Label label;
     protected final Pane pane;
     protected final TextField userNameTextField;
-    protected final PasswordField passwordTextField;
     protected final Label label0;
     protected final Label label1;
     protected final Label label2;
@@ -30,17 +28,16 @@ public class SignIn extends AnchorPane {
     protected final Line line;
     protected final Label label3;
     protected final Button signUp;
+    protected final PasswordField PasswordTextField;
     private Socket soc;
     private DataInputStream dis;
     private PrintStream print;
     String jsonString ;
-
     public SignIn() {
 
         label = new Label();
         pane = new Pane();
         userNameTextField = new TextField();
-        passwordTextField = new PasswordField();
         label0 = new Label();
         label1 = new Label();
         label2 = new Label();
@@ -48,10 +45,11 @@ public class SignIn extends AnchorPane {
         line = new Line();
         label3 = new Label();
         signUp = new Button();
-
+        PasswordTextField = new PasswordField();
+        
         setId("pane");
         setPrefHeight(500.0);
-        setPrefWidth(850.0);
+        setPrefWidth(800.0);
         getStylesheets().add("/tictactoeclient/style.css");
 
         label.setLayoutX(126);
@@ -59,19 +57,15 @@ public class SignIn extends AnchorPane {
         label.setMinHeight(16);
         label.setMinWidth(69);
 
-        pane.setLayoutX(292.0);
-        pane.setLayoutY(137.0);
-        pane.setPrefHeight(318.0);
-        pane.setPrefWidth(279.0);
+        pane.setLayoutX(232.0);
+        pane.setLayoutY(149.0);
+        pane.setPrefHeight(330.0);
+        pane.setPrefWidth(336.0);
         pane.setStyle("-fx-background-color: white; -fx-background-radius: 30;");
 
         userNameTextField.setLayoutX(65.0);
-        userNameTextField.setLayoutY(92.0);
+        userNameTextField.setLayoutY(96.0);
         userNameTextField.setStyle("-fx-background-radius: 6;");
-
-        passwordTextField.setLayoutX(65.0);
-        passwordTextField.setLayoutY(145.0);
-        passwordTextField.setStyle("-fx-background-radius: 6;");
 
         label0.setLayoutX(40.0);
         label0.setLayoutY(24.0);
@@ -79,16 +73,16 @@ public class SignIn extends AnchorPane {
         label0.setTextFill(javafx.scene.paint.Color.valueOf("#5427d0"));
         label0.setFont(new Font(24.0));
 
-        label1.setLayoutX(65.0);
-        label1.setLayoutY(75.0);
+        label1.setLayoutX(59.0);
+        label1.setLayoutY(68.0);
         label1.setText("User Name");
 
-        label2.setLayoutX(65.0);
-        label2.setLayoutY(128.0);
+        label2.setLayoutX(64.0);
+        label2.setLayoutY(134.0);
         label2.setText("Password");
 
-        join.setLayoutX(97.0);
-        join.setLayoutY(187.0);
+        join.setLayoutX(127.0);
+        join.setLayoutY(210.0);
         join.setMnemonicParsing(false);
         join.setPrefHeight(25.0);
         join.setPrefWidth(83.0);
@@ -97,8 +91,8 @@ public class SignIn extends AnchorPane {
         join.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
         join.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
         try {
-            if(passwordTextField.getText().length()<8){
-                passwordTextField.setStyle("-fx-border-color: red;");
+            if(PasswordTextField.getText().length()<8){
+                PasswordTextField.setStyle("-fx-border-color: red;");
             }
             else{
             this.soc = new Socket("127.0.0.1",5005);
@@ -108,9 +102,9 @@ public class SignIn extends AnchorPane {
 
             jsonString="{\"request\":\"signIn\",\"player\":{\"name\":\""+name+"\""
                      + ","
-                     + "\"password\":\""+passwordTextField.getText()+"\"}}";   
+                     + "\"password\":\""+PasswordTextField.getText()+"\"}}";   
            print.println(jsonString);
-           passwordTextField.clear();
+           PasswordTextField.clear();
            userNameTextField.clear();
            String serverReply = null;
            serverReply = dis.readLine();
@@ -130,22 +124,24 @@ public class SignIn extends AnchorPane {
                          
         });
 
-        line.setEndX(100.0);
-        line.setLayoutX(138.0);
-        line.setLayoutY(220.0);
+        line.setEndX(130.0);
+        line.setEndY(21.0);
+        line.setLayoutX(168.0);
+        line.setLayoutY(227.0);
         line.setOpacity(0.43);
-        line.setStartX(-100.0);
+        line.setStartX(-130.0);
+        line.setStartY(21.0);
         line.setStroke(javafx.scene.paint.Color.valueOf("#000000ae"));
 
-        label3.setLayoutX(49.0);
-        label3.setLayoutY(229.0);
-        label3.setText("Don't have an account");
+        label3.setLayoutX(38.0);
+        label3.setLayoutY(257.0);
+        label3.setText("Don't have an account?");
 
-        signUp.setLayoutX(183.0);
-        signUp.setLayoutY(225.0);
+        signUp.setLayoutX(186.0);
+        signUp.setLayoutY(252.0);
         signUp.setMnemonicParsing(false);
-        signUp.setPrefHeight(17.0);
-        signUp.setPrefWidth(59.0);
+        signUp.setPrefHeight(31.0);
+        signUp.setPrefWidth(83.0);
         signUp.setStyle("-fx-background-radius: 6; -fx-background-color: white;");
         signUp.setText("Sign Up");
         signUp.setTextFill(javafx.scene.paint.Color.valueOf("#5427d0"));
@@ -157,9 +153,13 @@ public class SignIn extends AnchorPane {
 
             }
         });
+        
+        PasswordTextField.setLayoutX(65.0);
+        PasswordTextField.setLayoutY(162.0);
+        PasswordTextField.setStyle("-fx-background-radius: 6;");
+
         getChildren().add(label);
         pane.getChildren().add(userNameTextField);
-        pane.getChildren().add(passwordTextField);
         pane.getChildren().add(label0);
         pane.getChildren().add(label1);
         pane.getChildren().add(label2);
@@ -167,6 +167,7 @@ public class SignIn extends AnchorPane {
         pane.getChildren().add(line);
         pane.getChildren().add(label3);
         pane.getChildren().add(signUp);
+        pane.getChildren().add(PasswordTextField);
         getChildren().add(pane);
 
     }
