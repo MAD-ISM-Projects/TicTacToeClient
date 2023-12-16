@@ -1,5 +1,6 @@
 package tictactoeclient;
 
+
 import java.net.URL;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -51,7 +52,7 @@ public  class StartpageBase extends AnchorPane {
         startButton.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent e){
-                Navigator.navigateTo(new ChooseModeBase(), e);
+                Navigator.navigateTo(new SignUp(), e);
             }
         });
         label.setLayoutX(126);
