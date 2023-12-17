@@ -112,7 +112,11 @@ public class SignUp extends AnchorPane {
             if(passwordTextField.getText().length()<8){
                 passwordTextField.setStyle("-fx-border-color: red;");
             }
+<<<<<<< Updated upstream
             else if(confirmPasswordTextField.getText().equals(passwordTextField)){
+=======
+            else if(confirmPasswordTextField.getText()!=passwordTextField.getText()){
+>>>>>>> Stashed changes
                 passwordTextField.setStyle("-fx-border-color: red;");
                 confirmPasswordTextField.setStyle("-fx-border-color: red;");
                 passwordTextField.clear();
@@ -129,7 +133,10 @@ public class SignUp extends AnchorPane {
            print.println(jsonString);
            passwordTextField.clear();
            userNameTextField.clear();
+<<<<<<< Updated upstream
            confirmPasswordTextField.clear();
+=======
+>>>>>>> Stashed changes
            String serverReply = null;
            serverReply = dis.readLine();
            showMessageDialog(null, (Integer.parseInt(serverReply)>=0)?"signed up seccessfully":"already signed up");
