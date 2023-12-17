@@ -1,5 +1,7 @@
 package tictactoeclient;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -123,22 +125,39 @@ public class SignUp extends AnchorPane {
   
             }
             else{
-            this.soc = new Socket("127.0.0.1",5005);
-            this.dis=new DataInputStream(soc.getInputStream());
-            this.print=new PrintStream(soc.getOutputStream());
-            jsonString="{\"request\":\"signUp\",\"player\":{\"name\":\""+userNameTextField.getText()+"\""
-                     + ","
-                     + "\"password\":\""+passwordTextField.getText()+"\",\"ip\":\""+defaultIp+"\"}}";   
-           print.println(jsonString);
-           passwordTextField.clear();
-           userNameTextField.clear();
+          soc = new Socket("127.0.0.1", 5005);
+            dis = new DataInputStream(soc.getInputStream());
+            print = new PrintStream(soc.getOutputStream());
 
-           confirmPasswordTextField.clear();
+            // Create a JsonObject using Gson for better JSON handling
+            JsonObject playerJson = new JsonObject();
+            playerJson.addProperty("name", userNameTextField.getText());
+            playerJson.addProperty("password", passwordTextField.getText());
+            playerJson.addProperty("ip", defaultIp);
 
-           String serverReply = "";
-           serverReply = dis.readLine();
-        showMessageDialog(null, (Integer.parseInt(serverReply)>=0)?"signed up seccessfully":"already signed up");
-            }
+            JsonObject jsonRequest = new JsonObject();
+            jsonRequest.addProperty("request", "signUp");
+            jsonRequest.add("player", playerJson);
+
+            // Convert JsonObject to JSON string
+            String jsonString = new Gson().toJson(jsonRequest);
+
+            print.println(jsonString);
+
+            // Clear text fields
+            passwordTextField.clear();
+            userNameTextField.clear();
+            confirmPasswordTextField.clear();
+
+            // Read server reply
+            String serverReply = dis.readLine();
+
+            // Show a dialog based on the server reply
+            if (serverReply != null && !serverReply.isEmpty()) {
+                showMessageDialog(null, (Integer.parseInt(serverReply) >= 0) ? "Signed up successfully" : "Already signed up");
+            } else {
+                showMessageDialog(null, "Error: Server reply is null or empty");
+            }            }
         } catch (IOException ex) {
             
             showMessageDialog(null, "Lost Connection To The Server");
