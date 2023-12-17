@@ -55,9 +55,10 @@ public class SignIn extends AnchorPane {
 
 
         setId("pane");
-        setPrefHeight(500.0);
-        setPrefWidth(850.0);
+        setPrefHeight(550.0);
+        setPrefWidth(800.0);
 
+        
         getStylesheets().add("/tictactoeclient/style.css");
 
         label.setLayoutX(126);
