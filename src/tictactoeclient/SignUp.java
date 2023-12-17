@@ -112,7 +112,7 @@ public class SignUp extends AnchorPane {
         join.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
         join.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
         try {
-            if(passwordTextField.getText().length()<8){
+            if(passwordTextField.getText().length()<4){
                 passwordTextField.setStyle("-fx-border-color: red;");
             }
 
@@ -125,7 +125,7 @@ public class SignUp extends AnchorPane {
   
             }
             else{
-          soc = new Socket("127.0.0.1", 5005);
+           soc = new Socket("127.0.0.1", 5005);
             dis = new DataInputStream(soc.getInputStream());
             print = new PrintStream(soc.getOutputStream());
 

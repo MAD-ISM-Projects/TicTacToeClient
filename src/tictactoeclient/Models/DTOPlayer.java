@@ -11,7 +11,7 @@ import tictactoeclient.Enum.Mark;
  *
  * @author NEW LAP
  */
-public class DTOPlayer {
+public class DTOPlayer  {
     private String playerName;
     private Mark mark;
     

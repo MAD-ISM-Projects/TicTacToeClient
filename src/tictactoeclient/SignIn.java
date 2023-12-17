@@ -1,9 +1,17 @@
 package tictactoeclient;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import dto.RequestHeader;
+import dto.SignInBase;
+import dto.SignUpBase;
+import dto.clientRequests;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -37,6 +45,8 @@ public class SignIn extends AnchorPane {
     private DataInputStream dis;
     private PrintStream print;
     String jsonString ;
+    String defaultIp="127.0.0.1";
+
 
     public SignIn() {
 
@@ -104,11 +114,8 @@ public class SignIn extends AnchorPane {
         join.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
         join.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
         try {
-
             if(passwordTextField.getText().length()<8){
                 passwordTextField.setStyle("-fx-border-color: red;");
-
-
             }
             else{
             this.soc = new Socket("127.0.0.1",5005);
@@ -116,34 +123,43 @@ public class SignIn extends AnchorPane {
             this.print=new PrintStream(soc.getOutputStream());
             String name=userNameTextField.getText();
 
-            jsonString="{\"request\":\"signIn\",\"player\":{\"name\":\""+name+"\""
-                     + ","
+            //JsonObject playerJson = new JsonObject();
+            SignInBase s=new SignInBase(userNameTextField.getText(),passwordTextField.getText());
+          //  playerJson.addProperty("name", userNameTextField.getText());
+          //  playerJson.addProperty("password", passwordTextField.getText());
+            //playerJson.addProperty("ip", defaultIp);
+         RequestHeader request = new RequestHeader(clientRequests.signIn,s);
+          //  JsonObject jsonRequest = new JsonObject();
+          //  jsonRequest.addProperty("request", "signIn");
+           // jsonRequest.add("player", playerJson);
 
-                     + "\"password\":\""+passwordTextField.getText()+"\"}}";   
-           print.println(jsonString);
-           passwordTextField.clear();
+            // Convert JsonObject to JSON string
+         //   String jsonString =request.getJson();
+           
 
+            print.println(request.getJson());
+            // Clear text fields
+            passwordTextField.clear();
+            userNameTextField.clear();
+            // Read server reply
+            String serverReply = dis.readLine();
 
-           userNameTextField.clear();
-           String serverReply = null;
-           serverReply = dis.readLine();
-           showMessageDialog(null, (Integer.parseInt(serverReply)>0)?"signed In seccessfully":"There is no player named "+name);
-            }
+            // Show a dialog based on the server reply
+            if (serverReply != null && !serverReply.isEmpty()) {
+              //  showMessageDialog(null, (Integer.parseInt(serverReply) >= 0) ? "Signed up successfully" : "Already signed up");
+                System.out.println("Signed up successfully");
+            } else {
+              System.out.println("Signed up not successfully");
+                //showMessageDialog(null, "Error: Server reply is null or empty");
+            }            }
         } catch (IOException ex) {
-            
-            showMessageDialog(null, "Lost Connection To The Server");
+           System.out.println("Lost Connection To The Server"); 
+           // showMessageDialog(null, "Lost Connection To The Server");
 
         }
           
-           //JsonObject jsonObject = new Gson().fromJson(serverReply, JsonObject.class);
-           
-                
-            
-
                          
         });
-
-
         line.setEndX(130.0);
         line.setEndY(21.0);
         line.setLayoutX(168.0);
