@@ -123,9 +123,9 @@ public class SignUp extends AnchorPane {
   
             }
             else{
-            this.soc = new Socket("127.0.0.1",5005);
-            this.dis=new DataInputStream(soc.getInputStream());
-            this.print=new PrintStream(soc.getOutputStream());
+//            this.soc = new Socket("127.0.0.1",5005);
+//            this.dis=new DataInputStream(soc.getInputStream());
+//            this.print=new PrintStream(soc.getOutputStream());
             jsonString="{\"request\":\"signUp\",\"player\":{\"name\":\""+userNameTextField.getText()+"\""
                      + ","
                      + "\"password\":\""+passwordTextField.getText()+"\"}}";   
