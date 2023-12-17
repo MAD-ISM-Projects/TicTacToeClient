@@ -36,6 +36,7 @@ public class SignUp extends AnchorPane {
     private DataInputStream dis;
     private PrintStream print;
     String jsonString ;
+    String defaultIp="127.0.0.1";
 
     public SignUp() {
 
@@ -127,16 +128,16 @@ public class SignUp extends AnchorPane {
             this.print=new PrintStream(soc.getOutputStream());
             jsonString="{\"request\":\"signUp\",\"player\":{\"name\":\""+userNameTextField.getText()+"\""
                      + ","
-                     + "\"password\":\""+passwordTextField.getText()+"\"}}";   
+                     + "\"password\":\""+passwordTextField.getText()+"\",\"ip\":\""+defaultIp+"\"}}";   
            print.println(jsonString);
            passwordTextField.clear();
            userNameTextField.clear();
 
            confirmPasswordTextField.clear();
 
-           String serverReply = null;
+           String serverReply = "";
            serverReply = dis.readLine();
-           showMessageDialog(null, (Integer.parseInt(serverReply)>=0)?"signed up seccessfully":"already signed up");
+        showMessageDialog(null, (Integer.parseInt(serverReply)>=0)?"signed up seccessfully":"already signed up");
             }
         } catch (IOException ex) {
             
