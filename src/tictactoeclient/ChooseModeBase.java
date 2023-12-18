@@ -111,7 +111,7 @@ public class ChooseModeBase extends AnchorPane {
         btn_online.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent e){
-                Navigator.navigateTo(new SignUp(), e);
+                Navigator.navigateTo(new SignIn(), e);
             }
         });
         getChildren().add(mode_image);
