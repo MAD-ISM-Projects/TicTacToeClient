@@ -1,5 +1,7 @@
 package tictactoeclient;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -58,7 +60,6 @@ public class SignIn extends AnchorPane {
         setPrefHeight(550.0);
         setPrefWidth(800.0);
 
-        
         getStylesheets().add("/tictactoeclient/style.css");
 
         label.setLayoutX(126);
@@ -104,7 +105,11 @@ public class SignIn extends AnchorPane {
         join.setText("Join");
         join.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
         join.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
-        try {
+         Gson gson = new GsonBuilder().create();
+         String userName = userNameTextField.getText();
+         String password = passwordTextField.getText();
+            
+            try {
 
             if(passwordTextField.getText().length()<8){
                 passwordTextField.setStyle("-fx-border-color: red;");
@@ -112,9 +117,9 @@ public class SignIn extends AnchorPane {
 
             }
             else{
-//            this.soc = new Socket("127.0.0.1",5005);
-//            this.dis=new DataInputStream(soc.getInputStream());
-//            this.print=new PrintStream(soc.getOutputStream());
+            this.soc = new Socket("127.0.0.1",5005);
+            this.dis=new DataInputStream(soc.getInputStream());
+            this.print=new PrintStream(soc.getOutputStream());
             String name=userNameTextField.getText();
 
             jsonString="{\"request\":\"signIn\",\"player\":{\"name\":\""+name+"\""
@@ -128,8 +133,7 @@ public class SignIn extends AnchorPane {
            userNameTextField.clear();
            String serverReply = null;
            serverReply = dis.readLine();
-                System.out.println("server reply: " + serverReply);
-           showMessageDialog(null, (Integer.parseInt(serverReply)>0)?"signed In seccessfully":"There is no player named "+name);
+           showMessageDialog(null, (Integer.parseInt(serverReply)>0)?"signed In seccessfully":"There is no player named "+name+" or wrong password");
             }
         } catch (IOException ex) {
             
