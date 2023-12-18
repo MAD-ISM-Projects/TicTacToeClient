@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -16,7 +15,6 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import services.Navigator;
-
 import tictactoeclient.Enum.Mark;
 import tictactoeclient.Models.DTOPlayer;
 
@@ -216,6 +214,7 @@ public class EasyLevelBase extends AnchorPane {
                 btn.setPrefHeight(100.0);
                 btn.setPrefWidth(100.0);
                 btn.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 46;");
+                
                 btn.setOnAction( e->{
                             isPlayerTurn();
                             if(btn.getText().isEmpty() && !isWin()){
@@ -225,31 +224,26 @@ public class EasyLevelBase extends AnchorPane {
                             }
                             if(isWin()){
                                 if(isPlayerTurn){
-                                    win=1;
-                                    page2=2;
+                                    win = 1;
+                                    page2 = 2;
                                     Navigator.navigateTo(new WinnerScreenBase(player1.getName(),win,page2), e);
                                     isPlayerTurn=!isPlayerTurn;
-                                     BordBase.scoreP1++;
                                 }
                                 else{
-                                      win=2;
-                                     page2=2;
+                                      win = 2;
+                                     page2 = 2;
                                     Navigator.navigateTo(new WinnerScreenBase(player1.getName(),win,page2), e);
-                                     
-                                    BordBase.scoreP2++;
-
                                 }
                                 resetGame();
                             }else if(isDraw()==true){
-                                    win=3;
-                                    page2=2;
+                                    win = 3;
+                                    page2 = 2;
                                     Navigator.navigateTo(new WinnerScreenBase("Drawer",win,page2), e);
 
                                     resetGame();
                                     isPlayerTurn=!isPlayerTurn;
                             }
-                            scoreBtnX.setText(Integer.toString(scoreP1));
-                            scoreBtnO.setText(Integer.toString(scoreP2));
+
                         }
                         
                 );
@@ -280,9 +274,11 @@ public class EasyLevelBase extends AnchorPane {
             }
         }
     }
-    private void doPlay(Button btn){
+    private void doPlay(Button btn){          
+            btn.setStyle("-fx-background-color: #FFFFFF; -fx-text-fill:#ff8fda; -fx-font-size: 36;");    
             btn.setText(player1.getMark().toString()); 
             btn.setDisable(true);
+
         
     }
  private boolean TicTac(List<Node> buttons){
