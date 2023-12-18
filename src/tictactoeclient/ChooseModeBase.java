@@ -30,7 +30,8 @@ public class ChooseModeBase extends AnchorPane {
     protected final Button btn_online;
     protected final Button btn_Record;
     TextField ipAddress = new TextField();
-    GridPane gridPane=new GridPane();
+    GridPane gridPane = new GridPane();
+
     public ChooseModeBase() {
 
         mode_image = new ImageView();
@@ -41,9 +42,9 @@ public class ChooseModeBase extends AnchorPane {
         btn_multi = new Button();
         btn_online = new Button();
         btn_Record = new Button();
-        gridPane.add(new Label("Server IP: "),0,0);
-        gridPane.add(ipAddress,1,0);
-        
+        gridPane.add(new Label("Server IP: "), 0, 0);
+        gridPane.add(ipAddress, 1, 0);
+
         setId("AnchorPane");
         setPrefHeight(550.0);
         setPrefWidth(800.0);
@@ -90,13 +91,13 @@ public class ChooseModeBase extends AnchorPane {
         btn_Single.setText("Single mode");
         btn_Single.setTextFill(javafx.scene.paint.Color.valueOf("#8b76a4"));
         btn_Single.setFont(new Font(MyFont.MY_FONT, 19.0));
-        btn_Single.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
+        btn_Single.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent e){
+            public void handle(ActionEvent e) {
                 Navigator.navigateTo(new selectLevelBase(), e);
             }
         });
-        
+
         btn_multi.setLayoutX(315.0);
         btn_multi.setLayoutY(395.0);
         btn_multi.setMnemonicParsing(false);
@@ -106,9 +107,9 @@ public class ChooseModeBase extends AnchorPane {
         btn_multi.setText("Multi mode");
         btn_multi.setTextFill(javafx.scene.paint.Color.valueOf("#8b76a4"));
         btn_multi.setFont(new Font(MyFont.MY_FONT, 18.0));
-        btn_multi.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
+        btn_multi.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent e){
+            public void handle(ActionEvent e) {
                 Navigator.navigateTo(new SetPlayersBase(), e);
             }
         });
@@ -121,21 +122,23 @@ public class ChooseModeBase extends AnchorPane {
         btn_online.setText("online");
         btn_online.setTextFill(javafx.scene.paint.Color.valueOf("#8b76a4"));
         btn_online.setFont(new Font(MyFont.MY_FONT, 19.0));
-        btn_online.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
+        btn_online.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent e){
-                Alert alert=new Alert(Alert.AlertType.CONFIRMATION);
+            public void handle(ActionEvent e) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Server IP");
                 alert.setHeaderText("Enter Server IP");
                 alert.getDialogPane().setContent(gridPane);
-                Optional<ButtonType>result=alert.showAndWait();
-                if(ipAddress.getText().isEmpty()){
+                Optional<ButtonType> result = alert.showAndWait();
+                if (ipAddress.getText().isEmpty()) {
                     ipAddress.setStyle("");
-                } else{
-                            if(result.isPresent()&&result.get()==ButtonType.OK){
-                        Navigator.navigateTo(new SignUp(), e);
-                    
-                            }
+                } else {
+                     StartConnection con = new StartConnection();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        //con.connectServer(ipAddress.toString());
+                        Navigator.navigateTo(new SignIn(), e);
+
+                    }
                 }
             }
         });
@@ -148,10 +151,12 @@ public class ChooseModeBase extends AnchorPane {
         btn_Record.setText("Record");
         btn_Record.setTextFill(javafx.scene.paint.Color.valueOf("#8b76a4"));
         btn_Record.setFont(new Font(MyFont.MY_FONT, 19.0));
-        btn_Record.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
+        btn_Record.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
+
             public void handle(ActionEvent e){
                 Navigator.navigateTo(new RecordPlay(), e);
+
             }
         });
         getChildren().add(mode_image);

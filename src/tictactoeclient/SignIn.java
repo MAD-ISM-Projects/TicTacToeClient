@@ -112,9 +112,9 @@ public class SignIn extends AnchorPane {
 
             }
             else{
-            this.soc = new Socket("127.0.0.1",5005);
-            this.dis=new DataInputStream(soc.getInputStream());
-            this.print=new PrintStream(soc.getOutputStream());
+//            this.soc = new Socket("127.0.0.1",5005);
+//            this.dis=new DataInputStream(soc.getInputStream());
+//            this.print=new PrintStream(soc.getOutputStream());
             String name=userNameTextField.getText();
 
             jsonString="{\"request\":\"signIn\",\"player\":{\"name\":\""+name+"\""
@@ -128,6 +128,7 @@ public class SignIn extends AnchorPane {
            userNameTextField.clear();
            String serverReply = null;
            serverReply = dis.readLine();
+                System.out.println("server reply: " + serverReply);
            showMessageDialog(null, (Integer.parseInt(serverReply)>0)?"signed In seccessfully":"There is no player named "+name);
             }
         } catch (IOException ex) {
