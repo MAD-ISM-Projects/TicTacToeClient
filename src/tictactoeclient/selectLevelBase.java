@@ -64,7 +64,7 @@ public  class selectLevelBase extends AnchorPane {
         HardButton.setText("Hard");
         HardButton.setTextFill(javafx.scene.paint.Color.WHITE);
         HardButton.setOnAction(e->{
-                Navigator.navigateTo(new SingleHardModeBase(), e);
+                Navigator.navigateTo(new SingleHardModeBase("YOU","PC"), e);
         });
         getChildren().add(EeasyImage);
         getChildren().add(EasyButton);
