@@ -133,7 +133,7 @@ public class SignIn extends AnchorPane {
            userNameTextField.clear();
            String serverReply = null;
            serverReply = dis.readLine();
-           showMessageDialog(null, (Integer.parseInt(serverReply)>0)?"signed In seccessfully":"There is no player named "+name);
+           showMessageDialog(null, (Integer.parseInt(serverReply)>0)?"signed In seccessfully":"There is no player named "+name+" or wrong password");
             }
         } catch (IOException ex) {
             

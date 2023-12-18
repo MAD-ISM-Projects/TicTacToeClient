@@ -111,7 +111,7 @@ public class SignUp extends AnchorPane {
         join.setText("Join");
         join.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
         join.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
-        
+             try {
             checkRegExName = isValidUsername(userNameTextField.getText()); //JsonObject jsonObject = new Gson().fromJson(serverReply, JsonObject.class);
             if(passwordTextField.getText().length()<8){
                 passwordTextField.setStyle("-fx-border-color: red;");
@@ -138,14 +138,15 @@ public class SignUp extends AnchorPane {
                 
                 String serverReply = network.getMessage();
                 
-                showMessageDialog(null, (Integer.parseInt(serverReply)>=0)?"signed up seccessfully":"already signed up");
+                showMessageDialog(null, (Integer.parseInt(serverReply)>0)?"signed up seccessfully":"already signed up");
                 Navigator.navigateTo(new SignUp(), event); 
             }
-           
-                
+             } catch (Exception ex) {
             
+            showMessageDialog(null, "Lost Connection To The Server");
 
-                         
+        }
+                   
         });
 
         line.setEndX(100.0);
