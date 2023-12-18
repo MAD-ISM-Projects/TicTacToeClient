@@ -1,5 +1,7 @@
 package tictactoeclient;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -103,7 +105,11 @@ public class SignIn extends AnchorPane {
         join.setText("Join");
         join.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
         join.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
-        try {
+         Gson gson = new GsonBuilder().create();
+         String userName = userNameTextField.getText();
+         String password = passwordTextField.getText();
+            
+            try {
 
             if(passwordTextField.getText().length()<8){
                 passwordTextField.setStyle("-fx-border-color: red;");

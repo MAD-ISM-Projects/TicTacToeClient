@@ -15,6 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import static javax.swing.JOptionPane.showMessageDialog;
+import network.connection.NetworkConnection;
 import services.Navigator;
 
 public class SignUp extends AnchorPane {
@@ -32,17 +33,15 @@ public class SignUp extends AnchorPane {
     protected final Line line;
     protected final Label label4;
     protected final Button signIn;
-    private Socket soc;
-    private DataInputStream dis;
-    private PrintStream print;
+ 
     String jsonString ;
     boolean checkRegExPassward;
     boolean checkRegExName;
     String regexPassword = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{5,10}";
     String regexUserName = "^[A-Za-z]\\w.{5,30}$";
-
+    NetworkConnection network ; 
     public SignUp() {
-
+        network = new NetworkConnection();
         label = new Label();
         pane = new Pane();
         userNameTextField = new TextField();
@@ -112,9 +111,8 @@ public class SignUp extends AnchorPane {
         join.setText("Join");
         join.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
         join.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
-        boolean check;
-            try {
-            checkRegExName = isValidUsername(userNameTextField.getText());    
+        
+            checkRegExName = isValidUsername(userNameTextField.getText()); //JsonObject jsonObject = new Gson().fromJson(serverReply, JsonObject.class);
             if(passwordTextField.getText().length()<8){
                 passwordTextField.setStyle("-fx-border-color: red;");
                 
@@ -129,29 +127,20 @@ public class SignUp extends AnchorPane {
   
             }
             else{
-            this.soc = new Socket("127.0.0.1",5005);
-            this.dis=new DataInputStream(soc.getInputStream());
-            this.print=new PrintStream(soc.getOutputStream());
-            jsonString="{\"request\":\"signUp\",\"player\":{\"name\":\""+userNameTextField.getText()+"\""
-                     + ","
-                     + "\"password\":\""+passwordTextField.getText()+"\"}}";   
-           print.println(jsonString);
-           passwordTextField.clear();
-           userNameTextField.clear();
-           confirmPasswordTextField.clear();
-
-           String serverReply = null;
-           serverReply = dis.readLine();
-           showMessageDialog(null, (Integer.parseInt(serverReply)>=0)?"signed up seccessfully":"already signed up");
-            Navigator.navigateTo(new SignUp(), event); 
+                
+                jsonString="{\"request\":\"signUp\",\"player\":{\"name\":\""+userNameTextField.getText()+"\""
+                        + ","
+                        + "\"password\":\""+passwordTextField.getText()+"\"}}";
+                network.sentMessage(jsonString);
+                passwordTextField.clear();
+                userNameTextField.clear();
+                confirmPasswordTextField.clear();
+                
+                String serverReply = network.getMessage();
+                
+                showMessageDialog(null, (Integer.parseInt(serverReply)>=0)?"signed up seccessfully":"already signed up");
+                Navigator.navigateTo(new SignUp(), event); 
             }
-        } catch (IOException ex) {
-            
-            showMessageDialog(null, "Lost Connection To The Server");
-            
-        }
-          
-           //JsonObject jsonObject = new Gson().fromJson(serverReply, JsonObject.class);
            
                 
             
