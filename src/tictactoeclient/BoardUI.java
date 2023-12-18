@@ -58,6 +58,8 @@ public abstract class BoardUI extends AnchorPane {
     static int winner = 0;
     static int page;
     protected Button[][] bord=new Button[3][3]; 
+    // to record and play record linearly we need to assign the button in one dimensional arrayList
+    protected ArrayList<Button> bordRecorder=new ArrayList<>();
     public BoardUI() {
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -285,9 +287,12 @@ public abstract class BoardUI extends AnchorPane {
                 btn.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 36;");
                 gridPane.add(btn,col,row);
                 bord[row][col]=btn;
+                bordRecorder.add(btn);
                 addListen(btn);
+                
             }
         }
+      
     }
     protected void doPlay(Button btn){
         if(btn.getText().isEmpty()){   

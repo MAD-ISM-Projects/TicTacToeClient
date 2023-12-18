@@ -151,7 +151,7 @@ public class ChooseModeBase extends AnchorPane {
         btn_Record.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent e){
-                Navigator.navigateTo(new SignUp(), e);
+                Navigator.navigateTo(new RecordPlay(), e);
             }
         });
         getChildren().add(mode_image);
