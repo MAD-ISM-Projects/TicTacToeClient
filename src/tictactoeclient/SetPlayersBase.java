@@ -109,7 +109,7 @@ public  class SetPlayersBase extends AnchorPane {
                     Saver saver=Saver.saverObject();
                     saver.setPlayer1Name(playerName1.getText());
                     saver.setPlayer2Name(playerName2.getText());
-                    Navigator.navigateTo(new BordBase(),e);
+                    Navigator.navigateTo(new BordBase(playerName1.getText(),playerName2.getText()),e);
                 }
             }
         });

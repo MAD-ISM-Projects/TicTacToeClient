@@ -15,6 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import static javax.swing.JOptionPane.showMessageDialog;
+import network.connection.NetworkConnection;
 import services.Navigator;
 
 public class SignUp extends AnchorPane {
@@ -32,13 +33,15 @@ public class SignUp extends AnchorPane {
     protected final Line line;
     protected final Label label4;
     protected final Button signIn;
-    private Socket soc;
-    private DataInputStream dis;
-    private PrintStream print;
+ 
     String jsonString ;
-
+    boolean checkRegExPassward;
+    boolean checkRegExName;
+    String regexPassword = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{5,10}";
+    String regexUserName = "^[A-Za-z]\\w.{5,30}$";
+    NetworkConnection network ; 
     public SignUp() {
-
+        network = new NetworkConnection();
         label = new Label();
         pane = new Pane();
         userNameTextField = new TextField();
@@ -54,8 +57,8 @@ public class SignUp extends AnchorPane {
         signIn = new Button();
 
         setId("pane");
-        setPrefHeight(500.0);
-        setPrefWidth(850.0);
+        setPrefHeight(550.0);
+        setPrefWidth(800.0);
         getStylesheets().add("/tictactoeclient/style.css");
 
         label.setLayoutX(126);
@@ -108,9 +111,11 @@ public class SignUp extends AnchorPane {
         join.setText("Join");
         join.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
         join.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
-        try {
+             try {
+            checkRegExName = isValidUsername(userNameTextField.getText()); //JsonObject jsonObject = new Gson().fromJson(serverReply, JsonObject.class);
             if(passwordTextField.getText().length()<8){
                 passwordTextField.setStyle("-fx-border-color: red;");
+                
             }
 
             else if(confirmPasswordTextField.getText().equals(passwordTextField)){
@@ -122,34 +127,26 @@ public class SignUp extends AnchorPane {
   
             }
             else{
-            this.soc = new Socket("127.0.0.1",5005);
-            this.dis=new DataInputStream(soc.getInputStream());
-            this.print=new PrintStream(soc.getOutputStream());
-            jsonString="{\"request\":\"signUp\",\"player\":{\"name\":\""+userNameTextField.getText()+"\""
-                     + ","
-                     + "\"password\":\""+passwordTextField.getText()+"\"}}";   
-           print.println(jsonString);
-           passwordTextField.clear();
-           userNameTextField.clear();
-
-           confirmPasswordTextField.clear();
-
-           String serverReply = null;
-           serverReply = dis.readLine();
-           showMessageDialog(null, (Integer.parseInt(serverReply)>=0)?"signed up seccessfully":"already signed up");
+                
+                jsonString="{\"request\":\"signUp\",\"player\":{\"name\":\""+userNameTextField.getText()+"\""
+                        + ","
+                        + "\"password\":\""+passwordTextField.getText()+"\"}}";
+                network.sentMessage(jsonString);
+                passwordTextField.clear();
+                userNameTextField.clear();
+                confirmPasswordTextField.clear();
+                
+                String serverReply = network.getMessage();
+                
+                showMessageDialog(null, (Integer.parseInt(serverReply)>0)?"signed up seccessfully":"already signed up");
+                Navigator.navigateTo(new SignUp(), event); 
             }
-        } catch (IOException ex) {
+             } catch (Exception ex) {
             
             showMessageDialog(null, "Lost Connection To The Server");
 
         }
-          
-           //JsonObject jsonObject = new Gson().fromJson(serverReply, JsonObject.class);
-           
-                
-            
-
-                         
+                   
         });
 
         line.setEndX(100.0);
@@ -195,4 +192,28 @@ public class SignUp extends AnchorPane {
         getChildren().add(pane);
 
     }
+    
+    public boolean isValidPassword(String password) {
+        if (password.matches(regexPassword)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isValidUsername(String name) {
+        if (name.matches(regexUserName)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkPassword(String password, String confirmpassword) {
+        if (password.equals(confirmpassword) && password.matches(regexPassword)) {
+            return true;
+        } else {
+            return false;
+        }
+}
 }

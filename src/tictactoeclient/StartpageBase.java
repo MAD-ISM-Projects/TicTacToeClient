@@ -53,7 +53,7 @@ public  class StartpageBase extends AnchorPane {
         startButton.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent e){
-                Navigator.navigateTo(new SignUp(), e);
+                Navigator.navigateTo(new ChooseModeBase(), e);
             }
         });
         label.setLayoutX(126);
