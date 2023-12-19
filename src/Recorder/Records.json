@@ -1,1 +1,16 @@
-{}
+{
+  "GamePlay 0": {
+    "players": {
+      "player1": "ramez",
+      "player2": "hamdi"
+    },
+    "steps": "254130786"
+  },
+  "GamePlay 1": {
+    "players": {
+      "player1": "ramez",
+      "player2": "saeed"
+    },
+    "steps": "2548736"
+  }
+}

@@ -13,6 +13,7 @@ import javafx.scene.media.MediaView;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import services.Navigator;
+import services.Saver;
 import tictactoeclient.BordBase;
 import tictactoeclient.ChooseModeBase;
 import tictactoeclient.EasyLevelBase;
@@ -47,8 +48,8 @@ public  class WinnerScreenBase extends BorderPane {
     protected final Label PlayerNameLabelWinner;
     protected final Label WinnerStatus;
     static String videoPath;
-    public WinnerScreenBase(String name , int num,int page) {
 
+    public WinnerScreenBase(String name , int num,int page) {
         mv = new MediaView();
         gridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
@@ -168,6 +169,7 @@ public  class WinnerScreenBase extends BorderPane {
             Navigator.navigateTo(new ChooseModeBase(),e);
             BordBase.scoreP1=0;
             BordBase.scoreP2=0;
+            mediaPlayer.stop();
         });
 
         GridPane.setColumnIndex(button0, 4);
@@ -181,12 +183,16 @@ public  class WinnerScreenBase extends BorderPane {
         button0.setFont(new Font(MyFont.MY_FONT, 16.0));
         setBottom(gridPane);
         button0.setOnAction(e->{
-            if(page==1){
-                
-            Navigator.navigateTo(new BordBase(),e);
+            if(page==1){    
+            Saver saver=Saver.saverObject();
+            saver.getPlayer1Name();
+            mediaPlayer.stop();
+            Navigator.navigateTo(new BordBase(saver.getPlayer1Name(),saver.getPlayer2Name()),e);
             }else if(page == 2){
-                 Navigator.navigateTo(new EasyLevelBase(),e);
+                 Navigator.navigateTo(new EasyLevelBase("YOU","PC"),e);
+                 mediaPlayer.stop();
             }else if (page == 3){
+                mediaPlayer.stop();
                 //navigat to hard mode ya mayar
              // Navigator.navigateTo(new EasyLevelBase(),e);
 
