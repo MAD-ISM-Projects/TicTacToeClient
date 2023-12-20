@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
 import services.Navigator;
 
 public  class selectLevelBase extends AnchorPane {
@@ -14,6 +15,7 @@ public  class selectLevelBase extends AnchorPane {
     protected final Button EasyButton;
     protected final ImageView HardImage;
     protected final Button HardButton;
+    protected final Button btnBack;
 
     public selectLevelBase() {
 
@@ -21,6 +23,7 @@ public  class selectLevelBase extends AnchorPane {
         EasyButton = new Button();
         HardImage = new ImageView();
         HardButton = new Button();
+        btnBack = new Button();
 
         setId("AnchorPane");
         setPrefHeight(550.0);
@@ -45,7 +48,7 @@ public  class selectLevelBase extends AnchorPane {
         EasyButton.setText("Easy");
         EasyButton.setTextFill(javafx.scene.paint.Color.WHITE);
         EasyButton.setOnAction(e->{
-            Navigator.navigateTo(new EasyLevelBase(),e);
+            Navigator.navigateTo(new EasyLevelBase("YOU","PC"),e);
         });
         HardImage.setFitHeight(200.0);
         HardImage.setFitWidth(200.0);
@@ -64,12 +67,29 @@ public  class selectLevelBase extends AnchorPane {
         HardButton.setText("Hard");
         HardButton.setTextFill(javafx.scene.paint.Color.WHITE);
         HardButton.setOnAction(e->{
-                Navigator.navigateTo(new SingleHardModeBase(), e);
+                Navigator.navigateTo(new SingleHardModeBase("YOU","PC"), e);
+        });
+        
+        btnBack.setLayoutX(60.0);
+        btnBack.setLayoutY(50.0);
+        btnBack.setMnemonicParsing(false);
+        btnBack.setPrefHeight(37.0);
+        btnBack.setPrefWidth(80.0);
+        btnBack.setStyle("-fx-background-radius: 10;");
+        btnBack.setText("Back");
+        btnBack.setTextFill(javafx.scene.paint.Color.valueOf("#8b76a4"));
+        btnBack.setFont(new Font(MyFont.MY_FONT, 19.0));
+        btnBack.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                Navigator.navigateTo(new ChooseModeBase(), e);
+            }
         });
         getChildren().add(EeasyImage);
         getChildren().add(EasyButton);
         getChildren().add(HardImage);
         getChildren().add(HardButton);
+        getChildren().add(btnBack);
 
     }
 }
