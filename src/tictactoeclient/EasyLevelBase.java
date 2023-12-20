@@ -29,6 +29,7 @@ public class EasyLevelBase extends BoardUI {
             }
         }
     }    
+    @Override
     protected void doPlay(Button btn){
         if(btn.getText().isEmpty()){   
             if(isPlayerTurn()){
@@ -43,6 +44,7 @@ public class EasyLevelBase extends BoardUI {
             }
         }
     }
+    @Override
     protected void addListen(Button btn) {
     btn.setOnAction(
                         e->{

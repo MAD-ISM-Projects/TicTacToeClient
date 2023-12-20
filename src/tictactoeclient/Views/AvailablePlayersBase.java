@@ -1,17 +1,18 @@
-package tictactoeclient;
+package tictactoeclient.Views;
 
 import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
+import javafx.stage.Stage;
+import tictactoeclient.DTOPlayer;
+import tictactoeclient.UsersItemListBase;
 
 public class AvailablePlayersBase extends BorderPane {
 
@@ -25,12 +26,8 @@ public class AvailablePlayersBase extends BorderPane {
     protected final AnchorPane anchorPane0;
     protected final Button HomeButton;
     protected final Button LogOutButton;
-   // protected final ListView<UsersItemListBase> UsersListView;
-    //public String[] cv = {"Ranoma"};
-
-
     
-   
+    public static ArrayList<DTOPlayer> usersList;
 
     public AvailablePlayersBase() {
 
@@ -55,23 +52,16 @@ public class AvailablePlayersBase extends BorderPane {
 
         BorderPane.setAlignment(UsersListView, javafx.geometry.Pos.CENTER);
         UsersListView.setEditable(true);
-        UsersListView.setPrefHeight(306.0);
-        UsersListView.setPrefWidth(600.0);
-        UsersListView.setStyle("-fx-background-radius: 15;");
-        //UsersListView.getItems().addAll(usersList);
-        BorderPane.setMargin(UsersListView, new Insets(0.0, 50.0, 20.0, 50.0));
+        UsersListView.setPrefHeight(282.0);
+        UsersListView.setPrefWidth(636.0);
+        UsersListView.setStyle("-fx-background-radius: 15; -fx-background-color: #34365C;");
+        BorderPane.setMargin(UsersListView, new Insets(0.0, 90.0, 20.0, 90.0));
         setCenter(UsersListView);
-       
-
-        // Populate the ListView with UsersItemListBase items
-        UsersItemListBase[] usersArray = new UsersItemListBase[2];
+        UsersItemListBase[] usersArray = new UsersItemListBase[6];
         for (int i = 0; i < usersArray.length; i++) {
             usersArray[i] = new UsersItemListBase();
-            usersArray[i].player.setText("Player " + (i + 1));
-            // Set other properties as needed
             UsersListView.getItems().add(usersArray[i]);
         }
-    
 
         BorderPane.setAlignment(anchorPane, javafx.geometry.Pos.CENTER);
         anchorPane.setPrefHeight(170.0);
@@ -88,30 +78,30 @@ public class AvailablePlayersBase extends BorderPane {
         rectangle.setArcHeight(5.0);
         rectangle.setArcWidth(5.0);
         rectangle.setFill(javafx.scene.paint.Color.valueOf("#8b91b5"));
-        rectangle.setHeight(64.0);
-        rectangle.setLayoutX(63.0);
-        rectangle.setLayoutY(77.0);
+        rectangle.setHeight(49.0);
+        rectangle.setLayoutX(89.0);
+        rectangle.setLayoutY(85.0);
         rectangle.setStroke(javafx.scene.paint.Color.WHITE);
         rectangle.setStrokeType(javafx.scene.shape.StrokeType.INSIDE);
-        rectangle.setWidth(672.0);
+        rectangle.setWidth(620.0);
 
-        ScoreLabel.setLayoutX(369.0);
+        ScoreLabel.setLayoutX(297.0);
         ScoreLabel.setLayoutY(91.0);
         ScoreLabel.setText("Score");
         ScoreLabel.setTextFill(javafx.scene.paint.Color.WHITE);
-        ScoreLabel.setFont(new Font(25.0));
+        ScoreLabel.setFont(new Font(24.0));
 
-        PlayerNameLabel.setLayoutX(126.0);
+        PlayerNameLabel.setLayoutX(111.0);
         PlayerNameLabel.setLayoutY(91.0);
         PlayerNameLabel.setText("player name");
         PlayerNameLabel.setTextFill(javafx.scene.paint.Color.WHITE);
-        PlayerNameLabel.setFont(new Font(25.0));
+        PlayerNameLabel.setFont(new Font(24.0));
 
-        StatusLabel.setLayoutX(583.0);
+        StatusLabel.setLayoutX(425.0);
         StatusLabel.setLayoutY(91.0);
         StatusLabel.setText("Status");
         StatusLabel.setTextFill(javafx.scene.paint.Color.WHITE);
-        StatusLabel.setFont(new Font(25.0));
+        StatusLabel.setFont(new Font(24.0));
         setTop(anchorPane);
 
         BorderPane.setAlignment(anchorPane0, javafx.geometry.Pos.CENTER);

@@ -32,7 +32,7 @@ public class ChooseModeBase extends AnchorPane {
     protected final Button btnBack;
     TextField ipAddress = new TextField();
     GridPane gridPane = new GridPane();
-
+    String ip;
     public ChooseModeBase() {
 
         mode_image = new ImageView();
@@ -154,6 +154,7 @@ public class ChooseModeBase extends AnchorPane {
                      StartConnection con = new StartConnection();
                     if (result.isPresent() && result.get() == ButtonType.OK) {
                         //con.connectServer(ipAddress.toString());
+                        ip=ipAddress.getText();
                         Navigator.navigateTo(new SignIn(), e);
 
                     }

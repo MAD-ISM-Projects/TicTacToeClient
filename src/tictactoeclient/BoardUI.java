@@ -214,6 +214,8 @@ public abstract class BoardUI extends AnchorPane {
             @Override
             public void handle(ActionEvent e) {
                 Navigator.navigateTo(new ChooseModeBase(), e);
+                scoreP1=0;
+                scoreP2=0;
             }
         });
 
