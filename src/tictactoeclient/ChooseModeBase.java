@@ -29,6 +29,7 @@ public class ChooseModeBase extends AnchorPane {
     protected final Button btn_multi;
     protected final Button btn_online;
     protected final Button btn_Record;
+    protected final Button btnBack;
     TextField ipAddress = new TextField();
     GridPane gridPane = new GridPane();
 
@@ -42,6 +43,7 @@ public class ChooseModeBase extends AnchorPane {
         btn_multi = new Button();
         btn_online = new Button();
         btn_Record = new Button();
+        btnBack = new Button();
         gridPane.add(new Label("Server IP: "), 0, 0);
         gridPane.add(ipAddress, 1, 0);
 
@@ -57,7 +59,23 @@ public class ChooseModeBase extends AnchorPane {
         mode_image.setPickOnBounds(true);
         mode_image.setPreserveRatio(true);
         mode_image.setImage(new Image(getClass().getResource("xoImg.png").toExternalForm()));
-
+        
+        btnBack.setLayoutX(60.0);
+        btnBack.setLayoutY(50.0);
+        btnBack.setMnemonicParsing(false);
+        btnBack.setPrefHeight(37.0);
+        btnBack.setPrefWidth(80.0);
+        btnBack.setStyle("-fx-background-radius: 10;");
+        btnBack.setText("Back");
+        btnBack.setTextFill(javafx.scene.paint.Color.valueOf("#8b76a4"));
+        btnBack.setFont(new Font(MyFont.MY_FONT, 19.0));
+        btnBack.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                Navigator.navigateTo(new StartpageBase(), e);
+            }
+        });
+        
         text_tic.setFill(javafx.scene.paint.Color.WHITE);
         text_tic.setLayoutX(312.0);
         text_tic.setLayoutY(276.0);
@@ -167,5 +185,6 @@ public class ChooseModeBase extends AnchorPane {
         getChildren().add(btn_multi);
         getChildren().add(btn_online);
         getChildren().add(btn_Record);
+        getChildren().add(btnBack);
     }
 }

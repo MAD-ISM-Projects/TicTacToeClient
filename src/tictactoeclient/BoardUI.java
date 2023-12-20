@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -52,6 +53,7 @@ public abstract class BoardUI extends AnchorPane {
     protected  Button scoreBtnO;
     protected  Text scorePlayer1;
     protected  Text scorePlayer2;
+    protected final Button btnBack;
     protected boolean isPlayerTurn=false;
     public static int scoreP1=0;
     public static int scoreP2=0;
@@ -75,6 +77,7 @@ public abstract class BoardUI extends AnchorPane {
         toeText = new Text();
         scoreBtnX = new Button();
         scoreBtnO = new Button();
+        btnBack = new Button();
         scorePlayer1 = new Text();
         scorePlayer2 = new Text();
         recordGame = new Button();
@@ -197,6 +200,22 @@ public abstract class BoardUI extends AnchorPane {
         recordGame.setFont(new Font("System Bold", 18.0));
         recordGame.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
         });
+        
+        btnBack.setLayoutX(60.0);
+        btnBack.setLayoutY(50.0);
+        btnBack.setMnemonicParsing(false);
+        btnBack.setPrefHeight(37.0);
+        btnBack.setPrefWidth(80.0);
+        btnBack.setStyle("-fx-background-radius: 10;");
+        btnBack.setText("Back");
+        btnBack.setTextFill(javafx.scene.paint.Color.valueOf("#8b76a4"));
+        btnBack.setFont(new Font(MyFont.MY_FONT, 19.0));
+        btnBack.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                Navigator.navigateTo(new ChooseModeBase(), e);
+            }
+        });
 
 
 
@@ -217,6 +236,7 @@ public abstract class BoardUI extends AnchorPane {
         getChildren().add(scorePlayer1);
         getChildren().add(scorePlayer2);
         getChildren().add(recordGame);
+        getChildren().add(btnBack);
         showBoard();
     }   
     protected boolean TicTac(List<Node> buttons){

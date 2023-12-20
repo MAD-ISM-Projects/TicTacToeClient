@@ -22,6 +22,7 @@ public  class SetPlayersBase extends AnchorPane {
     protected final Button startButton;
     protected final TextField playerName2;
     protected final TextField playerName1;
+    protected final Button btnBack;
 
     public SetPlayersBase() {
 
@@ -30,6 +31,7 @@ public  class SetPlayersBase extends AnchorPane {
         text_tac = new Text();
         text_toe = new Text();
         startButton = new Button();
+        btnBack = new Button();
         playerName2 = new TextField();
         playerName1 = new TextField();
         playerName1.setPromptText("Player X Name");
@@ -78,6 +80,22 @@ public  class SetPlayersBase extends AnchorPane {
         text_toe.setStrokeWidth(0.0);
         text_toe.setText("Toe");
         text_toe.setFont(new Font(MyFont.MY_FONT, 40.0));
+        
+        btnBack.setLayoutX(60.0);
+        btnBack.setLayoutY(50.0);
+        btnBack.setMnemonicParsing(false);
+        btnBack.setPrefHeight(37.0);
+        btnBack.setPrefWidth(80.0);
+        btnBack.setStyle("-fx-background-radius: 10;");
+        btnBack.setText("Back");
+        btnBack.setTextFill(javafx.scene.paint.Color.valueOf("#8b76a4"));
+        btnBack.setFont(new Font(MyFont.MY_FONT, 19.0));
+        btnBack.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                Navigator.navigateTo(new ChooseModeBase(), e);
+            }
+        });
 
         startButton.setLayoutX(315.0);
         startButton.setLayoutY(461.0);
@@ -128,6 +146,7 @@ public  class SetPlayersBase extends AnchorPane {
         getChildren().add(startButton);
         getChildren().add(playerName2);
         getChildren().add(playerName1);
+        getChildren().add(btnBack);
 
     }
 }

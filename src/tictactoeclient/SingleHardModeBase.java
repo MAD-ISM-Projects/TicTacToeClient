@@ -11,7 +11,7 @@ public class SingleHardModeBase extends BoardUI {
         player1Name.setText(p1);
         player2Name.setText(pc);
     }
-        private void easyLevel() {
+        private void hardLevel() {
             int[] bestMove = findBestMove();
 
             if (bestMove[0] != -1 && bestMove[1] != -1) {
@@ -143,9 +143,9 @@ public class SingleHardModeBase extends BoardUI {
                     player1Name.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));
                     player2Name.setFill(javafx.scene.paint.Color.valueOf("#ffffff"));
                     if (isWin()) return;
-                    easyLevel();
+                    hardLevel();
                     player1Name.setFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                    player2Name.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));
+                    player2Name.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));  
                 }
             }
         }

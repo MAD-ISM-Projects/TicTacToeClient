@@ -37,9 +37,10 @@ public class EasyLevelBase extends BoardUI {
                 player1Name.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));
                 player2Name.setFill(javafx.scene.paint.Color.valueOf("#ffffff"));
                 if(isWin()) return;
-                easyLevel();
                 player1Name.setFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                player2Name.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));   }
+                player2Name.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));   
+                easyLevel();
+            }
         }
     }
     protected void addListen(Button btn) {

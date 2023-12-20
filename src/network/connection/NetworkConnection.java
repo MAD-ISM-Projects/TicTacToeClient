@@ -24,7 +24,7 @@ public class NetworkConnection {
     public NetworkConnection() {
         
         try {
-            this.soc = new Socket("127.0.0.1",5005);
+            this.soc = new Socket("192.168.121.35",5048);
             this.dis=new DataInputStream(soc.getInputStream());
             this.print=new PrintStream(soc.getOutputStream());
             
