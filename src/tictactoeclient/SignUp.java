@@ -137,11 +137,16 @@ public class SignUp extends AnchorPane {
                 confirmPasswordTextField.clear();
                 
                 String serverReply = network.getMessage();
-                
-                showMessageDialog(null, (Integer.parseInt(serverReply)>0)?"signed up seccessfully":"already signed up");
-                Navigator.navigateTo(new SignUp(), event); 
-            }
-             } catch (Exception ex) {
+                if (Integer.parseInt(serverReply) > 0) {
+                        showMessageDialog(null, "Signed up successfully");
+                        // Close the connection after successful signup
+                        network.closeConnection();
+                        Navigator.navigateTo(new SignIn(), event);
+                    } else {
+                        showMessageDialog(null, "Already signed up");
+                    }
+                }
+            } catch (Exception ex) {
             
             showMessageDialog(null, "Lost Connection To The Server");
 

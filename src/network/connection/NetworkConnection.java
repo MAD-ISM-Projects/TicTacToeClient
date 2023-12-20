@@ -20,9 +20,8 @@ public class NetworkConnection {
     private Socket soc;
     private DataInputStream dis;
     private PrintStream print;
-
+    
     public NetworkConnection() {
-        
         try {
             this.soc = new Socket("127.0.0.1",5005);
             this.dis=new DataInputStream(soc.getInputStream());
@@ -30,15 +29,22 @@ public class NetworkConnection {
             
             
         } catch (IOException ex) {
-            Logger.getLogger(NetworkConnection.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NetworkConnection.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
        
     }
     
     
    public void sentMessage(String message){
-         print.println(message);
-         System.out.println(message);
+        new Thread() {
+            @Override
+            public void run() {
+                print.println(message);
+                System.out.println(message);
+            }
+        }.start(); 
+       
     }
    public String getMessage(){
        String mess = null ;
@@ -46,9 +52,25 @@ public class NetworkConnection {
             mess = dis.readLine();
             System.out.println(mess);
         } catch (IOException ex) {
-            Logger.getLogger(NetworkConnection.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NetworkConnection.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
         return mess;
     }
-    
+        public void closeConnection() {
+        try {
+            if (dis != null) {
+                dis.close();
+            }
+            if (print != null) {
+                print.close();
+            }
+            if (soc != null) {
+                soc.close();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(NetworkConnection.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
+    }
 }
