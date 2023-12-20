@@ -14,3 +14,17 @@ and open the template in the editor.
     -fx-background-position: center center;
     -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0); 
 }
+#records-screen{
+    -fx-background-image: url("Record-PhotoRoom.png");
+    -fx-background-repeat: stretch;   
+    -fx-background-size: 100% auto;
+    -fx-background-position: center center;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0); 
+}
+#record-player{
+    -fx-background-image: url("video-circle.png");
+    -fx-background-repeat: stretch;   
+    -fx-background-size: 100% auto;
+    -fx-background-position: center center;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0); 
+}
