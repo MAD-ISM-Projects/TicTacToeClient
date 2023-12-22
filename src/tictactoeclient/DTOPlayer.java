@@ -8,7 +8,8 @@ package tictactoeclient;
 import com.google.gson.Gson;
 
 public class DTOPlayer {
-//    private String ip;
+    
+    
     private String name;
     private String password;
     private int score;

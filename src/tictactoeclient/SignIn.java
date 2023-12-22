@@ -1,5 +1,7 @@
 package tictactoeclient;
 
+import DTO.ClientRequest;
+import DTO.ClientRequestHeader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.DataInputStream;
@@ -109,9 +111,10 @@ public class SignIn extends AnchorPane {
             join.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
             join.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
                     try {
-                        Gson gson = new GsonBuilder().create();
-                        String userName = userNameTextField.getText();
-                        String password = passwordTextField.getText();
+                        //Gson gson = new GsonBuilder().create();
+                       // String userName = userNameTextField.getText();
+                        //String password = passwordTextField.getText();
+                        ClientRequest clientRequest=new ClientRequest(ClientRequestHeader.signIn,userNameTextField.getText(),passwordTextField.getText());
 
                         if (passwordTextField.getText().length() < 8) {
                             passwordTextField.setStyle("-fx-border-color: red;");
@@ -127,6 +130,12 @@ public class SignIn extends AnchorPane {
                             userNameTextField.clear();
                             String serverReply = network.getMessage();
                             showMessageDialog(null, (Integer.parseInt(serverReply) > 0) ? "signed In successfully" : "There is no player named " + name + " or wrong password");
+                            join.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
+                              public void handle(ActionEvent e){
+                              Navigator.navigateTo(new AvailablePlayersBase(), e);
+                              }
+                          });
+                                    
                         }
                     } catch (Exception ex) {
                         showMessageDialog(null, "Lost Connection To The Server");

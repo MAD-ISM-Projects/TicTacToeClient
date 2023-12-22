@@ -12,7 +12,6 @@ import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import tictactoeclient.Views.AvailablePlayersBase;
 
 /**
  *
@@ -23,7 +22,7 @@ public class TicTacToeClient extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        Parent root = new StartpageBase();
+        Parent root = new StartPageBase();
         root.setId("pane");
         
         Scene scene = new Scene(root,800,550);

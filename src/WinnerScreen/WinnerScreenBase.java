@@ -18,7 +18,7 @@ import tictactoeclient.BordBase;
 import tictactoeclient.ChooseModeBase;
 import tictactoeclient.EasyLevelBase;
 import tictactoeclient.MyFont;
-import tictactoeclient.StartpageBase;
+import tictactoeclient.StartPageBase;
 
 public  class WinnerScreenBase extends BorderPane {
 

@@ -1,6 +1,7 @@
-package tictactoeclient.Views;
+package tictactoeclient;
 
 import java.util.ArrayList;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -60,8 +61,8 @@ public class AvailablePlayersBase extends BorderPane {
         UsersItemListBase[] usersArray = new UsersItemListBase[6];
         for (int i = 0; i < usersArray.length; i++) {
             usersArray[i] = new UsersItemListBase();
-            UsersListView.getItems().add(usersArray[i]);
-        }
+             UsersListView.getItems().add(usersArray[i]);
+       }
 
         BorderPane.setAlignment(anchorPane, javafx.geometry.Pos.CENTER);
         anchorPane.setPrefHeight(170.0);
@@ -138,4 +139,25 @@ public class AvailablePlayersBase extends BorderPane {
         anchorPane0.getChildren().add(LogOutButton);
 
     }
+    
+     public void getUsers(ArrayList<DTOPlayer> users) {
+        usersList = users;
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                UsersListView.getItems().clear();
+                for (int i = 0; i < users.size(); i++) {
+//                    if (usersList.get(i).getUserName().equals(NetworkConnection.userOnline.getUserName())) {
+//                        usersList.remove(i);
+//                        continue;
+//                    }
+                  //  UsersListView.getItems().add(new UsersItemListBase("    " + users.get(i).getName(), users.get(i).getStatus(), users.get(i).getScore()));
+
+                    System.out.println("users count = " + usersList.size());
+                }
+            }
+        });
+
+    }
+    
 }

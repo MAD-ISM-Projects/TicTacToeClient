@@ -72,7 +72,7 @@ public class ChooseModeBase extends AnchorPane {
         btnBack.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                Navigator.navigateTo(new StartpageBase(), e);
+                Navigator.navigateTo(new StartPageBase(), e);
             }
         });
         

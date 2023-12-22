@@ -176,7 +176,7 @@ public class SignUp extends AnchorPane {
         signIn.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent e){
-             
+                
                 Navigator.navigateTo(new SignIn(), e);
 
             }
