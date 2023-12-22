@@ -36,4 +36,8 @@ public class GamePlay {
                 ", steps='" + steps + '\'' +
                 '}';
     }
+
+    String getPlayer1Name() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -49,8 +49,8 @@ public class RecordPlay extends BoardUI {
         // Find the last recorded game play ID
         return gamePlays.keySet().stream().max(String::compareTo).orElse(null);
     }
-
-
+    
+    
     void showRecord() {
         
         recordReader=new Thread(() -> {

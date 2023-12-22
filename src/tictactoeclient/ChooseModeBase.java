@@ -155,7 +155,7 @@ public class ChooseModeBase extends AnchorPane {
             @Override
 
             public void handle(ActionEvent e){
-                Navigator.navigateTo(new Records(), e);
+                Navigator.navigateTo(new RecordListViewBase(), e);
 
             }
         });
