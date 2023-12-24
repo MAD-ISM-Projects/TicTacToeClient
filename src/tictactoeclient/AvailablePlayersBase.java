@@ -2,13 +2,19 @@ package tictactoeclient;
 
 import DTO.ClientRequest;
 import DTO.ClientRequestHeader;
+import DTO.DTOPlayer;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,8 +25,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import static javax.swing.JOptionPane.showMessageDialog;
 import network.connection.NetworkConnection;
-import tictactoeclient.DTOPlayer;
+import services.Navigator;
+import static tictactoeclient.BoardUI.scoreP1;
+import static tictactoeclient.BoardUI.scoreP2;
 import tictactoeclient.UsersItemListBase;
 
 public class AvailablePlayersBase extends BorderPane {
@@ -36,23 +45,23 @@ public class AvailablePlayersBase extends BorderPane {
     protected final Button HomeButton;
     protected final Button LogOutButton;
     private NetworkConnection network;
+    String myName;
 
+    ArrayList<DTOPlayer> onlinePlayrs = new ArrayList<>();
 
-
-    
-    ArrayList<DTOPlayer> onlinePlayrs = new ArrayList<>(); 
-
-    public AvailablePlayersBase(String playerName) {
-             network = new NetworkConnection();
- ArrayList<DTOPlayer> availablePlayers = new ArrayList<>();
+    public AvailablePlayersBase(String playerName, NetworkConnection network) {
+        network = new NetworkConnection();
+        ArrayList<DTOPlayer> availablePlayers = new ArrayList<>();
         ClientRequest availablePlayersRequest = new ClientRequest(ClientRequestHeader.onlineUsers, playerName);
+        myName = playerName;
         String availablePlayersResponse = availablePlayersRequest.toJson();
         network.sentMessage(availablePlayersResponse);
         System.out.println(availablePlayersResponse);
         String replyOnAvailablePlayers = network.getMessage();
         System.out.println(replyOnAvailablePlayers);
         Gson gson = new Gson();
-        Type listType = new TypeToken<ArrayList<DTOPlayer>>() {}.getType();
+        Type listType = new TypeToken<ArrayList<DTOPlayer>>() {
+        }.getType();
         availablePlayers = gson.fromJson(replyOnAvailablePlayers, listType);
 
         UsersListView = new ListView();
@@ -162,6 +171,7 @@ public class AvailablePlayersBase extends BorderPane {
         anchorPane0.getChildren().add(LogOutButton);
         this.receiveOnlinePlayers(availablePlayers);
     }
+
     public void receiveOnlinePlayers(ArrayList<DTOPlayer> onlinePlayers) {
         UsersListView.getItems().clear();
         ObservableList<UsersItemListBase> cellList = FXCollections.observableArrayList();
@@ -172,29 +182,39 @@ public class AvailablePlayersBase extends BorderPane {
             cell.Status.setText(player.getStatus());
             // Add cell to the ListView
             UsersListView.getItems().add(cell);
+            cell.button.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent e) {
+                    String name;
+                    name = cell.player.getText();
+                    System.out.println("TEST " + name);
+                    ClientRequest InvitationRequest = new ClientRequest(myName, name, ClientRequestHeader.gameInvitation);
+                    String InvitationResponse = InvitationRequest.toJson();
+                    network.sentMessage(InvitationResponse);
+                    System.out.println(" ========== invitation");
+                    System.out.println(InvitationResponse);
+                }
+            });
+
         }
-    }
-    
-    
-
-   /* public void getUsers(ArrayList<DTOPlayer> fetchedAvailablePlayers) {
-        onlinePlayrs = fetchedAvailablePlayers;
-        Platform.runLater(new Runnable() {
-            @Override
+        new Thread() {
             public void run() {
-                UsersListView.getItems().clear();
-                for (int i = 0; i < fetchedAvailablePlayers.size(); i++) {
-//                    if (usersList.get(i).getUserName().equals(NetworkConnection.userOnline.getUserName())) {
-//                        usersList.remove(i);
-//                        continue;
-//                    }
-                    UsersListView.getItems().add(new UsersItemListBase("    " + fetchedAvailablePlayers.get(i).getName(), fetchedAvailablePlayers.get(i).getStatus(), fetchedAvailablePlayers.get(i).getScore()));
+                while (true) {
+                    String msg = network.getMessage();
+                    if (msg == null) {
+                        System.out.println("The message is null.");
+                    } else {
+                        System.out.println("The message is: " + msg);
+                    }
 
-                    //System.out.println("users count = " + usersList.size());
+//                            String msg=network.getMessage();
+//                            if(msg!=null){
+//                                showMessageDialog(null,"Invitation send Successfully   "+msg);
+//                            }
                 }
             }
-        });
-    }*/
-    
- }
+        }.start();
 
+    }
+
+}

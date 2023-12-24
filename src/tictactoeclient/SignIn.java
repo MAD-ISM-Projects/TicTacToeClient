@@ -135,8 +135,8 @@ public class SignIn extends AnchorPane {
                             if(Integer.parseInt(replyOnSingIn) > 0) 
                             {
                                 showMessageDialog(null,"signed In successfully");
-                                 network.closeConnection();
-                                 Navigator.navigateTo(new AvailablePlayersBase(name), event);
+                                 //network.closeConnection();
+                                 Navigator.navigateTo(new AvailablePlayersBase(name,network), event);
                             }
                             else showMessageDialog(null, "There is no player named " + name + " or wrong password");
 
