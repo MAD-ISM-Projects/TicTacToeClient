@@ -30,8 +30,8 @@ public class AvailablePlayersBase extends BorderPane {
     
     public static ArrayList<DTOPlayer> usersList;
 
-    public AvailablePlayersBase() {
-
+    public AvailablePlayersBase(ArrayList<DTOPlayer> fetchedAvailablePlayers) {
+        //ArrayList<DTOPlayer> usersList = fetchedAvailablePlayers;
         UsersListView = new ListView();
         anchorPane = new AnchorPane();
         text = new Text();
@@ -58,11 +58,11 @@ public class AvailablePlayersBase extends BorderPane {
         UsersListView.setStyle("-fx-background-radius: 15; -fx-background-color: #34365C;");
         BorderPane.setMargin(UsersListView, new Insets(0.0, 90.0, 20.0, 90.0));
         setCenter(UsersListView);
-        UsersItemListBase[] usersArray = new UsersItemListBase[6];
-        for (int i = 0; i < usersArray.length; i++) {
-            usersArray[i] = new UsersItemListBase();
-             UsersListView.getItems().add(usersArray[i]);
-       }
+//        UsersItemListBase[] usersArray = new UsersItemListBase[6];
+//        for (int i = 0; i < usersArray.length; i++) {
+//            usersArray[i] = new UsersItemListBase();
+//             UsersListView.getItems().add(usersArray[i]);
+//       }
 
         BorderPane.setAlignment(anchorPane, javafx.geometry.Pos.CENTER);
         anchorPane.setPrefHeight(170.0);
@@ -140,24 +140,35 @@ public class AvailablePlayersBase extends BorderPane {
 
     }
     
-     public void getUsers(ArrayList<DTOPlayer> users) {
-        usersList = users;
+    class MyAvailable extends Thread{
+        public void run(){
+            
+            
+            Platform.runLater(new Runnable() {
+          
+            public void run() {}
+            });
+    }
+    
+    public void getUsers(ArrayList<DTOPlayer> fetchedAvailablePlayers) {
+        usersList = fetchedAvailablePlayers;
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 UsersListView.getItems().clear();
-                for (int i = 0; i < users.size(); i++) {
+                for (int i = 0; i < fetchedAvailablePlayers.size(); i++) {
 //                    if (usersList.get(i).getUserName().equals(NetworkConnection.userOnline.getUserName())) {
 //                        usersList.remove(i);
 //                        continue;
 //                    }
-                  //  UsersListView.getItems().add(new UsersItemListBase("    " + users.get(i).getName(), users.get(i).getStatus(), users.get(i).getScore()));
+                    UsersListView.getItems().add(new UsersItemListBase("    " + fetchedAvailablePlayers.get(i).getName(), fetchedAvailablePlayers.get(i).getStatus(), fetchedAvailablePlayers.get(i).getScore()));
 
-                    System.out.println("users count = " + usersList.size());
+                    //System.out.println("users count = " + usersList.size());
                 }
             }
         });
 
     }
     
+ }
 }

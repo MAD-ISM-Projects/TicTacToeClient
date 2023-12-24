@@ -15,9 +15,7 @@ public class Authentication extends GsonHandler{
     public String password;
     public Authentication(String userName,String password) {
         this.userName = userName;
-        this.password=password;
-        this.toJson();
-        
+        this.password=password;        
     }
     
 }

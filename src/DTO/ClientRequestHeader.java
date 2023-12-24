@@ -10,9 +10,10 @@ package DTO;
  * @author U S B
  */
 public enum ClientRequestHeader{
-    signUP,
+    signUp,
     signIn,
     signOut,
     onlineUsers,
     gameInvitation,
+    nextStep
 }

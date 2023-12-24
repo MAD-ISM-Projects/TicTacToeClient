@@ -12,7 +12,7 @@ public class UsersItemListBase extends AnchorPane {
     protected final Label Status;
     protected final Button button;
 
-    public UsersItemListBase() {
+    public UsersItemListBase(String userName, String status, int score) {
 
         player = new Label();
         Score = new Label();
@@ -26,12 +26,14 @@ public class UsersItemListBase extends AnchorPane {
 
         player.setLayoutX(39.0);
         player.setLayoutY(12.0);
-        player.setText("player");
+        player.setText("         "+userName);
+        //player.setText("player");
         player.setFont(new Font(20.0));
 
         Score.setLayoutX(189.0);
         Score.setLayoutY(12.0);
-        Score.setText("Score");
+        //Score.setText("Score");
+        Score.setText(String.valueOf(score));
         Score.setFont(new Font(20.0));
 
         Status.setLayoutX(333.0);

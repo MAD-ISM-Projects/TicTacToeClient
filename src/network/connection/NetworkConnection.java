@@ -23,7 +23,7 @@ public class NetworkConnection {
     
     public NetworkConnection() {
         try {
-            this.soc = new Socket("127.0.0.1",5048);
+            this.soc = new Socket("127.0.0.1",5005);
             this.dis=new DataInputStream(soc.getInputStream());
             this.print=new PrintStream(soc.getOutputStream());
             

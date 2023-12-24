@@ -1,5 +1,7 @@
 package tictactoeclient;
 
+import DTO.ClientRequest;
+import DTO.ClientRequestHeader;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -128,9 +130,13 @@ public class SignUp extends AnchorPane {
             }
             else{
                 
-                jsonString="{\"request\":\"signUp\",\"player\":{\"name\":\""+userNameTextField.getText()+"\""
-                        + ","
-                        + "\"password\":\""+passwordTextField.getText()+"\"}}";
+//                jsonString="{\"request\":\"signUp\",\"player\":{\"name\":\""+userNameTextField.getText()+"\""
+//                        + ","
+//                        + "\"password\":\""+passwordTextField.getText()+"\"}}";
+                ClientRequest signUpRequest=new ClientRequest(ClientRequestHeader.signUp,userNameTextField.getText(),passwordTextField.getText());
+                String signUpResponse=signUpRequest.toJson();
+                System.out.println(signUpResponse);
+                network.sentMessage(signUpResponse);
                 network.sentMessage(jsonString);
                 passwordTextField.clear();
                 userNameTextField.clear();

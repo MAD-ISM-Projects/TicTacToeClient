@@ -4,10 +4,13 @@ import DTO.ClientRequest;
 import DTO.ClientRequestHeader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.Type;
 import java.net.Socket;
+import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -23,7 +26,6 @@ import network.connection.NetworkConnection;
 import services.Navigator;
 
 public class SignIn extends AnchorPane {
-
         protected final Label label;
         protected final Pane pane;
         protected final TextField userNameTextField;
@@ -109,32 +111,44 @@ public class SignIn extends AnchorPane {
             join.setStyle("-fx-background-radius: 6; -fx-background-color: #5427d0;");
             join.setText("Join");
             join.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
+            
             join.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
                     try {
-                        //Gson gson = new GsonBuilder().create();
-                       // String userName = userNameTextField.getText();
-                        //String password = passwordTextField.getText();
-                        ClientRequest clientRequest=new ClientRequest(ClientRequestHeader.signIn,userNameTextField.getText(),passwordTextField.getText());
-
+                          
+                          
                         if (passwordTextField.getText().length() < 8) {
                             passwordTextField.setStyle("-fx-border-color: red;");
                         } else if (userNameTextField.getText().isEmpty()) {
                             userNameTextField.setStyle("-fx-border-color: red;");
                         } else {
                             String name = userNameTextField.getText();
-                            jsonString = "{\"request\":\"signIn\",\"player\":{\"name\":\"" + name + "\""
-                                    + ","
-                                    + "\"password\":\"" + passwordTextField.getText() + "\"}}";
-                            network.sentMessage(jsonString);
+                            ClientRequest signInRequest=new ClientRequest(ClientRequestHeader.signIn,userNameTextField.getText(),passwordTextField.getText());
+                            String singInResponse=signInRequest.toJson();
+                            network.sentMessage(singInResponse);
+                            System.out.println(singInResponse);
                             passwordTextField.clear();
                             userNameTextField.clear();
-                            String serverReply = network.getMessage();
-                            showMessageDialog(null, (Integer.parseInt(serverReply) > 0) ? "signed In successfully" : "There is no player named " + name + " or wrong password");
-                            join.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
-                              public void handle(ActionEvent e){
-                              Navigator.navigateTo(new AvailablePlayersBase(), e);
-                              }
-                          });
+                            String replyOnSingIn = network.getMessage();
+                           
+                            
+                            
+                            if(Integer.parseInt(replyOnSingIn) > 0) 
+                            {
+                                showMessageDialog(null,"signed In successfully");
+                                 ArrayList<DTOPlayer> availablePlayers=new ArrayList<>();
+                                 ClientRequest availablePlayersRequest=new ClientRequest(ClientRequestHeader.onlineUsers,userNameTextField.getText());
+                                 String availablePlayersResponse=availablePlayersRequest.toJson();
+                                 network.sentMessage(availablePlayersResponse);  
+                                 System.out.println(availablePlayersResponse);
+                                 String replyOnAvailablePlayers = network.getMessage();
+                                 Gson gson = new Gson();
+                                 Type listType = new TypeToken<ArrayList<DTOPlayer>>() {}.getType();
+                                 availablePlayers= gson.fromJson(replyOnAvailablePlayers, listType);
+                                 
+                                 Navigator.navigateTo(new AvailablePlayersBase(availablePlayers), event);
+                            }
+                            else showMessageDialog(null, "There is no player named " + name + " or wrong password");
+
                                     
                         }
                     } catch (Exception ex) {
