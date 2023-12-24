@@ -135,17 +135,8 @@ public class SignIn extends AnchorPane {
                             if(Integer.parseInt(replyOnSingIn) > 0) 
                             {
                                 showMessageDialog(null,"signed In successfully");
-                                 ArrayList<DTOPlayer> availablePlayers=new ArrayList<>();
-                                 ClientRequest availablePlayersRequest=new ClientRequest(ClientRequestHeader.onlineUsers,userNameTextField.getText());
-                                 String availablePlayersResponse=availablePlayersRequest.toJson();
-                                 network.sentMessage(availablePlayersResponse);  
-                                 System.out.println(availablePlayersResponse);
-                                 String replyOnAvailablePlayers = network.getMessage();
-                                 Gson gson = new Gson();
-                                 Type listType = new TypeToken<ArrayList<DTOPlayer>>() {}.getType();
-                                 availablePlayers= gson.fromJson(replyOnAvailablePlayers, listType);
-                                 
-                                 Navigator.navigateTo(new AvailablePlayersBase(availablePlayers), event);
+                                 network.closeConnection();
+                                 Navigator.navigateTo(new AvailablePlayersBase(name), event);
                             }
                             else showMessageDialog(null, "There is no player named " + name + " or wrong password");
 
