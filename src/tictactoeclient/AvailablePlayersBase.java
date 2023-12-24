@@ -1,7 +1,14 @@
 package tictactoeclient;
 
+import DTO.ClientRequest;
+import DTO.ClientRequestHeader;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,6 +19,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import network.connection.NetworkConnection;
 import tictactoeclient.DTOPlayer;
 import tictactoeclient.UsersItemListBase;
 
@@ -27,11 +35,26 @@ public class AvailablePlayersBase extends BorderPane {
     protected final AnchorPane anchorPane0;
     protected final Button HomeButton;
     protected final Button LogOutButton;
-    
-    public static ArrayList<DTOPlayer> usersList;
+    private NetworkConnection network;
 
-    public AvailablePlayersBase(ArrayList<DTOPlayer> fetchedAvailablePlayers) {
-        //ArrayList<DTOPlayer> usersList = fetchedAvailablePlayers;
+
+
+    
+    ArrayList<DTOPlayer> onlinePlayrs = new ArrayList<>(); 
+
+    public AvailablePlayersBase(String playerName) {
+             network = new NetworkConnection();
+ ArrayList<DTOPlayer> availablePlayers = new ArrayList<>();
+        ClientRequest availablePlayersRequest = new ClientRequest(ClientRequestHeader.onlineUsers, playerName);
+        String availablePlayersResponse = availablePlayersRequest.toJson();
+        network.sentMessage(availablePlayersResponse);
+        System.out.println(availablePlayersResponse);
+        String replyOnAvailablePlayers = network.getMessage();
+        System.out.println(replyOnAvailablePlayers);
+        Gson gson = new Gson();
+        Type listType = new TypeToken<ArrayList<DTOPlayer>>() {}.getType();
+        availablePlayers = gson.fromJson(replyOnAvailablePlayers, listType);
+
         UsersListView = new ListView();
         anchorPane = new AnchorPane();
         text = new Text();
@@ -137,21 +160,25 @@ public class AvailablePlayersBase extends BorderPane {
         anchorPane.getChildren().add(StatusLabel);
         anchorPane0.getChildren().add(HomeButton);
         anchorPane0.getChildren().add(LogOutButton);
+        this.receiveOnlinePlayers(availablePlayers);
+    }
+    public void receiveOnlinePlayers(ArrayList<DTOPlayer> onlinePlayers) {
+        UsersListView.getItems().clear();
+        ObservableList<UsersItemListBase> cellList = FXCollections.observableArrayList();
+        for (DTOPlayer player : onlinePlayers) {
+            UsersItemListBase cell = new UsersItemListBase();
+            cell.player.setText(player.getName());
+            cell.Score.setText(String.valueOf(player.getScore()));
+            cell.Status.setText(player.getStatus());
+            // Add cell to the ListView
+            UsersListView.getItems().add(cell);
+        }
+    }
+    
+    
 
-    }
-    
-    class MyAvailable extends Thread{
-        public void run(){
-            
-            
-            Platform.runLater(new Runnable() {
-          
-            public void run() {}
-            });
-    }
-    
-    public void getUsers(ArrayList<DTOPlayer> fetchedAvailablePlayers) {
-        usersList = fetchedAvailablePlayers;
+   /* public void getUsers(ArrayList<DTOPlayer> fetchedAvailablePlayers) {
+        onlinePlayrs = fetchedAvailablePlayers;
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -167,8 +194,7 @@ public class AvailablePlayersBase extends BorderPane {
                 }
             }
         });
-
-    }
+    }*/
     
  }
-}
+
