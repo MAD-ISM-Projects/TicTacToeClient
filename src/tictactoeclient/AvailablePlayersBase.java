@@ -3,6 +3,7 @@ package tictactoeclient;
 import DTO.ClientRequest;
 import DTO.ClientRequestHeader;
 import DTO.DTOPlayer;
+import DTO.Invitation;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
@@ -196,28 +197,42 @@ public class AvailablePlayersBase extends BorderPane {
             });
 
         }
-        new Thread() {
+      Thread t=  new Thread() {
             @Override
             public void run() {
                 while (true) {
-                    String msg = network.getMessage();
-                    Gson gson = new Gson();
-                    Type type = new TypeToken<ClientRequest>() {
-                    }.getType();
-                    ClientRequest request = gson.fromJson(msg, type);
-                    if (request != null) {
-                        switch (request.request) {
-                            case "requestInvitation":
-                                System.out.println("Invitation Request");
-                                break; // show dialog
-                            case "invitationResponse":
-                                System.out.println(" Ivitation Response");
-                                break; // yes ==> open game
-                        }
+                    try {
+                        this.sleep(2000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(AvailablePlayersBase.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    String msg = network.getMessage();
+                    if(msg!=null)System.out.println("+++++"+msg);
+                    //Invitation signIn = new Gson().fromJson(clientRequest.data, Invitation.class);                 
+
+//                    Gson gson = new Gson();
+//                    Type type = new TypeToken<ClientRequest>() {
+//                    }.getType();
+//                    ClientRequest request = gson.fromJson(msg, type);
+//                    if (request != null) {
+//                        switch (request.request) {
+//                            case "requestInvitation":
+//                                System.out.println("Invitation Request");
+//                                break; // show dialog
+//                            case "invitationResponse":
+//                                System.out.println(" Ivitation Response");
+//                                break; // yes ==> open game
+//                        }
+//                    }
                 }
             }
-        }.start();
+        };
+                      t.start();
+                      Platform.runLater(() -> {
+                    if (t != null) {
+                        t.stop();
+                    }
+                });
 
     }
 

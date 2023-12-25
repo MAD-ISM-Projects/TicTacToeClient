@@ -51,8 +51,7 @@ public class NetworkConnection {
         try {
             mess = dis.readLine();
         } catch (IOException ex) {
-            Logger.getLogger(NetworkConnection.class.getName())
-                    .log(Level.SEVERE, null, ex);
+            return mess;
         }
         return mess;
     }
