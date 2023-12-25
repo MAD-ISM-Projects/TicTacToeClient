@@ -5,28 +5,32 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public abstract class RecordCellBase extends AnchorPane {
+public class RecordCellBase extends AnchorPane {
 
-    protected final Text text;
+    protected final Text playerOne;
     protected final Button button;
+    protected final Text playerTwo;
+    protected final Text text;
 
     public RecordCellBase() {
 
-        text = new Text();
+        playerOne = new Text();
         button = new Button();
+        playerTwo = new Text();
+        text = new Text();
 
         setId("AnchorPane");
         setPrefHeight(72.0);
         setPrefWidth(701.0);
         setStyle("-fx-border-radius: 20;");
 
-        text.setLayoutX(57.0);
-        text.setLayoutY(48.0);
-        text.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
-        text.setStrokeWidth(0.0);
-        text.setText("Ranoma      Vs       Mayora");
-        text.setWrappingWidth(471.525390625);
-        text.setFont(new Font(30.0));
+        playerOne.setLayoutX(35.0);
+        playerOne.setLayoutY(47.0);
+        playerOne.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
+        playerOne.setStrokeWidth(0.0);
+        playerOne.setText("Mayora");
+        playerOne.setWrappingWidth(151.525390625);
+        playerOne.setFont(new Font(30.0));
 
         button.setLayoutX(590.0);
         button.setLayoutY(24.0);
@@ -35,8 +39,26 @@ public abstract class RecordCellBase extends AnchorPane {
         button.setPrefWidth(84.0);
         button.setText("Play");
 
-        getChildren().add(text);
+        playerTwo.setLayoutX(321.0);
+        playerTwo.setLayoutY(48.0);
+        playerTwo.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
+        playerTwo.setStrokeWidth(0.0);
+        playerTwo.setText("Ranoma");
+        playerTwo.setWrappingWidth(194.525390625);
+        playerTwo.setFont(new Font(30.0));
+
+        text.setLayoutX(207.0);
+        text.setLayoutY(49.0);
+        text.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
+        text.setStrokeWidth(0.0);
+        text.setText("VS");
+        text.setWrappingWidth(40.525390625);
+        text.setFont(new Font(30.0));
+
+        getChildren().add(playerOne);
         getChildren().add(button);
+        getChildren().add(playerTwo);
+        getChildren().add(text);
 
     }
 }

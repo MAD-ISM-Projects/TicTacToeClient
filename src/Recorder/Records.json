@@ -12,5 +12,33 @@
       "player2": "saeed"
     },
     "steps": "2548736"
+  },
+  "GamePlay 2": {
+    "players": {
+      "player1": "asdfsa",
+      "player2": "sadfasdf"
+    },
+    "steps": "25476"
+  },
+  "GamePlay 3": {
+    "players": {
+      "player1": "YOU",
+      "player2": "PC"
+    },
+    "steps": ""
+  },
+  "GamePlay 4": {
+    "players": {
+      "player1": "YOU",
+      "player2": "PC"
+    },
+    "steps": "25764"
+  },
+  "GamePlay 5": {
+    "players": {
+      "player1": "YOU",
+      "player2": "PC"
+    },
+    "steps": "2503"
   }
 }

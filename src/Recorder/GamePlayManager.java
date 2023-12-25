@@ -6,7 +6,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GamePlayManager {
@@ -20,6 +22,7 @@ public class GamePlayManager {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
         this.gamePlays = new HashMap<>();
         loadGamePlays();
+        index=gamePlays.size();
     }
     static{
         index=0;
@@ -62,6 +65,9 @@ public class GamePlayManager {
 
     public Map<String, GamePlay> getGamePlays() {
         return new HashMap<>(gamePlays);
+    }
+        public ArrayList<GamePlay> getAllGamePlays() {
+        return new ArrayList<>(gamePlays.values());
     }
 }
     
