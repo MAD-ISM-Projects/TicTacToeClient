@@ -187,10 +187,14 @@ public class AvailablePlayersBase extends BorderPane {
                 public void handle(ActionEvent e) {
                     String name;
                     name = cell.player.getText();
+                    network = new NetworkConnection();
                     ClientRequest InvitationRequest = new ClientRequest(myName, name, ClientRequestHeader.gameInvitation);
                     String InvitationResponse = InvitationRequest.toJson();
-                    network.sentMessage(InvitationResponse);
-                    System.out.println(" ========== invitation");
+                    System.out.println(" ========== invitation Request ============");
+                    network.sentMessage(InvitationRequest.toJson());
+                    System.out.println(InvitationRequest.toJson());
+                    System.out.println(" ========== invitation Response ============");
+                    //network.sentMessage(InvitationResponse);
                     System.out.println(InvitationResponse);
                 }
             });
@@ -207,15 +211,42 @@ public class AvailablePlayersBase extends BorderPane {
                     ClientRequest request = gson.fromJson(msg, type);
                     if (request != null) {
                         switch (request.request) {
+                            case "gameInvitation":
+                                System.out.println("1-gameInvitation Request");
+                                // Show a dialog to the user and handle the response
+                                // For example:
+                                
+                                //showInvitationDialog(request.data);
+                                break;
                             case "requestInvitation":
-                                System.out.println("Invitation Request");
-                                break; // show dialog
+                                System.out.println("2-Invitation Request");
+                                // Show a dialog to the user and handle the response
+                                // For example:
+                                
+                                //showInvitationDialog(request.data);
+                                break;
+                                    
                             case "invitationResponse":
-                                System.out.println(" Ivitation Response");
-                                break; // yes ==> open game
+                                System.out.println("3-Invitation Response");
+
+                                // Open the game based on the response
+                                // For example:
+                                //handleInvitationResponse(request.data);
+                                break;
                         }
                     }
                 }
+            }
+
+            private void showInvitationDialog(String invitationData) {
+                // Implement code to show a dialog to the user with the invitation details
+                // Extract information from the invitationData and display it to the user
+            }
+
+            private void handleInvitationResponse(String response) {
+                // Implement code to handle the invitation response
+                // Extract information from the response and take appropriate actions
+                // For example, open the game if the response is positive
             }
         }.start();
 

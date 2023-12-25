@@ -17,37 +17,37 @@ import java.util.logging.Logger;
  * @author mayar
  */
 public class NetworkConnection {
+
     private Socket soc;
     public DataInputStream dis;
     private PrintStream print;
-    
+
     public NetworkConnection() {
         try {
-            this.soc = new Socket("127.0.0.1",5005);
-            this.dis=new DataInputStream(soc.getInputStream());
-            this.print=new PrintStream(soc.getOutputStream());
-            
-            
+            this.soc = new Socket("127.0.0.1", 5005);
+            this.dis = new DataInputStream(soc.getInputStream());
+            this.print = new PrintStream(soc.getOutputStream());
+
         } catch (IOException ex) {
             Logger.getLogger(NetworkConnection.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
-       
+
     }
-    
-    
-   public void sentMessage(String message){
+
+    public void sentMessage(String message) {
         new Thread() {
             @Override
             public void run() {
-       print.println(message);
-       System.out.println(message);
+                print.println(message);
+                System.out.println(message);
             }
-        }.start(); 
-       
+        }.start();
+
     }
-   public String getMessage(){
-       String mess = null ;
+
+    public String getMessage() {
+        String mess = null;
         try {
             mess = dis.readLine();
         } catch (IOException ex) {
@@ -56,7 +56,8 @@ public class NetworkConnection {
         }
         return mess;
     }
-        public void closeConnection() {
+
+    public void closeConnection() {
         try {
             if (dis != null) {
                 dis.close();
@@ -72,5 +73,5 @@ public class NetworkConnection {
                     .log(Level.SEVERE, null, ex);
         }
     }
-        
+
 }
