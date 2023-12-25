@@ -1,9 +1,12 @@
 package tictactoeclient;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
+import services.Navigator;
 
 public class UsersItemListBase extends AnchorPane {
 
@@ -49,7 +52,7 @@ public class UsersItemListBase extends AnchorPane {
         button.setText("Invite");
         button.setTextFill(javafx.scene.paint.Color.WHITE);
         button.setFont(new Font(20.0));
-
+        
         getChildren().add(player);
         getChildren().add(Score);
         getChildren().add(Status);

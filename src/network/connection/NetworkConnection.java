@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class NetworkConnection {
     private Socket soc;
-    private DataInputStream dis;
+    public DataInputStream dis;
     private PrintStream print;
     
     public NetworkConnection() {
@@ -40,8 +40,8 @@ public class NetworkConnection {
         new Thread() {
             @Override
             public void run() {
-                print.println(message);
-                System.out.println(message);
+       print.println(message);
+       System.out.println(message);
             }
         }.start(); 
        
@@ -50,7 +50,6 @@ public class NetworkConnection {
        String mess = null ;
         try {
             mess = dis.readLine();
-            System.out.println(mess);
         } catch (IOException ex) {
             Logger.getLogger(NetworkConnection.class.getName())
                     .log(Level.SEVERE, null, ex);

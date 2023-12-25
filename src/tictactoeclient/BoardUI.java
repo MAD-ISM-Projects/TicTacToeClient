@@ -29,7 +29,6 @@ import static tictactoeclient.BordBase.scoreP1;
 import static tictactoeclient.BordBase.scoreP2;
 import static tictactoeclient.BordBase.winner;
 import tictactoeclient.Enum.Mark;
-import tictactoeclient.Models.DTOPlayer;
 
 /**
  *

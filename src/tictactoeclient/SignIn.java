@@ -143,6 +143,7 @@ public class SignIn extends AnchorPane {
                                     
                         }
                     } catch (Exception ex) {
+                        ex.printStackTrace();
                         showMessageDialog(null, "Lost Connection To The Server");
                     }
                 });
