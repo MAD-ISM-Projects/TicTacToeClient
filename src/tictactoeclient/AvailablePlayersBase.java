@@ -208,17 +208,13 @@ public class AvailablePlayersBase extends BorderPane {
                     if (request != null) {
                         switch (request.request) {
                             case "requestInvitation":
-                                showMessageDialog(null, " You 've been invited");
+                                System.out.println("Invitation Request");
                                 break; // show dialog
                             case "invitationResponse":
+                                System.out.println(" Ivitation Response");
                                 break; // yes ==> open game
                         }
                     }
-
-//                            String msg=network.getMessage();
-//                            if(msg!=null){
-//                                showMessageDialog(null,"Invitation send Successfully   "+msg);
-//                            }
                 }
             }
         }.start();
