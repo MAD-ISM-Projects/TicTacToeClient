@@ -49,7 +49,7 @@ public class AvailablePlayersBase extends BorderPane {
 
     ArrayList<DTOPlayer> onlinePlayrs = new ArrayList<>();
 
-    public AvailablePlayersBase(String playerName, NetworkConnection network) {
+    public AvailablePlayersBase(String playerName) {
         network = new NetworkConnection();
         ArrayList<DTOPlayer> availablePlayers = new ArrayList<>();
         ClientRequest availablePlayersRequest = new ClientRequest(ClientRequestHeader.onlineUsers, playerName);
@@ -187,7 +187,6 @@ public class AvailablePlayersBase extends BorderPane {
                 public void handle(ActionEvent e) {
                     String name;
                     name = cell.player.getText();
-                    System.out.println("TEST " + name);
                     ClientRequest InvitationRequest = new ClientRequest(myName, name, ClientRequestHeader.gameInvitation);
                     String InvitationResponse = InvitationRequest.toJson();
                     network.sentMessage(InvitationResponse);
@@ -198,13 +197,22 @@ public class AvailablePlayersBase extends BorderPane {
 
         }
         new Thread() {
+            @Override
             public void run() {
                 while (true) {
                     String msg = network.getMessage();
-                    if (msg == null) {
-                        System.out.println("The message is null.");
-                    } else {
-                        System.out.println("The message is: " + msg);
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<ClientRequest>() {
+                    }.getType();
+                    ClientRequest request = gson.fromJson(msg, type);
+                    if (request != null) {
+                        switch (request.request) {
+                            case "requestInvitation":
+                                showMessageDialog(null, " You 've been invited");
+                                break; // show dialog
+                            case "invitationResponse":
+                                break; // yes ==> open game
+                        }
                     }
 
 //                            String msg=network.getMessage();
