@@ -47,6 +47,7 @@ public class AvailablePlayersBase extends BorderPane {
     protected final Button LogOutButton;
     private NetworkConnection network;
     String myName;
+    Thread thread;
 
     ArrayList<DTOPlayer> onlinePlayrs = new ArrayList<>();
 
@@ -171,6 +172,46 @@ public class AvailablePlayersBase extends BorderPane {
         anchorPane0.getChildren().add(HomeButton);
         anchorPane0.getChildren().add(LogOutButton);
         this.receiveOnlinePlayers(availablePlayers);
+        
+            thread = new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+
+                    String invitation = network.getMessage();
+                    if (invitation != null) {
+                        System.out.println(invitation + "sfasfdgasdsdgas");
+                    }
+//                    if (request != null) {
+//                        switch (request.request) {
+//                            case "gameInvitation":
+//
+//                                Invitation inv = new Gson().fromJson(invitation, Invitation.class);
+//                                String invitorName = inv.getPlayerName();
+//                                System.out.println(" YOu got invited by : " + invitorName);
+//
+//                                // Show a dialog to the user and handle the response
+//                                // For example:
+//                                //showInvitationDialog(request.data);
+//                                break;
+//
+//                        }
+//                    }
+                }
+            }
+//
+//            private void showInvitationDialog(String invitationData) {
+//                // Implement code to show a dialog to the user with the invitation details
+//                // Extract information from the invitationData and display it to the user
+//            }
+//
+//            private void handleInvitationResponse(String response) {
+//                // Implement code to handle the invitation response
+//                // Extract information from the response and take appropriate actions
+//                // For example, open the game if the response is positive
+//            }
+        };
+         thread.start();
     }
 
     public void receiveOnlinePlayers(ArrayList<DTOPlayer> onlinePlayers) {
@@ -199,7 +240,6 @@ public class AvailablePlayersBase extends BorderPane {
                     System.out.println(InvitationResponse);
                 }
             });
-
         }
     }
 }
