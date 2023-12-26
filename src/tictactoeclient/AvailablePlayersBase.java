@@ -3,12 +3,15 @@ package tictactoeclient;
 import DTO.ClientRequest;
 import DTO.ClientRequestHeader;
 import DTO.DTOPlayer;
+import DTO.Invitation;
 import DTO.invitationResponseStatus;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.awt.Event;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -17,14 +20,21 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import static javax.swing.JOptionPane.showMessageDialog;
 import network.connection.NetworkConnection;
@@ -47,6 +57,7 @@ public class AvailablePlayersBase extends BorderPane {
     protected final Button LogOutButton;
     private NetworkConnection network;
     String myName;
+    String name;
     Thread thread;
 
     ArrayList<DTOPlayer> onlinePlayrs = new ArrayList<>();
@@ -172,46 +183,67 @@ public class AvailablePlayersBase extends BorderPane {
         anchorPane0.getChildren().add(HomeButton);
         anchorPane0.getChildren().add(LogOutButton);
         this.receiveOnlinePlayers(availablePlayers);
-        
-            thread = new Thread() {
+
+        thread = new Thread() {
             @Override
             public void run() {
                 while (true) {
 
-                    String invitation = network.getMessage();
-                    if (invitation != null) {
-                        System.out.println(invitation + "sfasfdgasdsdgas");
+                    String message = network.getMessage();
+                    if (message != null) {
+                        System.out.println(message + "sfasfdgasdsdgas");
+                        ClientRequest receivedRequest = new Gson().fromJson(message, ClientRequest.class);
+                        if (receivedRequest != null) {
+                            switch (receivedRequest.request) {
+                                case "gameInvitation":
+                                    Invitation inv = new Gson().fromJson(receivedRequest.data, Invitation.class);
+                                    String invitorName = inv.getPlayerName();
+                                    String invitedName = inv.getOpponentName();
+                                    showDialog(invitorName, invitedName);
+                                    break;
+                                case "responseInvitation":
+                                    ClientRequest InvResponse = new ClientRequest(myName, name, ClientRequestHeader.responseInvitation, invitationResponseStatus.accepted);
+                                    String InviteResponse = InvResponse.toJson();
+                                    network.sentMessage(InviteResponse);
+                                    Platform.runLater(()->Navigator.navigateTo(new BordBase()));
+                                    break;
+
+                            }
+                        }
                     }
-//                    if (request != null) {
-//                        switch (request.request) {
-//                            case "gameInvitation":
-//
-//                                Invitation inv = new Gson().fromJson(invitation, Invitation.class);
-//                                String invitorName = inv.getPlayerName();
-//                                System.out.println(" YOu got invited by : " + invitorName);
-//
-//                                // Show a dialog to the user and handle the response
-//                                // For example:
-//                                //showInvitationDialog(request.data);
-//                                break;
-//
-//                        }
-//                    }
+
                 }
             }
-//
-//            private void showInvitationDialog(String invitationData) {
-//                // Implement code to show a dialog to the user with the invitation details
-//                // Extract information from the invitationData and display it to the user
-//            }
-//
-//            private void handleInvitationResponse(String response) {
-//                // Implement code to handle the invitation response
-//                // Extract information from the response and take appropriate actions
-//                // For example, open the game if the response is positive
-//            }
         };
-         thread.start();
+        thread.start();
+    }
+
+    private void showDialog(String message, String invitedName) {
+        Platform.runLater(() -> {
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setTitle("Invitation Dialog");
+            dialogStage.setMinWidth(200);
+
+            Label label = new Label(invitedName + ": " + message + " Invited you to a game" + ".");
+            Button acceptButton = new Button("Accept");
+            Button refuseButton = new Button("Refuse");
+            acceptButton.setOnAction(e -> {
+                dialogStage.close();
+                ClientRequest InvitationAccept = new ClientRequest(myName, invitedName, ClientRequestHeader.responseInvitation, invitationResponseStatus.accepted);
+                String InvitationResponse = InvitationAccept.toJson();
+                network.sentMessage(InvitationResponse);
+                Navigator.navigateTo(new BordBase(), e);
+            });
+            refuseButton.setOnAction(e -> dialogStage.close());
+
+            VBox dialogVbox = new VBox(20);
+            dialogVbox.getChildren().addAll(label, refuseButton, acceptButton);
+
+            Scene dialogScene = new Scene(dialogVbox, 200, 200);
+            dialogStage.setScene(dialogScene);
+            dialogStage.showAndWait();
+        });
     }
 
     public void receiveOnlinePlayers(ArrayList<DTOPlayer> onlinePlayers) {
@@ -230,7 +262,7 @@ public class AvailablePlayersBase extends BorderPane {
                 public void handle(ActionEvent e) {
                     String name;
                     name = cell.player.getText();
-                    ClientRequest InvitationRequest = new ClientRequest(myName, name, ClientRequestHeader.gameInvitation,invitationResponseStatus.awaiting);
+                    ClientRequest InvitationRequest = new ClientRequest(myName, name, ClientRequestHeader.gameInvitation, invitationResponseStatus.awaiting);
                     String InvitationResponse = InvitationRequest.toJson();
                     System.out.println(" ========== invitation Request ============");
                     network.sentMessage(InvitationRequest.toJson());
@@ -242,4 +274,5 @@ public class AvailablePlayersBase extends BorderPane {
             });
         }
     }
+
 }

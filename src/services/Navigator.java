@@ -28,6 +28,11 @@ public class Navigator {
         showScene();
     }
     
+    public static void navigateTo(Parent distnationRoot){
+        scene = new Scene(distnationRoot);
+        showScene();
+    }
+    
     // navigate by event parameter
     public static void navigateTo(Parent distinationRoot, Event event){
         scene = new Scene(distinationRoot);
