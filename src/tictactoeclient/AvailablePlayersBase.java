@@ -3,6 +3,7 @@ package tictactoeclient;
 import DTO.ClientRequest;
 import DTO.ClientRequestHeader;
 import DTO.DTOPlayer;
+import DTO.invitationResponseStatus;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
@@ -50,7 +51,7 @@ public class AvailablePlayersBase extends BorderPane {
     ArrayList<DTOPlayer> onlinePlayrs = new ArrayList<>();
 
     public AvailablePlayersBase(String playerName) {
-        network = new NetworkConnection();
+        network = NetworkConnection.getConnection();
         ArrayList<DTOPlayer> availablePlayers = new ArrayList<>();
         ClientRequest availablePlayersRequest = new ClientRequest(ClientRequestHeader.onlineUsers, playerName);
         myName = playerName;
@@ -183,12 +184,12 @@ public class AvailablePlayersBase extends BorderPane {
             // Add cell to the ListView
             UsersListView.getItems().add(cell);
             cell.button.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+
                 @Override
                 public void handle(ActionEvent e) {
                     String name;
                     name = cell.player.getText();
-                    network = new NetworkConnection();
-                    ClientRequest InvitationRequest = new ClientRequest(myName, name, ClientRequestHeader.gameInvitation);
+                    ClientRequest InvitationRequest = new ClientRequest(myName, name, ClientRequestHeader.gameInvitation,invitationResponseStatus.awaiting);
                     String InvitationResponse = InvitationRequest.toJson();
                     System.out.println(" ========== invitation Request ============");
                     network.sentMessage(InvitationRequest.toJson());
@@ -200,56 +201,5 @@ public class AvailablePlayersBase extends BorderPane {
             });
 
         }
-        new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    String msg = network.getMessage();
-                    Gson gson = new Gson();
-                    Type type = new TypeToken<ClientRequest>() {
-                    }.getType();
-                    ClientRequest request = gson.fromJson(msg, type);
-                    if (request != null) {
-                        switch (request.request) {
-                            case "gameInvitation":
-                                System.out.println("1-gameInvitation Request");
-                                // Show a dialog to the user and handle the response
-                                // For example:
-                                
-                                //showInvitationDialog(request.data);
-                                break;
-                            case "requestInvitation":
-                                System.out.println("2-Invitation Request");
-                                // Show a dialog to the user and handle the response
-                                // For example:
-                                
-                                //showInvitationDialog(request.data);
-                                break;
-                                    
-                            case "invitationResponse":
-                                System.out.println("3-Invitation Response");
-
-                                // Open the game based on the response
-                                // For example:
-                                //handleInvitationResponse(request.data);
-                                break;
-                        }
-                    }
-                }
-            }
-
-            private void showInvitationDialog(String invitationData) {
-                // Implement code to show a dialog to the user with the invitation details
-                // Extract information from the invitationData and display it to the user
-            }
-
-            private void handleInvitationResponse(String response) {
-                // Implement code to handle the invitation response
-                // Extract information from the response and take appropriate actions
-                // For example, open the game if the response is positive
-            }
-        }.start();
-
     }
-
 }

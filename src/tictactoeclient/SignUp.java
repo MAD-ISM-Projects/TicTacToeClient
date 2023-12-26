@@ -43,7 +43,7 @@ public class SignUp extends AnchorPane {
     String regexUserName = "^[A-Za-z]\\w.{5,30}$";
     NetworkConnection network ; 
     public SignUp() {
-        network = new NetworkConnection();
+        network = NetworkConnection.getConnection();
         label = new Label();
         pane = new Pane();
         userNameTextField = new TextField();
@@ -146,7 +146,7 @@ public class SignUp extends AnchorPane {
                 if (Integer.parseInt(serverReply) > 0) {
                         showMessageDialog(null, "Signed up successfully");
                         // Close the connection after successful signup
-                        network.closeConnection();
+                       // network.closeConnection();
                         Navigator.navigateTo(new SignIn(), event);
                     } else {
                         showMessageDialog(null, "Already signed up");

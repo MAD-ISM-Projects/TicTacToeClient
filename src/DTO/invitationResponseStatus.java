@@ -7,14 +7,8 @@ package DTO;
 
 /**
  *
- * @author U S B
+ * @author NEW LAP
  */
-public enum ClientRequestHeader{
-    signUp,
-    signIn,
-    signOut,
-    onlineUsers,
-    gameInvitation,
-    responseInvitation,
-    nextStep
+public enum invitationResponseStatus {
+    awaiting,denied,accepted
 }

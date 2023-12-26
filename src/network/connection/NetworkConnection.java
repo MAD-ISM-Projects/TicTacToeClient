@@ -11,6 +11,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import tictactoeclient.AvailablePlayersBase;
 
 /**
  *
@@ -21,10 +22,12 @@ public class NetworkConnection {
     private Socket soc;
     public DataInputStream dis;
     private PrintStream print;
+    private static NetworkConnection connection=null;
+    public AvailablePlayersBase opponentBase;
 
-    public NetworkConnection() {
+    private NetworkConnection() {
         try {
-            this.soc = new Socket("127.0.0.1", 5005);
+            this.soc = new Socket("127.0.0.1", 5001);
             this.dis = new DataInputStream(soc.getInputStream());
             this.print = new PrintStream(soc.getOutputStream());
 
@@ -33,6 +36,12 @@ public class NetworkConnection {
                     .log(Level.SEVERE, null, ex);
         }
 
+    }
+    public static synchronized NetworkConnection getConnection() {
+        if(connection==null){
+            connection=new NetworkConnection();
+        }
+        return connection;
     }
 
     public void sentMessage(String message) {
@@ -46,7 +55,7 @@ public class NetworkConnection {
 
     }
 
-    public String getMessage() {
+    synchronized public String getMessage() {
         String mess = null;
         try {
             mess = dis.readLine();

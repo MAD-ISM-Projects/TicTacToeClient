@@ -17,6 +17,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import network.connection.NetworkConnection;
 import services.Navigator;
 
 public class ChooseModeBase extends AnchorPane {
@@ -155,6 +156,7 @@ public class ChooseModeBase extends AnchorPane {
                     if (result.isPresent() && result.get() == ButtonType.OK) {
                         //con.connectServer(ipAddress.toString());
                         ip=ipAddress.getText();
+                        NetworkConnection.getConnection();
                         Navigator.navigateTo(new SignIn(), e);
 
                     }
