@@ -164,9 +164,9 @@ public class AvailablePlayersBase extends BorderPane {
         setBottom(anchorPane0);
         LogOutButton.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent e) {
-                // 1. Create a ClientRequest for sign-out
-                ClientRequest signOutRequest = new ClientRequest(ClientRequestHeader.signOut, myName);
+          public void handle(ActionEvent e) {
+               /* // 1. Create a ClientRequest for sign-out
+                ClientRequest signOutRequest = new ClientRequest(myName,ClientRequestHeader.signOut );
 
                 // 2. Convert the ClientRequest to JSON
                 String signOutRequestJson = signOutRequest.toJson();
@@ -180,7 +180,15 @@ public class AvailablePlayersBase extends BorderPane {
                 System.out.println("Closed network connection.");
 
                 // 5. Navigate to the start screen
-                Navigator.navigateTo(new StartPageBase(), e);
+                Navigator.navigateTo(new StartPageBase(), e);*/
+                ClientRequest signoutRequest=new ClientRequest(myName,ClientRequestHeader.signOut);
+                            String signOutRaquest=signoutRequest.toJson();
+                            network.sentMessage(signOutRaquest);
+                            System.out.println(signOutRaquest);
+                  
+                            String replyOnSingIn = network.getMessage();
+                             Navigator.navigateTo(new StartPageBase(), e);
+                           
             }
         });
 

@@ -129,9 +129,7 @@ public class SignIn extends AnchorPane {
                             passwordTextField.clear();
                             userNameTextField.clear();
                             String replyOnSingIn = network.getMessage();
-                           
-                            
-                            
+                               
                             if(Integer.parseInt(replyOnSingIn) > 0) 
                             {
                                 showMessageDialog(null,"signed In successfully");

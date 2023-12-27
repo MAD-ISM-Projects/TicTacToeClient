@@ -26,8 +26,6 @@ abstract class GsonHandler{
     }
 }
 
-
-
 public class ClientRequest extends GsonHandler{
     public String request;
     public String data; 
@@ -49,7 +47,11 @@ public class ClientRequest extends GsonHandler{
         data=status.toJson();
     }
         
-
+    public ClientRequest(String name,ClientRequestHeader request) {
+        this.request = request.toString();
+         Logout logout=new Logout(name);
+        data=logout.toJson();
+    }
 
 
 
