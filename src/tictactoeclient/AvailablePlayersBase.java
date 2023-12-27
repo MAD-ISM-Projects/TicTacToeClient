@@ -5,6 +5,8 @@ import DTO.ClientRequestHeader;
 import DTO.DTOPlayer;
 import DTO.Invitation;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import java.awt.Event;
 import java.io.IOException;
@@ -60,15 +62,15 @@ public class AvailablePlayersBase extends BorderPane {
     private NetworkConnection network;
     String playerName;
     String opponentName;
-    Thread thread;
+    Thread thread, t;
 
     ArrayList<DTOPlayer> onlinePlayrs = new ArrayList<>();
 
     public AvailablePlayersBase(String playerName) {
         network = NetworkConnection.getConnection();
+
         ArrayList<DTOPlayer> availablePlayers = new ArrayList<>();
         ClientRequest availablePlayersRequest = new ClientRequest(ClientRequestHeader.onlineUsers, playerName);
-        this.playerName = playerName;
         String availablePlayersResponse = availablePlayersRequest.toJson();
         network.sentMessage(availablePlayersResponse);
         System.out.println(availablePlayersResponse);
@@ -78,7 +80,6 @@ public class AvailablePlayersBase extends BorderPane {
         Type listType = new TypeToken<ArrayList<DTOPlayer>>() {
         }.getType();
         availablePlayers = gson.fromJson(replyOnAvailablePlayers, listType);
-
         UsersListView = new ListView();
         anchorPane = new AnchorPane();
         text = new Text();
@@ -194,41 +195,50 @@ public class AvailablePlayersBase extends BorderPane {
                     String message = network.getMessage();
                     if (message != null) {
                         System.out.println(message + "sfasfdgasdsdgas");
-                        ClientRequest receivedRequest = new Gson().fromJson(message, ClientRequest.class);
-                        if (receivedRequest != null) {
-                            switch (receivedRequest.request) {
-                                case "gameInvitation":
-                                    Invitation inv = new Gson().fromJson(receivedRequest.data, Invitation.class);
-                                    String invitorName = inv.getPlayerName();
-                                    String invitedName = inv.getOpponentName();
+                        JsonElement jsonElement = new JsonParser().parse(message);
+                        if (jsonElement.isJsonObject()) {
+                            ClientRequest receivedRequest = new Gson().fromJson(message, ClientRequest.class);
+                            if (receivedRequest != null) {
+                                switch (receivedRequest.request) {
+                                    case "gameInvitation":
+                                        Invitation inv = new Gson().fromJson(receivedRequest.data, Invitation.class);
+                                        String invitorName = inv.getPlayerName();
+                                        String invitedName = inv.getOpponentName();
 
-                                    System.out.println("     Invitor Name 1" + invitorName);
-                                    System.out.println("     Invited Name 1" + invitedName);
-                                    Platform.runLater(() -> acceptPlaying(invitorName, invitedName));
-                                    //this.stop();
-                                    break;
-                                case "responseInvitation":
+                                        System.out.println("     Invitor Name 1" + invitorName);
+                                        System.out.println("     Invited Name 1" + invitedName);
+                                        Platform.runLater(() -> acceptPlaying(invitorName, invitedName));
+                                        //this.stop();
+                                        break;
+                                    case "responseInvitation":
 
-                                    Invitation inv2 = new Gson().fromJson(receivedRequest.data, Invitation.class);
-                                    String invitorName2 = inv2.getPlayerName();
-                                    String invitedName2 = inv2.getOpponentName();
-                                    System.out.println("     Invitor Name 2" + invitorName2);
-                                    System.out.println("     Invited Name 2" + invitedName2);
+                                        Invitation inv2 = new Gson().fromJson(receivedRequest.data, Invitation.class);
+                                        String invitorName2 = inv2.getPlayerName();
+                                        String invitedName2 = inv2.getOpponentName();
+                                        System.out.println("     Invitor Name 2" + invitorName2);
+                                        System.out.println("     Invited Name 2" + invitedName2);
 
 //                                    network.sentMessage(InviteResponse);
-                                    Platform.runLater(() -> Navigator.navigateTo(new BordBase()));
-                                    this.stop();
-                                    break;
-                                case "refusedInvitation":
-                                    Invitation inv3 = new Gson().fromJson(receivedRequest.data, Invitation.class);
-                                    String invitorName3 = inv3.getPlayerName();
-                                    String invitedName3 = inv3.getOpponentName();
+                                        Platform.runLater(() -> Navigator.navigateTo(new BordBase()));
+                                        this.stop();
+                                        break;
+                                    case "refusedInvitation":
+                                        Invitation inv3 = new Gson().fromJson(receivedRequest.data, Invitation.class);
+                                        String invitorName3 = inv3.getPlayerName();
+                                        String invitedName3 = inv3.getOpponentName();
 
-                                    System.out.println("     Invitor Name 3" + invitorName3);
-                                    System.out.println("     Invited Name 3" + invitedName3);
-                                    Platform.runLater(() -> refusePlaying(invitorName3, invitedName3));
+                                        System.out.println("     Invitor Name 3" + invitorName3);
+                                        System.out.println("     Invited Name 3" + invitedName3);
+                                        Platform.runLater(() -> refusePlaying(invitorName3, invitedName3));
 
+                                }
+
+                            } else if (jsonElement.isJsonArray()) {
+                                Type listType = new TypeToken<ArrayList<DTOPlayer>>() {
+                                }.getType();
+                                ArrayList<DTOPlayer> playerList = new Gson().fromJson(message, listType);
                             }
+
                         }
                     }
 
@@ -308,35 +318,40 @@ public class AvailablePlayersBase extends BorderPane {
         Node okButton = dialogPaneName.lookupButton(OkButtonType);
 
         okButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
-        
+
         Optional<ButtonType> clickedButton = dialog.showAndWait();
         // we re working here now
         if (clickedButton.get() == OkButtonType) {
         }
     }
+
     public void receiveOnlinePlayers(ArrayList<DTOPlayer> onlinePlayers) {
-        UsersListView.getItems().clear();
-        ObservableList<UsersItemListBase> cellList = FXCollections.observableArrayList();
-        for (DTOPlayer player : onlinePlayers) {
-            UsersItemListBase cell = new UsersItemListBase();
-            cell.player.setText(player.getName());
-            cell.Score.setText(String.valueOf(player.getScore()));
-            cell.Status.setText(player.getStatus());
-            // Add cell to the ListView
-            UsersListView.getItems().add(cell);
-            cell.button.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent e) {
-                    String opponentName;
-                    opponentName = cell.player.getText();
-                    ClientRequest InvitationRequest = new ClientRequest(playerName, opponentName, ClientRequestHeader.gameInvitation);
-                    network.sentMessage(InvitationRequest.toJson());
-                    System.out.println(" p1 " + playerName + " p2 " + opponentName);
-                    System.out.println(InvitationRequest.toJson());
-                    //network.sentMessage(InvitationResponse);
-                }
-            });
-        }
+        Platform.runLater(() -> {
+
+            UsersListView.getItems().clear();
+            ObservableList<UsersItemListBase> cellList = FXCollections.observableArrayList();
+            for (DTOPlayer player : onlinePlayers) {
+                UsersItemListBase cell = new UsersItemListBase();
+                cell.player.setText(player.getName());
+                cell.Score.setText(String.valueOf(player.getScore()));
+                cell.Status.setText(player.getStatus());
+                // Add cell to the ListView
+                UsersListView.getItems().add(cell);
+                cell.button.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent e) {
+                        String opponentName;
+                        opponentName = cell.player.getText();
+                        ClientRequest InvitationRequest = new ClientRequest(playerName, opponentName, ClientRequestHeader.gameInvitation);
+                        network.sentMessage(InvitationRequest.toJson());
+                        System.out.println(" p1 " + playerName + " p2 " + opponentName);
+                        System.out.println(InvitationRequest.toJson());
+                        //network.sentMessage(InvitationResponse);
+                    }
+                });
+            }
+        });
+
     }
 
 }

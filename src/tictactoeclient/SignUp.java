@@ -35,15 +35,15 @@ public class SignUp extends AnchorPane {
     protected final Line line;
     protected final Label label4;
     protected final Button signIn;
- 
-    String jsonString ;
+
+    String jsonString;
     boolean checkRegExPassward;
     boolean checkRegExName;
     String regexPassword = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{5,10}";
     String regexUserName = "^[A-Za-z]\\w.{5,30}$";
-    NetworkConnection network ; 
+    NetworkConnection network;
+
     public SignUp() {
-        network = NetworkConnection.getConnection();
         label = new Label();
         pane = new Pane();
         userNameTextField = new TextField();
@@ -113,51 +113,47 @@ public class SignUp extends AnchorPane {
         join.setText("Join");
         join.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
         join.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
-             try {
-            checkRegExName = isValidUsername(userNameTextField.getText()); //JsonObject jsonObject = new Gson().fromJson(serverReply, JsonObject.class);
-            if(passwordTextField.getText().length()<8){
-                passwordTextField.setStyle("-fx-border-color: red;");
-                
-            }
+            try {
+                checkRegExName = isValidUsername(userNameTextField.getText()); //JsonObject jsonObject = new Gson().fromJson(serverReply, JsonObject.class);
+                if (passwordTextField.getText().length() < 8) {
+                    passwordTextField.setStyle("-fx-border-color: red;");
 
-            else if(confirmPasswordTextField.getText().equals(passwordTextField)){
+                } else if (confirmPasswordTextField.getText().equals(passwordTextField)) {
 
-                passwordTextField.setStyle("-fx-border-color: red;");
-                confirmPasswordTextField.setStyle("-fx-border-color: red;");
-                passwordTextField.clear();
-                confirmPasswordTextField.clear();
-  
-            }
-            else{
-                
+                    passwordTextField.setStyle("-fx-border-color: red;");
+                    confirmPasswordTextField.setStyle("-fx-border-color: red;");
+                    passwordTextField.clear();
+                    confirmPasswordTextField.clear();
+
+                } else {
+
 //                jsonString="{\"request\":\"signUp\",\"player\":{\"name\":\""+userNameTextField.getText()+"\""
 //                        + ","
 //                        + "\"password\":\""+passwordTextField.getText()+"\"}}";
-                ClientRequest signUpRequest=new ClientRequest(ClientRequestHeader.signUp,userNameTextField.getText(),passwordTextField.getText());
-                String signUpResponse=signUpRequest.toJson();
-                System.out.println(signUpResponse);
-                network.sentMessage(signUpResponse);
-                network.sentMessage(jsonString);
-                passwordTextField.clear();
-                userNameTextField.clear();
-                confirmPasswordTextField.clear();
-                
-                String serverReply = network.getMessage();
-                if (Integer.parseInt(serverReply) > 0) {
+                    network = NetworkConnection.getConnection();
+                    ClientRequest signUpRequest = new ClientRequest(ClientRequestHeader.signUp, userNameTextField.getText(), passwordTextField.getText());
+                    String signUpResponse = signUpRequest.toJson();
+                    System.out.println(signUpResponse);
+                    network.sentMessage(signUpResponse);
+                    System.out.println(" error here ");
+                    passwordTextField.clear();
+                    userNameTextField.clear();
+                    confirmPasswordTextField.clear();
+
+                    String serverReply = network.getMessage();
+                    if (Integer.parseInt(serverReply) > 0) {
                         showMessageDialog(null, "Signed up successfully");
-                        // Close the connection after successful signup
-                       // network.closeConnection();
                         Navigator.navigateTo(new SignIn(), event);
                     } else {
                         showMessageDialog(null, "Already signed up");
                     }
                 }
             } catch (Exception ex) {
-            
-            showMessageDialog(null, "Lost Connection To The Server");
 
-        }
-                   
+                showMessageDialog(null, "Lost Connection To The Server");
+
+            }
+
         });
 
         line.setEndX(100.0);
@@ -179,10 +175,10 @@ public class SignUp extends AnchorPane {
         signIn.setStyle("-fx-background-radius: 6; -fx-background-color: white;");
         signIn.setText("Sign In");
         signIn.setTextFill(javafx.scene.paint.Color.valueOf("#5427d0"));
-        signIn.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent>(){
+        signIn.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent e){
-                
+            public void handle(ActionEvent e) {
+
                 Navigator.navigateTo(new SignIn(), e);
 
             }
@@ -203,7 +199,7 @@ public class SignUp extends AnchorPane {
         getChildren().add(pane);
 
     }
-    
+
     public boolean isValidPassword(String password) {
         if (password.matches(regexPassword)) {
             return true;
@@ -226,5 +222,5 @@ public class SignUp extends AnchorPane {
         } else {
             return false;
         }
-}
+    }
 }

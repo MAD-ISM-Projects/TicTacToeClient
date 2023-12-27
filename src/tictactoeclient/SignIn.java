@@ -1,5 +1,4 @@
 package tictactoeclient;
-
 import DTO.ClientRequest;
 import DTO.ClientRequestHeader;
 import com.google.gson.Gson;
