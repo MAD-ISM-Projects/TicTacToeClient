@@ -16,5 +16,6 @@ public enum ClientRequestHeader{
     onlineUsers,
     gameInvitation,
     responseInvitation,
+    refusedInvitation,
     nextStep
 }

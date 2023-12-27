@@ -201,35 +201,44 @@ public class AvailablePlayersBase extends BorderPane {
                                     Invitation inv = new Gson().fromJson(receivedRequest.data, Invitation.class);
                                     String invitorName = inv.getPlayerName();
                                     String invitedName = inv.getOpponentName();
-                                    
-                                    System.out.println("     Invitor Name 1"+invitorName);
-                                    System.out.println("     Invited Name 1"+invitedName);
-                                    Platform.runLater(()->acceptPlaying(invitorName, invitedName));
+
+                                    System.out.println("     Invitor Name 1" + invitorName);
+                                    System.out.println("     Invited Name 1" + invitedName);
+                                    Platform.runLater(() -> acceptPlaying(invitorName, invitedName));
                                     //this.stop();
                                     break;
                                 case "responseInvitation":
-                                    
+
                                     Invitation inv2 = new Gson().fromJson(receivedRequest.data, Invitation.class);
                                     String invitorName2 = inv2.getPlayerName();
-                                    String invitedName2= inv2.getOpponentName();
-                                    System.out.println("     Invitor Name 2"+invitorName2);
-                                    System.out.println("     Invited Name 2"+invitedName2);
-                                    
+                                    String invitedName2 = inv2.getOpponentName();
+                                    System.out.println("     Invitor Name 2" + invitorName2);
+                                    System.out.println("     Invited Name 2" + invitedName2);
+
 //                                    network.sentMessage(InviteResponse);
-                                    Platform.runLater(()->Navigator.navigateTo(new BordBase()));
+                                    Platform.runLater(() -> Navigator.navigateTo(new BordBase()));
                                     this.stop();
                                     break;
+                                case "refusedInvitation":
+                                    Invitation inv3 = new Gson().fromJson(receivedRequest.data, Invitation.class);
+                                    String invitorName3 = inv3.getPlayerName();
+                                    String invitedName3 = inv3.getOpponentName();
+
+                                    System.out.println("     Invitor Name 3" + invitorName3);
+                                    System.out.println("     Invited Name 3" + invitedName3);
+                                    Platform.runLater(() -> refusePlaying(invitorName3, invitedName3));
 
                             }
                         }
                     }
-                    
+
                 }
             }
         };
         thread.start();
     }
-    public  void acceptPlaying(String message, String opponentName) {
+
+    public void acceptPlaying(String message, String opponentName) {
         DialogPane dialogPaneName;
         GridPane gridPane;
         Label labelFirstPlayer;
@@ -262,17 +271,49 @@ public class AvailablePlayersBase extends BorderPane {
         Optional<ButtonType> clickedButton = dialog.showAndWait();
         // we re working here now
         if (clickedButton.get() == OkButtonType) {
-            ClientRequest InvitationAccept = new ClientRequest(  playerName,opponentName,ClientRequestHeader.responseInvitation);
-                String InvitationResponse = InvitationAccept.toJson();
-                network.sentMessage(InvitationResponse);
-                Navigator.navigateTo(new BordBase());
+            ClientRequest InvitationAccept = new ClientRequest(message, opponentName, ClientRequestHeader.responseInvitation);
+            System.out.println("p1 from ok " + message + "p2 from ok " + opponentName);
+            String InvitationResponse = InvitationAccept.toJson();
+            network.sentMessage(InvitationResponse);
+            Navigator.navigateTo(new BordBase());
         } else if (clickedButton.get() == cancelButtonType) {
-                ClientRequest InvitationRefused = new ClientRequest(playerName, opponentName, ClientRequestHeader.responseInvitation);
-                String InvitationRefuse= InvitationRefused.toJson();
-                network.sentMessage(InvitationRefuse);        }
+            ClientRequest InvitationRefused = new ClientRequest(message, opponentName, ClientRequestHeader.refusedInvitation);
+            String InvitationRefuse = InvitationRefused.toJson();
+            network.sentMessage(InvitationRefuse);
+        }
     }
 
+    public void refusePlaying(String message, String opponentName) {
+        DialogPane dialogPaneName;
+        GridPane gridPane;
+        Label labelFirstPlayer;
+        dialogPaneName = new DialogPane();
+        gridPane = new GridPane();
+        labelFirstPlayer = new Label(opponentName + " Refused to play with you..");
 
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        dialogPaneName.setHeaderText("Refuse palying");
+
+        gridPane.add(labelFirstPlayer, 0, 0);
+        dialogPaneName.setContent(gridPane);
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setDialogPane(dialogPaneName);
+        //dialog.setTitle(message);
+
+        ButtonType OkButtonType = new ButtonType("Ok");
+        dialogPaneName.getButtonTypes().addAll(OkButtonType);
+
+        Node okButton = dialogPaneName.lookupButton(OkButtonType);
+
+        okButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
+        
+        Optional<ButtonType> clickedButton = dialog.showAndWait();
+        // we re working here now
+        if (clickedButton.get() == OkButtonType) {
+        }
+    }
     public void receiveOnlinePlayers(ArrayList<DTOPlayer> onlinePlayers) {
         UsersListView.getItems().clear();
         ObservableList<UsersItemListBase> cellList = FXCollections.observableArrayList();
@@ -288,9 +329,9 @@ public class AvailablePlayersBase extends BorderPane {
                 public void handle(ActionEvent e) {
                     String opponentName;
                     opponentName = cell.player.getText();
-                    ClientRequest InvitationRequest = new ClientRequest(playerName, opponentName, ClientRequestHeader.gameInvitation);    
+                    ClientRequest InvitationRequest = new ClientRequest(playerName, opponentName, ClientRequestHeader.gameInvitation);
                     network.sentMessage(InvitationRequest.toJson());
-                    System.out.println(" p1 "+playerName +" p2 "+opponentName);
+                    System.out.println(" p1 " + playerName + " p2 " + opponentName);
                     System.out.println(InvitationRequest.toJson());
                     //network.sentMessage(InvitationResponse);
                 }
