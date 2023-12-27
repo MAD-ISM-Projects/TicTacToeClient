@@ -260,7 +260,7 @@ public class AvailablePlayersBase extends BorderPane {
         cancelButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
 
         Optional<ButtonType> clickedButton = dialog.showAndWait();
-
+        // we re working here now
         if (clickedButton.get() == OkButtonType) {
             ClientRequest InvitationAccept = new ClientRequest(  playerName,opponentName,ClientRequestHeader.responseInvitation);
                 String InvitationResponse = InvitationAccept.toJson();
