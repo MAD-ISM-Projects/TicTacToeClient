@@ -192,21 +192,32 @@ public class AvailablePlayersBase extends BorderPane {
                     String message = network.getMessage();
                     if (message != null) {
                         System.out.println(message + "sfasfdgasdsdgas");
-                        ClientRequest receivedRequest = new Gson().fromJson(message, ClientRequest.class);
+                        Invitation receivedRequest = new Gson().fromJson(message, Invitation.class);
                         if (receivedRequest != null) {
-                            switch (receivedRequest.request) {
-                                case "gameInvitation":
-                                    Invitation inv = new Gson().fromJson(receivedRequest.data, Invitation.class);
-                                    String invitorName = inv.getPlayerName();
-                                    String invitedName = inv.getOpponentName();
+                            switch (receivedRequest.getResponse()) {
+                                case "awaiting":
+                                    String invitorName = receivedRequest.getPlayerName();
+                                    String invitedName = receivedRequest.getOpponentName();
                                     showDialog(invitorName, invitedName);
                                     break;
-                                case "responseInvitation":
-                                    ClientRequest InvResponse = new ClientRequest(myName, name, ClientRequestHeader.responseInvitation, invitationResponseStatus.accepted);
+                                case "accepted":
+                                    ClientRequest InvResponse = new ClientRequest(myName, name, ClientRequestHeader.gameInvitation, invitationResponseStatus.accepted);
                                     String InviteResponse = InvResponse.toJson();
                                     network.sentMessage(InviteResponse);
-                                    Platform.runLater(()->Navigator.navigateTo(new BordBase()));
+                                    Platform.runLater(() -> {
+                                        //Navigator.navigateTo(new BordBase());
+                                        Parent newSceneRoot = new BordBase();
+                                        Navigator.navigateTo(newSceneRoot);
+
+                                    });
+                                    this.stop();
                                     break;
+//                                case "denied":
+//                                    ClientRequest InvResponse = new ClientRequest(myName, name, ClientRequestHeader.responseInvitation, invitationResponseStatus.accepted);
+//                                    String InviteResponse = InvResponse.toJson();
+//                                    network.sentMessage(InviteResponse);
+//                                    Platform.runLater(() -> Navigator.navigateTo(new BordBase()));
+//                                    break;
 
                             }
                         }
@@ -216,6 +227,9 @@ public class AvailablePlayersBase extends BorderPane {
             }
         };
         thread.start();
+        Platform.runLater(() -> {
+        thread.stop();
+        });
     }
 
     private void showDialog(String message, String invitedName) {
@@ -230,12 +244,24 @@ public class AvailablePlayersBase extends BorderPane {
             Button refuseButton = new Button("Refuse");
             acceptButton.setOnAction(e -> {
                 dialogStage.close();
-                ClientRequest InvitationAccept = new ClientRequest(myName, invitedName, ClientRequestHeader.responseInvitation, invitationResponseStatus.accepted);
+                ClientRequest InvitationAccept = new ClientRequest(myName, invitedName, ClientRequestHeader.gameInvitation, invitationResponseStatus.accepted);
                 String InvitationResponse = InvitationAccept.toJson();
                 network.sentMessage(InvitationResponse);
-                Navigator.navigateTo(new BordBase(), e);
+                //Navigator.navigateTo(new BordBase(), e);
+                Platform.runLater(() -> {
+                    //Navigator.navigateTo(new BordBase());
+                    Parent newSceneRoot = new BordBase();
+                    Navigator.navigateTo(new BordBase());
+
+                });
             });
-            refuseButton.setOnAction(e -> dialogStage.close());
+            refuseButton.setOnAction(e -> {
+//                ClientRequest InvitationAccept = new ClientRequest(myName, invitedName, ClientRequestHeader.gameInvitation, invitationResponseStatus.denied);
+//                String InvitationResponse = InvitationAccept.toJson();
+//                network.sentMessage(InvitationResponse);
+                dialogStage.close();
+
+            });
 
             VBox dialogVbox = new VBox(20);
             dialogVbox.getChildren().addAll(label, refuseButton, acceptButton);
