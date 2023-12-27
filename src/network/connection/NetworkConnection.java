@@ -20,11 +20,12 @@ public class NetworkConnection {
 
     private Socket soc;
     public DataInputStream dis;
-    private PrintStream print;
-
+    private PrintStream print; 
+    private String IP =IpAddress.getIp();
+    
     public NetworkConnection() {
         try {
-            this.soc = new Socket("127.0.0.1", 5005);
+            this.soc = new Socket(IP, 5005);
             this.dis = new DataInputStream(soc.getInputStream());
             this.print = new PrintStream(soc.getOutputStream());
 

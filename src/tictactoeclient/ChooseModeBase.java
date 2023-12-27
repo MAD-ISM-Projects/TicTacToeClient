@@ -17,6 +17,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import network.connection.IpAddress;
 import services.Navigator;
 
 public class ChooseModeBase extends AnchorPane {
@@ -33,6 +34,7 @@ public class ChooseModeBase extends AnchorPane {
     TextField ipAddress = new TextField();
     GridPane gridPane = new GridPane();
     String ip;
+    private IpAddress IP;
     public ChooseModeBase() {
 
         mode_image = new ImageView();
@@ -155,6 +157,8 @@ public class ChooseModeBase extends AnchorPane {
                     if (result.isPresent() && result.get() == ButtonType.OK) {
                         //con.connectServer(ipAddress.toString());
                         ip=ipAddress.getText();
+                        IP.setIp(ip);
+                        
                         Navigator.navigateTo(new SignIn(), e);
 
                     }

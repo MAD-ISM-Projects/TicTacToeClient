@@ -50,6 +50,7 @@ public class AvailablePlayersBase extends BorderPane {
     ArrayList<DTOPlayer> onlinePlayrs = new ArrayList<>();
 
     public AvailablePlayersBase(String playerName) {
+
         network = new NetworkConnection();
         ArrayList<DTOPlayer> availablePlayers = new ArrayList<>();
         ClientRequest availablePlayersRequest = new ClientRequest(ClientRequestHeader.onlineUsers, playerName);
@@ -161,6 +162,27 @@ public class AvailablePlayersBase extends BorderPane {
         LogOutButton.setTextFill(javafx.scene.paint.Color.valueOf("#f8f5f5"));
         LogOutButton.setFont(new Font(14.0));
         setBottom(anchorPane0);
+        LogOutButton.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                // 1. Create a ClientRequest for sign-out
+                ClientRequest signOutRequest = new ClientRequest(ClientRequestHeader.signOut, myName);
+
+                // 2. Convert the ClientRequest to JSON
+                String signOutRequestJson = signOutRequest.toJson();
+
+                // 3. Send the sign-out request to the server
+                network.sentMessage(signOutRequestJson);
+                System.out.println("Sent sign-out request.");
+
+                // 4. Close the network connection
+                network.closeConnection();
+                System.out.println("Closed network connection.");
+
+                // 5. Navigate to the start screen
+                Navigator.navigateTo(new StartPageBase(), e);
+            }
+        });
 
         anchorPane.getChildren().add(text);
         anchorPane.getChildren().add(rectangle);
@@ -169,87 +191,66 @@ public class AvailablePlayersBase extends BorderPane {
         anchorPane.getChildren().add(StatusLabel);
         anchorPane0.getChildren().add(HomeButton);
         anchorPane0.getChildren().add(LogOutButton);
-        this.receiveOnlinePlayers(availablePlayers);
+        SignIn signIn = new SignIn();
+        signIn.receiveOnlinePlayers(availablePlayers);
     }
 
-    public void receiveOnlinePlayers(ArrayList<DTOPlayer> onlinePlayers) {
-        UsersListView.getItems().clear();
-        ObservableList<UsersItemListBase> cellList = FXCollections.observableArrayList();
-        for (DTOPlayer player : onlinePlayers) {
-            UsersItemListBase cell = new UsersItemListBase();
-            cell.player.setText(player.getName());
-            cell.Score.setText(String.valueOf(player.getScore()));
-            cell.Status.setText(player.getStatus());
-            // Add cell to the ListView
-            UsersListView.getItems().add(cell);
-            cell.button.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent e) {
-                    String name;
-                    name = cell.player.getText();
-                    network = new NetworkConnection();
-                    ClientRequest InvitationRequest = new ClientRequest(myName, name, ClientRequestHeader.gameInvitation);
-                    String InvitationResponse = InvitationRequest.toJson();
-                    System.out.println(" ========== invitation Request ============");
-                    network.sentMessage(InvitationRequest.toJson());
-                    System.out.println(InvitationRequest.toJson());
-                    System.out.println(" ========== invitation Response ============");
-                    //network.sentMessage(InvitationResponse);
-                    System.out.println(InvitationResponse);
+    // Import statements...
+    public class SignIn {
+        // Class variables and methods...
+
+        public void receiveOnlinePlayers(ArrayList<DTOPlayer> onlinePlayers) {
+            // Clear the list in a background thread
+            Platform.runLater(() -> UsersListView.getItems().clear());
+
+            new Thread(() -> {
+                try {
+                    Thread.sleep(2000); // Sleep for 2 seconds
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            });
 
-        }
-        new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    String msg = network.getMessage();
-                    Gson gson = new Gson();
-                    Type type = new TypeToken<ClientRequest>() {
-                    }.getType();
-                    ClientRequest request = gson.fromJson(msg, type);
-                    if (request != null) {
-                        switch (request.request) {
-                            case "gameInvitation":
-                                System.out.println("1-gameInvitation Request");
-                                // Show a dialog to the user and handle the response
-                                // For example:
-                                
-                                //showInvitationDialog(request.data);
-                                break;
-                            case "requestInvitation":
-                                System.out.println("2-Invitation Request");
-                                // Show a dialog to the user and handle the response
-                                // For example:
-                                
-                                //showInvitationDialog(request.data);
-                                break;
-                                    
-                            case "invitationResponse":
-                                System.out.println("3-Invitation Response");
+                Platform.runLater(() -> {
+                    ObservableList<UsersItemListBase> cellList = FXCollections.observableArrayList();
+                    for (DTOPlayer player : onlinePlayers) {
+                        UsersItemListBase cell = new UsersItemListBase();
+                        cell.player.setText(player.getName());
+                        cell.Score.setText(String.valueOf(player.getScore()));
+                        cell.Status.setText(player.getStatus());
 
-                                // Open the game based on the response
-                                // For example:
-                                //handleInvitationResponse(request.data);
-                                break;
-                        }
+                        // Add cell to the ListView in the JavaFX Application Thread
+                        UsersListView.getItems().add(cell);
+                        cell.button.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent e) {
+                                String name = cell.player.getText();
+                                network = new NetworkConnection();
+                                ClientRequest InvitationRequest = new ClientRequest(myName, name, ClientRequestHeader.gameInvitation);
+                                String InvitationResponse = InvitationRequest.toJson();
+                                System.out.println(" ========== invitation Request ============");
+                                network.sentMessage(InvitationRequest.toJson());
+                                System.out.println(InvitationRequest.toJson());
+                                System.out.println(" ========== invitation Response ============");
+                                System.out.println(InvitationResponse);
+                            }
+                        });
                     }
-                }
-            }
+                });
+            }).start();
+        }
 
-            private void showInvitationDialog(String invitationData) {
-                // Implement code to show a dialog to the user with the invitation details
-                // Extract information from the invitationData and display it to the user
-            }
+        private void showInvitationDialog(String invitationData) {
+            // Implement code to show a dialog to the user with the invitation details
+            // Extract information from the invitationData and display it to the user
+        }
 
-            private void handleInvitationResponse(String response) {
-                // Implement code to handle the invitation response
-                // Extract information from the response and take appropriate actions
-                // For example, open the game if the response is positive
-            }
-        }.start();
+        private void handleInvitationResponse(String response) {
+            // Implement code to handle the invitation response
+            // Extract information from the response and take appropriate actions
+            // For example, open the game if the response is positive
+        }
 
+        // Other methods...
     }
 
 }
