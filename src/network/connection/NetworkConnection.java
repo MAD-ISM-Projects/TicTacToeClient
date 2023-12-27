@@ -24,10 +24,10 @@ public class NetworkConnection {
     private PrintStream print;
     private static NetworkConnection connection=null;
     public AvailablePlayersBase opponentBase;
-
+    private String IP =IpAddress.getIp();
     private NetworkConnection() {
         try {
-            this.soc = new Socket("127.0.0.1", 5001);
+            this.soc = new Socket(IP, 5001);
             this.dis = new DataInputStream(soc.getInputStream());
             this.print = new PrintStream(soc.getOutputStream());
 
