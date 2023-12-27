@@ -38,9 +38,9 @@ public class ClientRequest extends GsonHandler{
         Authentication auth=new Authentication(name,password);
         data=auth.toJson();
     }
-    public ClientRequest(String playerName,String opponentName,ClientRequestHeader request,invitationResponseStatus status) {
+    public ClientRequest(String playerName,String opponentName,ClientRequestHeader request) {
         this.request = request.toString();
-        Invitation inv = new Invitation(playerName,opponentName,status);
+        Invitation inv = new Invitation(playerName,opponentName);
         data= inv.toJson();
     }
     public ClientRequest(ClientRequestHeader request,String name) {
