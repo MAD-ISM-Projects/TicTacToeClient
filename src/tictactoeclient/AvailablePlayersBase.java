@@ -177,6 +177,19 @@ public class AvailablePlayersBase extends BorderPane {
         LogOutButton.setTextFill(javafx.scene.paint.Color.valueOf("#f8f5f5"));
         LogOutButton.setFont(new Font(14.0));
         setBottom(anchorPane0);
+        LogOutButton.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            @Override
+          public void handle(ActionEvent e) {
+                ClientRequest signoutRequest=new ClientRequest(playerName,ClientRequestHeader.signOut);
+                            String signOutRaquest=signoutRequest.toJson();
+                            network.sentMessage(signOutRaquest);
+                            System.out.println(signOutRaquest);
+                  
+                            String replyOnSingIn = network.getMessage();
+                             Navigator.navigateTo(new StartPageBase(), e);
+                           
+            }
+        });
 
         anchorPane.getChildren().add(text);
         anchorPane.getChildren().add(rectangle);
