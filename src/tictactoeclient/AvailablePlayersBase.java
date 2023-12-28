@@ -70,6 +70,7 @@ public class AvailablePlayersBase extends BorderPane {
         network = NetworkConnection.getConnection();
 
         ArrayList<DTOPlayer> availablePlayers = new ArrayList<>();
+        this.playerName=playerName;
         ClientRequest availablePlayersRequest = new ClientRequest(ClientRequestHeader.onlineUsers, playerName);
         String availablePlayersResponse = availablePlayersRequest.toJson();
         network.sentMessage(availablePlayersResponse);
@@ -219,7 +220,7 @@ public class AvailablePlayersBase extends BorderPane {
                                         System.out.println("     Invited Name 2" + invitedName2);
 
 //                                    network.sentMessage(InviteResponse);
-                                        Platform.runLater(() -> Navigator.navigateTo(new BordBase()));
+                                        Platform.runLater(() -> Navigator.navigateTo(new OnlineBoard(invitedName2,true)));
                                         this.stop();
                                         break;
                                     case "refusedInvitation":
@@ -236,7 +237,11 @@ public class AvailablePlayersBase extends BorderPane {
                             } else if (jsonElement.isJsonArray()) {
                                 Type listType = new TypeToken<ArrayList<DTOPlayer>>() {
                                 }.getType();
+                                network.getMessage();
                                 ArrayList<DTOPlayer> playerList = new Gson().fromJson(message, listType);
+                                receiveOnlinePlayers(playerList);
+                                    System.out.println("Received updated player list: " +playerList.size() + " players");
+
                             }
 
                         }
@@ -285,7 +290,7 @@ public class AvailablePlayersBase extends BorderPane {
             System.out.println("p1 from ok " + message + "p2 from ok " + opponentName);
             String InvitationResponse = InvitationAccept.toJson();
             network.sentMessage(InvitationResponse);
-            Navigator.navigateTo(new BordBase());
+            Navigator.navigateTo(new OnlineBoard(message,false));
         } else if (clickedButton.get() == cancelButtonType) {
             ClientRequest InvitationRefused = new ClientRequest(message, opponentName, ClientRequestHeader.refusedInvitation);
             String InvitationRefuse = InvitationRefused.toJson();
@@ -327,7 +332,7 @@ public class AvailablePlayersBase extends BorderPane {
 
     public void receiveOnlinePlayers(ArrayList<DTOPlayer> onlinePlayers) {
         Platform.runLater(() -> {
-
+    System.out.println("Received updated player list: " + onlinePlayers.size() + " players");
             UsersListView.getItems().clear();
             ObservableList<UsersItemListBase> cellList = FXCollections.observableArrayList();
             for (DTOPlayer player : onlinePlayers) {
@@ -346,12 +351,15 @@ public class AvailablePlayersBase extends BorderPane {
                         network.sentMessage(InvitationRequest.toJson());
                         System.out.println(" p1 " + playerName + " p2 " + opponentName);
                         System.out.println(InvitationRequest.toJson());
-                        //network.sentMessage(InvitationResponse);
                     }
                 });
             }
         });
 
+    }
+    
+    public void sendOnlineReq(){
+        
     }
 
 }
