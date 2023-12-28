@@ -55,4 +55,10 @@ public class ClientRequest extends GsonHandler {
         data = move.toJson();
     }
 
+    public ClientRequest(String name, ClientRequestHeader request) {
+        this.request = request.toString();
+        Logout logout = new Logout(name);
+        data = logout.toJson();
+    }
+
 }

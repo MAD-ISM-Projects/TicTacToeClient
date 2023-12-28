@@ -49,6 +49,7 @@ public class BordBase extends BoardUI{
                         e->{
                             doPlay(btn);
                            currentGamePlaySteps+=bordRecorder.indexOf(btn);
+                           System.out.println(currentGamePlaySteps);
                            //stepper++;
                             if(isWin()){
                                 if(isPlayerTurn){

@@ -1,18 +1,33 @@
 package tictactoeclient;
 
+import Recorder.GamePlayManager;
 import WinnerScreen.WinnerScreenBase;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import services.Navigator;
 import services.Saver;
 
 public class EasyLevelBase extends BoardUI {
     Saver saver=Saver.saverObject();
+        String currentGamePlaySteps="";
+    //int stepper=0;
+    Map<String, String> players;
+    GamePlayManager manager;
     public EasyLevelBase(String p1,String pc) {
         player1Name.setText(p1);
         player2Name.setText(pc);
+           recordGame.addEventHandler(ActionEvent.ACTION, (event) -> {
+            manager = new GamePlayManager();
+            players = new HashMap<>();
+            players.put("player1", player1Name.getText());
+            players.put("player2", player2Name.getText());  
+     });
     }
     private void easyLevel(){
+
         Random random = new Random() ;
         boolean choise = false;
         while(!choise){
@@ -21,6 +36,7 @@ public class EasyLevelBase extends BoardUI {
             if(bord[idxRow][idxCol].getText().isEmpty()){
                 bord[idxRow][idxCol].setStyle("-fx-background-color: #FFFFFF; -fx-text-fill:#ff8fda; -fx-font-size: 36;");
                 bord[idxRow][idxCol].setText("O");
+                currentGamePlaySteps+=(idxRow*3)+idxCol;
                 bord[idxRow][idxCol].setDisable(true);
                 choise=true;
                 isPlayerTurn();
@@ -37,10 +53,13 @@ public class EasyLevelBase extends BoardUI {
                 btn.setText("X");
                 player1Name.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));
                 player2Name.setFill(javafx.scene.paint.Color.valueOf("#ffffff"));
+                currentGamePlaySteps+=bordRecorder.indexOf(btn);
+
                 if(isWin()) return;
                 player1Name.setFill(javafx.scene.paint.Color.valueOf("#ffffff"));
                 player2Name.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));   
                 easyLevel();
+
             }
         }
     }
@@ -49,6 +68,8 @@ public class EasyLevelBase extends BoardUI {
     btn.setOnAction(
                         e->{
                             doPlay(btn);
+                           System.out.println(currentGamePlaySteps);
+
                             if(isWin()){
                                 if(isPlayerTurn){
                                     BordBase.winner = 1;
@@ -63,11 +84,21 @@ public class EasyLevelBase extends BoardUI {
                                     Navigator.navigateTo(new WinnerScreenBase("YOU",winner,page), e);
                                     BordBase.scoreP2++;
                                 }
+                                   if(manager!=null) 
+                                   {
+                                       manager.saveGamePlay( players, currentGamePlaySteps);
+                                       currentGamePlaySteps="";
+                                   }
                                 resetGame();
                             }else if(isDraw()==true){
                                     BordBase.winner = 3;
                                     BordBase.page=2;
                                     Navigator.navigateTo(new WinnerScreenBase("YOU",winner,page), e);
+                                   if(manager!=null) 
+                                   {
+                                       manager.saveGamePlay( players, currentGamePlaySteps);
+                                       currentGamePlaySteps="";
+                                   }
                                     resetGame();
                                     isPlayerTurn=!isPlayerTurn;
                             }

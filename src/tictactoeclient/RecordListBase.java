@@ -1,19 +1,57 @@
 package tictactoeclient;
 
+import Recorder.GamePlay;
+import Recorder.GamePlayManager;
+import java.util.ArrayList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import services.Navigator;
 
-public abstract class RecordListBase extends AnchorPane {
+public class RecordListBase extends AnchorPane {
 
     protected final Text text;
     protected final ImageView imageView;
     protected final ListView recordListView;
+    private ArrayList<GamePlay> recordedGamePlays;
+    private GamePlayManager manager;
+    
+        public void receiveRecords(ArrayList<GamePlay> recordedGamePlays) {
+        recordListView.getItems().clear();
+        ObservableList<RecordCellBase> cellList = FXCollections.observableArrayList();
+        
+        for (GamePlay player : recordedGamePlays) {
+            RecordCellBase cell = new RecordCellBase();
+            cell.playerOne.setText(player.getPlayers().get("player1"));
+            cell.playerTwo.setText(player.getPlayers().get("player2"));
+            
+            // Add cell to the ListView
+            recordListView.getItems().add(cell);
+            cell.button.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent e) {
+                    //String name;
+                   // name = cell.player.getText();
+                    
+                   // System.out.println(" ========== invitation");
+                  //  System.out.println(InvitationResponse);
+                    final int cellIndex = recordListView.getItems().indexOf(cell);
+                  
+                  Navigator.navigateTo(new RecordPlay(recordedGamePlays.get(cellIndex)), e);
+                }
+            });
 
+        }
+    }
     public RecordListBase() {
-
+        manager=new GamePlayManager();
+        ArrayList<GamePlay> recordedGamePlays=manager.getAllGamePlays();
         text = new Text();
         imageView = new ImageView();
         recordListView = new ListView();
@@ -43,10 +81,12 @@ public abstract class RecordListBase extends AnchorPane {
         recordListView.setLayoutY(230.0);
         recordListView.setPrefHeight(293.0);
         recordListView.setPrefWidth(688.0);
-
+        
         getChildren().add(text);
         getChildren().add(imageView);
         getChildren().add(recordListView);
+        this.receiveRecords(recordedGamePlays);
+
 
     }
 }

@@ -246,10 +246,12 @@ public abstract class BoardUI extends AnchorPane {
             Button button = (Button) btn;
             if(!(button.getText().equals(mark))) return false;
         }
+        
         return true;
     }
     //sub list from 0 to n-1
     protected boolean isWin(){
+        //row
         for(int line=0 ; line < 3 ; line++){
             if(TicTac(gridPane.getChildren().subList(line*3, (line+1)*3))) return true;
         }
