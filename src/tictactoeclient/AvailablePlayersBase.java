@@ -364,7 +364,6 @@ public class AvailablePlayersBase extends BorderPane {
                 });
             }
         });
-
     }
 
 }

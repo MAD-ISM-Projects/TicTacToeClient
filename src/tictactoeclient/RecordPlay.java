@@ -2,6 +2,7 @@ package tictactoeclient;
 
 import Recorder.GamePlay;
 import Recorder.GamePlayManager;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,10 +15,15 @@ import services.Navigator;
 public class RecordPlay extends BoardUI {
 
     private GamePlayManager manager;
-    private String lastGamePlaySteps;
+    private String gamePlaySteps;
     private Thread recordReader;
+    private GamePlay gamePlay;
 
-    public RecordPlay() {
+    public RecordPlay(GamePlay gamePlay) {
+        this.gamePlay=gamePlay;
+        player1Name.setText(gamePlay.getPlayers().get("player1"));
+        player2Name.setText(gamePlay.getPlayers().get("player2"));
+       
         recordGame.setText("Back");
         recordGame.addEventHandler(ActionEvent.ACTION, (event) -> {
             recordReader.stop();
@@ -25,38 +31,42 @@ public class RecordPlay extends BoardUI {
  
      });
         
-        manager = new GamePlayManager();
-        lastGamePlaySteps = getLastRecordedGamePlaySteps(manager);
+       // manager = new GamePlayManager();
+        //ArrayList<GamePlay> records=manager.getAllGamePlays();
+        //System.out.println(records);
+       // lastGamePlaySteps = getLastRecordedGamePlaySteps(manager);
+        gamePlaySteps = gamePlay.getSteps();
+        
 
-        if (lastGamePlaySteps != null) {
-            System.out.println("Last recorded game play steps: " + lastGamePlaySteps);
+        if (gamePlaySteps != null) {
+            System.out.println("Last recorded game play steps: " + gamePlaySteps);
         } else {
             System.out.println("No recorded game plays.");
         }
 
         showRecord();
     }
-    private String getLastRecordedGamePlaySteps(GamePlayManager manager) {
-        Map<String, GamePlay> gamePlays = manager.getGamePlays();
-        if (!gamePlays.isEmpty()) {
-            String lastRecordedGamePlayId = findLastRecordedGamePlayId(gamePlays);
-            return gamePlays.get(lastRecordedGamePlayId).getSteps();
-        }
-        return null;
-    }
+//    private String getLastRecordedGamePlaySteps(GamePlayManager manager) {
+//        Map<String, GamePlay> gamePlays = manager.getGamePlays();
+//        if (!gamePlays.isEmpty()) {
+//            String lastRecordedGamePlayId = findLastRecordedGamePlayId(gamePlays);
+//            return gamePlays.get(lastRecordedGamePlayId).getSteps();
+//        }
+//        return null;
+//    }
 
-    private String findLastRecordedGamePlayId(Map<String, GamePlay> gamePlays) {
-        // Find the last recorded game play ID
-        return gamePlays.keySet().stream().max(String::compareTo).orElse(null);
-    }
+//    private String findLastRecordedGamePlayId(Map<String, GamePlay> gamePlays) {
+//        // Find the last recorded game play ID
+//        return gamePlays.keySet().stream().max(String::compareTo).orElse(null);
+//    }
 
 
     void showRecord() {
         
         recordReader=new Thread(() -> {
-        for (int stepper = 0; stepper < lastGamePlaySteps.length(); stepper++) {
+        for (int stepper = 0; stepper < gamePlaySteps.length(); stepper++) {
             char move = (stepper % 2 == 0) ? 'X' : 'O';
-            int index = Character.getNumericValue(lastGamePlaySteps.charAt(stepper));
+            int index = Character.getNumericValue(gamePlaySteps.charAt(stepper));
 
             Platform.runLater(() -> {
                 Button btn = bordRecorder.get(index);

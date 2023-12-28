@@ -4,13 +4,41 @@
       "player1": "ramez",
       "player2": "hamdi"
     },
-    "steps": "254130786"
+    "steps": "85470"
   },
   "GamePlay 1": {
     "players": {
-      "player1": "ramez",
+      "player1": "hamdi",
       "player2": "saeed"
     },
-    "steps": "2548736"
+    "steps": "85410"
+  },
+  "GamePlay 2": {
+    "players": {
+      "player1": "asdfsf",
+      "player2": "1234"
+    },
+    "steps": "85410"
+  },
+  "GamePlay 3": {
+    "players": {
+      "player1": "YOU",
+      "player2": "PC"
+    },
+    "steps": "845216"
+  },
+  "GamePlay 4": {
+    "players": {
+      "player1": "YOU",
+      "player2": "PC"
+    },
+    "steps": "627854130"
+  },
+  "GamePlay 5": {
+    "players": {
+      "player1": "YOU",
+      "player2": "PC"
+    },
+    "steps": "87532"
   }
 }
