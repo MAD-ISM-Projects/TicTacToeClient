@@ -234,7 +234,22 @@ public class AvailablePlayersBase extends BorderPane {
                                     System.out.println("     Invited Name 2" + invitedName2);
 
 //                                    network.sentMessage(InviteResponse);
-                                    Platform.runLater(() -> Navigator.navigateTo(new OnlineBoard(invitedName2,invitorName2,true)));
+                                    Platform.runLater(() -> {
+
+                                        ClientRequest makeBusyRequest = new ClientRequest(invitorName2, ClientRequestHeader.playerBusy, "online");
+                                        System.out.println(invitorName2 + "" + invitedName2);
+                                        System.out.println(makeBusyRequest);
+
+                                        String busyRaquest = makeBusyRequest.toJson();
+                                        System.out.println(busyRaquest);
+                                        network.sentMessage(busyRaquest);
+                                        System.out.println(busyRaquest);
+
+                                        String BusyRequest = network.getMessage();
+
+                                        Navigator.navigateTo(new OnlineBoard(invitedName2, invitorName2, true));
+
+                                    });
                                     this.stop();
                                     break;
                                 case "refusedInvitation":
@@ -294,7 +309,16 @@ public class AvailablePlayersBase extends BorderPane {
             System.out.println("p1 from ok " + message + "p2 from ok " + opponentName);
             String InvitationResponse = InvitationAccept.toJson();
             network.sentMessage(InvitationResponse);
-            Navigator.navigateTo(new OnlineBoard(message,opponentName ,false));
+            ClientRequest makeBusyRequest = new ClientRequest(opponentName, ClientRequestHeader.playerBusy, "online");
+            System.out.println(opponentName);
+            System.out.println(makeBusyRequest);
+
+            String busyRaquest = makeBusyRequest.toJson();
+            System.out.println(busyRaquest);
+            network.sentMessage(busyRaquest);
+            System.out.println(busyRaquest);
+
+            Navigator.navigateTo(new OnlineBoard(message, opponentName, false));
             thread.stop();
         } else if (clickedButton.get() == cancelButtonType) {
             ClientRequest InvitationRefused = new ClientRequest(message, opponentName, ClientRequestHeader.refusedInvitation);
