@@ -1,4 +1,5 @@
 package tictactoeclient;
+
 import DTO.ClientRequest;
 import DTO.ClientRequestHeader;
 import com.google.gson.Gson;
@@ -23,6 +24,8 @@ import javafx.scene.text.Font;
 import static javax.swing.JOptionPane.showMessageDialog;
 import network.connection.NetworkConnection;
 import services.Navigator;
+import static tictactoeclient.BoardUI.scoreP1;
+import static tictactoeclient.BoardUI.scoreP2;
 
 public class SignIn extends AnchorPane {
 
@@ -39,6 +42,7 @@ public class SignIn extends AnchorPane {
     protected final Line line;
     protected final Label label3;
     protected final Button signUp;
+    protected final Button btnBack;
 
     private Socket soc;
     private DataInputStream dis;
@@ -52,6 +56,7 @@ public class SignIn extends AnchorPane {
         pane = new Pane();
         userNameTextField = new TextField();
         passwordTextField = new PasswordField();
+        btnBack = new Button();
 
         label0 = new Label();
         label1 = new Label();
@@ -171,6 +176,24 @@ public class SignIn extends AnchorPane {
 
         getChildren().add(label);
         pane.getChildren().add(userNameTextField);
+        btnBack.setLayoutX(60.0);
+        btnBack.setLayoutY(50.0);
+        btnBack.setMnemonicParsing(false);
+        btnBack.setPrefHeight(37.0);
+        btnBack.setPrefWidth(80.0);
+        btnBack.setStyle("-fx-background-radius: 10;");
+        btnBack.setText("Back");
+        btnBack.setTextFill(javafx.scene.paint.Color.valueOf("#8b76a4"));
+        btnBack.setFont(new Font(MyFont.MY_FONT, 19.0));
+        btnBack.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                Navigator.navigateTo(new ChooseModeBase(), e);
+                scoreP1 = 0;
+                scoreP2 = 0;
+            }
+        });
+        getChildren().add(btnBack);
 
         pane.getChildren().add(label0);
         pane.getChildren().add(label1);

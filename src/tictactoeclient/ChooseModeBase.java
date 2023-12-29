@@ -155,7 +155,6 @@ public class ChooseModeBase extends AnchorPane {
                 if (ipAddress.getText().isEmpty()) {
                     ipAddress.setStyle("");
                 } else {
-                     StartConnection con = new StartConnection();
                     if (result.isPresent() && result.get() == ButtonType.OK) {
                         //con.connectServer(ipAddress.toString());
                         ip=ipAddress.getText();

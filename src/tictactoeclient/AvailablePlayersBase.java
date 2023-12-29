@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,6 +41,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import static javax.swing.JOptionPane.showMessageDialog;
 import network.connection.NetworkConnection;
 import services.Navigator;
@@ -65,6 +67,34 @@ public class AvailablePlayersBase extends BorderPane {
     Thread thread, t;
 
     ArrayList<DTOPlayer> availablePlayers = new ArrayList<>();
+
+    public AvailablePlayersBase() {
+        network = NetworkConnection.getConnection();
+
+        availablePlayers = new ArrayList<>();
+        this.playerName = playerName;
+        ClientRequest availablePlayersRequest = new ClientRequest(ClientRequestHeader.onlineUsers, playerName);
+        String availablePlayersResponse = availablePlayersRequest.toJson();
+        network.sentMessage(availablePlayersResponse);
+        System.out.println("00000" + availablePlayersResponse);
+        String replyOnAvailablePlayers = network.getMessage();
+        System.out.println("111111" + replyOnAvailablePlayers);
+        Gson gson = new Gson();
+        Type listType = new TypeToken<ArrayList<DTOPlayer>>() {
+        }.getType();
+        availablePlayers = gson.fromJson(replyOnAvailablePlayers, listType);
+        UsersListView = new ListView();
+        anchorPane = new AnchorPane();
+        text = new Text();
+        rectangle = new Rectangle();
+        ScoreLabel = new Label();
+        PlayerNameLabel = new Label();
+        StatusLabel = new Label();
+        anchorPane0 = new AnchorPane();
+        HomeButton = new Button();
+        LogOutButton = new Button();
+        this.receiveOnlinePlayers(availablePlayers);
+    }
 
     public AvailablePlayersBase(String playerName) {
         network = NetworkConnection.getConnection();
@@ -234,7 +264,7 @@ public class AvailablePlayersBase extends BorderPane {
                                     System.out.println("     Invited Name 2" + invitedName2);
 
 //                                    network.sentMessage(InviteResponse);
-                                    Platform.runLater(() -> Navigator.navigateTo(new OnlineBoard(invitedName2, true)));
+                                    Platform.runLater(() -> Navigator.navigateTo(new OnlineBoard(invitedName2, invitorName2, true)));
                                     this.stop();
                                     break;
                                 case "refusedInvitation":
@@ -294,7 +324,7 @@ public class AvailablePlayersBase extends BorderPane {
             System.out.println("p1 from ok " + message + "p2 from ok " + opponentName);
             String InvitationResponse = InvitationAccept.toJson();
             network.sentMessage(InvitationResponse);
-            Navigator.navigateTo(new OnlineBoard(message, false));
+            Navigator.navigateTo(new OnlineBoard(message, opponentName, false));
             thread.stop();
         } else if (clickedButton.get() == cancelButtonType) {
             ClientRequest InvitationRefused = new ClientRequest(message, opponentName, ClientRequestHeader.refusedInvitation);
@@ -356,12 +386,27 @@ public class AvailablePlayersBase extends BorderPane {
                         network.sentMessage(InvitationRequest.toJson());
                         System.out.println(" p1 " + playerName + " p2 " + opponentName);
                         System.out.println(InvitationRequest.toJson());
+
                         //network.sentMessage(InvitationResponse);
                     }
                 });
+
             }
         });
 
     }
 
+//    private void disableAllButtons() {
+//        for (int i = 0; i < UsersListView.getItems().size(); i++) {
+//            Button button = (Button) UsersListView.getItems().get(i);
+//            button.setDisable(true);
+//        }
+//    }
+//
+//    private void enableAllButtons() {
+//        for (int i = 0; i < UsersListView.getItems().size(); i++) {
+//            Button button = (Button) UsersListView.getItems().get(i);
+//            button.setDisable(false);
+//        }
+//    }
 }

@@ -14,6 +14,7 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import services.Navigator;
 import services.Saver;
+import tictactoeclient.AvailablePlayersBase;
 import tictactoeclient.BordBase;
 import tictactoeclient.ChooseModeBase;
 import tictactoeclient.EasyLevelBase;
@@ -196,6 +197,8 @@ public  class WinnerScreenBase extends BorderPane {
                 //navigat to hard mode ya mayar
              // Navigator.navigateTo(new EasyLevelBase(),e);
 
+            }else if(page==4){
+                Navigator.navigateTo(new AvailablePlayersBase());
             }
         });
 

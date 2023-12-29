@@ -19,6 +19,8 @@ import javafx.scene.text.Font;
 import static javax.swing.JOptionPane.showMessageDialog;
 import network.connection.NetworkConnection;
 import services.Navigator;
+import static tictactoeclient.BoardUI.scoreP1;
+import static tictactoeclient.BoardUI.scoreP2;
 
 public class SignUp extends AnchorPane {
 
@@ -35,7 +37,7 @@ public class SignUp extends AnchorPane {
     protected final Line line;
     protected final Label label4;
     protected final Button signIn;
-
+    protected final Button btnBack;
     String jsonString;
     boolean checkRegExPassward;
     boolean checkRegExName;
@@ -57,6 +59,7 @@ public class SignUp extends AnchorPane {
         line = new Line();
         label4 = new Label();
         signIn = new Button();
+        btnBack = new Button();
 
         setId("pane");
         setPrefHeight(550.0);
@@ -183,6 +186,25 @@ public class SignUp extends AnchorPane {
 
             }
         });
+
+        btnBack.setLayoutX(60.0);
+        btnBack.setLayoutY(50.0);
+        btnBack.setMnemonicParsing(false);
+        btnBack.setPrefHeight(37.0);
+        btnBack.setPrefWidth(80.0);
+        btnBack.setStyle("-fx-background-radius: 10;");
+        btnBack.setText("Back");
+        btnBack.setTextFill(javafx.scene.paint.Color.valueOf("#8b76a4"));
+        btnBack.setFont(new Font(MyFont.MY_FONT, 19.0));
+        btnBack.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                Navigator.navigateTo(new ChooseModeBase(), e);
+                scoreP1 = 0;
+                scoreP2 = 0;
+            }
+        });
+        getChildren().add(btnBack);
 
         getChildren().add(label);
         pane.getChildren().add(userNameTextField);
