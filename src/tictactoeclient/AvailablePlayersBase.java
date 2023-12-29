@@ -245,19 +245,6 @@ public class AvailablePlayersBase extends BorderPane {
                                     System.out.println("     Invitor Name 3" + invitorName3);
                                     System.out.println("     Invited Name 3" + invitedName3);
                                     Platform.runLater(() -> refusePlaying(invitorName3, invitedName3));
-                                case "onlineUsers":
-                                    Gson gson = new Gson();
-                                    Type listType = new TypeToken<ArrayList<DTOPlayer>>() {
-                                    }.getType();
-                                    ArrayList<DTOPlayer> updateAvailablePlayers = new ArrayList<>();
-
-                                    updateAvailablePlayers = gson.fromJson(replyOnAvailablePlayers, listType);
-                                    if(!availablePlayers.contains(updateAvailablePlayers.get(0)))
-                                    {
-                                        availablePlayers.add(updateAvailablePlayers.get(0));
-                                    }
-                                    break;
-
                             }
 
                         }
