@@ -49,9 +49,9 @@ public class ClientRequest extends GsonHandler {
         data = status.toJson();
     }
 
-    public ClientRequest(ClientRequestHeader request, String opponentName,int nextStepIndex) {
+    public ClientRequest(ClientRequestHeader request, String opponentName, int nextStepIndex) {
         this.request = request.toString();
-        NextStep move = new NextStep(opponentName,nextStepIndex);
+        NextStep move = new NextStep(opponentName, nextStepIndex);
         data = move.toJson();
     }
 
@@ -61,4 +61,10 @@ public class ClientRequest extends GsonHandler {
         data = logout.toJson();
     }
 
+ 
+    public ClientRequest(String name, ClientRequestHeader request,String status) {
+        this.request = request.toString();
+        PlayerBusy PlayerBusy = new PlayerBusy(name,status);
+        data = PlayerBusy.toJson();
+    }
 }
