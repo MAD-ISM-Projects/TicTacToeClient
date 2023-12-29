@@ -11,6 +11,7 @@ import DTO.ClientRequestHeader;
 import DTO.NextStep;
 import WinnerScreen.WinnerScreenBase;
 import com.google.gson.Gson;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import network.connection.NetworkConnection;
@@ -23,11 +24,10 @@ import static tictactoeclient.BoardUI.winner;
  */
 public class OnlineBoard extends BoardUI {
 
-    boolean validStep = true;
+    // boolean validStep = true;
     NetworkConnection network;
     String opponentName;
-    String currentGamePlayStep;
-    Thread nextOppoenentMove;
+    String currentGamePlaySteps;
 
     String playerCharacter;
     String opponentCharacter;
@@ -41,19 +41,44 @@ public class OnlineBoard extends BoardUI {
             playerCharacter = "X";
             opponentCharacter = "O";
         } else {
-            {
-                playerCharacter = "O";
-                opponentCharacter = "X";
-            }
-        };
+            playerCharacter = "O";
+            opponentCharacter = "X";
+        }
         this.opponentName = opponentName;
-        currentGamePlayStep = "";
+        currentGamePlaySteps = "";
+        Thread nextOppoenentMove = new Thread(() -> {
+            while (true) {
+                String replyOnNextMove = network.getMessage();
+                if(!replyOnNextMove.startsWith("{"))
+                  replyOnNextMove="{"+replyOnNextMove;
+                System.out.print("message got successfully: " + replyOnNextMove);
+
+//                ClientRequest clientRequest = new Gson().fromJson(replyOnNextMove, ClientRequest.class);
+//                System.out.print("another player next step is: " + clientRequest);
+                NextStep nextStep = new Gson().fromJson(replyOnNextMove, NextStep.class);
+                System.out.print("another player next step is: " + nextStep);
+                if (replyOnNextMove != null && !currentGamePlaySteps.contains(String.valueOf(nextStep.getNextStepIndex()))) {
+                    Platform.runLater(() -> {
+                        // Update UI components here
+                        bordRecorder.get(nextStep.getNextStepIndex()).setText(opponentCharacter);
+                        currentGamePlaySteps += nextStep.getNextStepIndex();
+                        System.out.println("other opponent playee : "+currentGamePlaySteps);
+                        isWin();
+                        continueGame();
+                        isPlayerTurn();
+                    });
+                }
+            }
+        });
+        nextOppoenentMove.start();
+
     }
 
     @Override
     protected void doPlay(Button btn) {
         if (btn.getText().isEmpty()) {
             if (isPlayerTurn()) {
+                System.out.println(playerCharacter + " turn");
                 btn.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 36;");
                 btn.setText(playerCharacter);
                 player1Name.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));
@@ -65,13 +90,17 @@ public class OnlineBoard extends BoardUI {
                 player2Name.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));
                 //easyLevel();
                 stopGame();
-                ClientRequest nextStepRequest = new ClientRequest(ClientRequestHeader.nextStep, opponentName, Integer.parseInt(currentGamePlayStep.substring(currentGamePlayStep.length() - 1)));
+                System.out.println("stop game successfully");
+
+                ClientRequest nextStepRequest = new ClientRequest(ClientRequestHeader.nextStep, opponentName, Integer.parseInt(currentGamePlaySteps.substring(currentGamePlaySteps.length() - 1)));
+                System.out.println("nextStepRequest " + nextStepRequest.toString());
                 String nextStepRequestData = nextStepRequest.toJson();
+                System.out.println("nextStepRequestData " + nextStepRequestData);
                 network.sentMessage(nextStepRequestData);
-                nextOpponentStep();
 
             } else {
-                nextOpponentStep();
+                System.out.println(opponentCharacter + " turn");
+
             }
         }
     }
@@ -88,33 +117,11 @@ public class OnlineBoard extends BoardUI {
         }
     }
 
-    public void nextOpponentStep() {
-
-        nextOppoenentMove = new Thread(() -> {
-            while (!validStep) {
-
-                String replyOnNextMove = network.getMessage();
-                NextStep nextStep = new Gson().fromJson(replyOnNextMove, NextStep.class);
-
-                if (replyOnNextMove != null && !currentGamePlayStep.contains(String.valueOf(nextStep.getNextStepIndex()))) {
-                    validStep=false;
-                    bordRecorder.get(nextStep.getNextStepIndex()).setText(opponentCharacter);
-                    continueGame();
-                    isPlayerTurn();
-                    nextOppoenentMove.destroy();
-
-                }
-            }
-        }
-        );
-        nextOppoenentMove.start();
-
-    }
-
     @Override
     protected void addListen(Button btn) {
         btn.setOnAction(e -> {
-            currentGamePlayStep += bordRecorder.indexOf(btn);
+            currentGamePlaySteps += bordRecorder.indexOf(btn);
+            System.out.println("player played :"+currentGamePlaySteps);
 
             doPlay(btn);
 
