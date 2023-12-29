@@ -79,6 +79,7 @@ public class RecordListBase extends AnchorPane {
         });
         
         getChildren().add(text);
+        getChildren().add(btnBack);
         getChildren().add(imageView);
         getChildren().add(recordListView);
         this.receiveRecords(recordedGamePlays);
