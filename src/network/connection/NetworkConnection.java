@@ -11,6 +11,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static javax.swing.JOptionPane.showMessageDialog;
 import tictactoeclient.AvailablePlayersBase;
 
 /**
@@ -22,9 +23,10 @@ public class NetworkConnection {
     private Socket soc;
     public DataInputStream dis;
     private PrintStream print;
-    private static NetworkConnection connection=null;
+    private static NetworkConnection connection = null;
     public AvailablePlayersBase opponentBase;
-    private String IP =IpAddress.getIp();
+    private String IP = IpAddress.getIp();
+
     private NetworkConnection() {
         try {
             this.soc = new Socket(IP, 5001);
@@ -34,12 +36,15 @@ public class NetworkConnection {
         } catch (IOException ex) {
             Logger.getLogger(NetworkConnection.class.getName())
                     .log(Level.SEVERE, null, ex);
+            showMessageDialog(null, "Enter Correct IP");
+
         }
 
     }
+
     public static synchronized NetworkConnection getConnection() {
-        if(connection==null){
-            connection=new NetworkConnection();
+        if (connection == null) {
+            connection = new NetworkConnection();
         }
         return connection;
     }
