@@ -77,10 +77,10 @@ public class SignIn extends AnchorPane {
         label.setMinHeight(16);
         label.setMinWidth(69);
 
-        pane.setLayoutX(232.0);
-        pane.setLayoutY(149.0);
-        pane.setPrefHeight(330.0);
-        pane.setPrefWidth(336.0);
+        pane.setLayoutX(275.0);
+        pane.setLayoutY(170.0);
+        pane.setPrefHeight(318.0);
+        pane.setPrefWidth(279.0);
         pane.setStyle("-fx-background-color: white; -fx-background-radius: 30;");
 
         userNameTextField.setLayoutX(65.0);

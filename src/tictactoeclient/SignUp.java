@@ -71,8 +71,8 @@ public class SignUp extends AnchorPane {
         label.setMinHeight(16);
         label.setMinWidth(69);
 
-        pane.setLayoutX(292.0);
-        pane.setLayoutY(137.0);
+        pane.setLayoutX(275.0);
+        pane.setLayoutY(170.0);
         pane.setPrefHeight(318.0);
         pane.setPrefWidth(279.0);
         pane.setStyle("-fx-background-color: white; -fx-background-radius: 30;");
