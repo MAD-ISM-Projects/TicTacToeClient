@@ -27,12 +27,13 @@ public class OnlineBoard extends BoardUI {
     // boolean validStep = true;
     NetworkConnection network;
     String opponentName;
+    String myName;
     String currentGamePlaySteps;
 
     String playerCharacter;
     String opponentCharacter;
 
-    public OnlineBoard(String opponentName, boolean isTurn) {
+    public OnlineBoard(String opponentName, String myName,boolean isTurn) {
         network = NetworkConnection.getConnection();
         System.out.println(" this is 2 " + opponentName);
         isPlayerTurn = isTurn;
@@ -45,10 +46,14 @@ public class OnlineBoard extends BoardUI {
             opponentCharacter = "X";
         }
         this.opponentName = opponentName;
+        this.myName=myName;
+        player1Name.setText(myName);
+        player2Name.setText(opponentName);
         currentGamePlaySteps = "";
         Thread nextOppoenentMove = new Thread(() -> {
             while (true) {
                 String replyOnNextMove = network.getMessage();
+                if(isWin()) return;
                 if(!replyOnNextMove.startsWith("{"))
                   replyOnNextMove="{"+replyOnNextMove;
                 System.out.print("message got successfully: " + replyOnNextMove);
@@ -61,9 +66,9 @@ public class OnlineBoard extends BoardUI {
                     Platform.runLater(() -> {
                         // Update UI components here
                         bordRecorder.get(nextStep.getNextStepIndex()).setText(opponentCharacter);
+                        
                         currentGamePlaySteps += nextStep.getNextStepIndex();
                         System.out.println("other opponent playee : "+currentGamePlaySteps);
-                        isWin();
                         continueGame();
                         isPlayerTurn();
                     });
@@ -83,21 +88,18 @@ public class OnlineBoard extends BoardUI {
                 btn.setText(playerCharacter);
                 player1Name.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));
                 player2Name.setFill(javafx.scene.paint.Color.valueOf("#ffffff"));
-                if (isWin()) {
-                    return;
-                }
                 player1Name.setFill(javafx.scene.paint.Color.valueOf("#ffffff"));
                 player2Name.setFill(javafx.scene.paint.Color.valueOf("#ff8fda"));
                 //easyLevel();
                 stopGame();
                 System.out.println("stop game successfully");
-
                 ClientRequest nextStepRequest = new ClientRequest(ClientRequestHeader.nextStep, opponentName, Integer.parseInt(currentGamePlaySteps.substring(currentGamePlaySteps.length() - 1)));
                 System.out.println("nextStepRequest " + nextStepRequest.toString());
                 String nextStepRequestData = nextStepRequest.toJson();
                 System.out.println("nextStepRequestData " + nextStepRequestData);
                 network.sentMessage(nextStepRequestData);
-
+                if(isWin()) return; 
+                
             } else {
                 System.out.println(opponentCharacter + " turn");
 
@@ -128,20 +130,20 @@ public class OnlineBoard extends BoardUI {
             if (isWin()) {
                 if (isPlayerTurn) {
                     BordBase.winner = 1;
-                    BordBase.page = 2;
+                    BordBase.page = 4;
                     Navigator.navigateTo(new WinnerScreenBase("YOU", winner, page), e);
                     isPlayerTurn = !isPlayerTurn;
                     BordBase.scoreP1++;
                 } else {
                     BordBase.winner = 2;
-                    BordBase.page = 2;
+                    BordBase.page = 4;
                     Navigator.navigateTo(new WinnerScreenBase("YOU", winner, page), e);
                     BordBase.scoreP2++;
                 }
                 resetGame();
             } else if (isDraw() == true) {
                 BordBase.winner = 3;
-                BordBase.page = 2;
+                BordBase.page = 4;
                 Navigator.navigateTo(new WinnerScreenBase("YOU", winner, page), e);
                 resetGame();
                 isPlayerTurn = !isPlayerTurn;

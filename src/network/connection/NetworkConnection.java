@@ -12,7 +12,9 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static javax.swing.JOptionPane.showMessageDialog;
+import services.Navigator;
 import tictactoeclient.AvailablePlayersBase;
+import tictactoeclient.ChooseModeBase;
 
 /**
  *
@@ -37,7 +39,7 @@ public class NetworkConnection {
             Logger.getLogger(NetworkConnection.class.getName())
                     .log(Level.SEVERE, null, ex);
             showMessageDialog(null, "Enter Correct IP");
-
+            Navigator.navigateTo(new ChooseModeBase());
         }
 
     }

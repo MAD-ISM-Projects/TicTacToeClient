@@ -196,6 +196,9 @@ public  class WinnerScreenBase extends BorderPane {
                 //navigat to hard mode ya mayar
              // Navigator.navigateTo(new EasyLevelBase(),e);
 
+            }else if(page ==4){
+                Navigator.navigateTo(new ChooseModeBase());
+                mediaPlayer.stop();
             }
         });
 

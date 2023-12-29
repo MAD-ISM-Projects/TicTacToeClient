@@ -234,7 +234,7 @@ public class AvailablePlayersBase extends BorderPane {
                                     System.out.println("     Invited Name 2" + invitedName2);
 
 //                                    network.sentMessage(InviteResponse);
-                                    Platform.runLater(() -> Navigator.navigateTo(new OnlineBoard(invitedName2, true)));
+                                    Platform.runLater(() -> Navigator.navigateTo(new OnlineBoard(invitedName2,invitorName2,true)));
                                     this.stop();
                                     break;
                                 case "refusedInvitation":
@@ -294,7 +294,7 @@ public class AvailablePlayersBase extends BorderPane {
             System.out.println("p1 from ok " + message + "p2 from ok " + opponentName);
             String InvitationResponse = InvitationAccept.toJson();
             network.sentMessage(InvitationResponse);
-            Navigator.navigateTo(new OnlineBoard(message, false));
+            Navigator.navigateTo(new OnlineBoard(message,opponentName ,false));
             thread.stop();
         } else if (clickedButton.get() == cancelButtonType) {
             ClientRequest InvitationRefused = new ClientRequest(message, opponentName, ClientRequestHeader.refusedInvitation);
