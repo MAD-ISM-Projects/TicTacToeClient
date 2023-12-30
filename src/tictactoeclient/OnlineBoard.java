@@ -32,12 +32,12 @@ public class OnlineBoard extends BoardUI {
 
     String playerCharacter;
     String opponentCharacter;
-
+    boolean bolckBoard;
     public OnlineBoard(String opponentName, String myName,boolean isTurn) {
         network = NetworkConnection.getConnection();
         System.out.println(" this is 2 " + opponentName);
         isPlayerTurn = isTurn;
-
+        bolckBoard=isTurn;
         if (isPlayerTurn) {
             playerCharacter = "X";
             opponentCharacter = "O";
@@ -70,7 +70,25 @@ public class OnlineBoard extends BoardUI {
                         currentGamePlaySteps += nextStep.getNextStepIndex();
                         System.out.println("other opponent playee : "+currentGamePlaySteps);
                         continueGame();
-                        isPlayerTurn();
+//                        isPlayerTurn();
+                        bolckBoard=true;
+                        isPlayerTurn = !isPlayerTurn;
+            if (isWin()) {
+//                
+                    BordBase.winner = 2;
+                    BordBase.page = 4;
+                    Navigator.navigateTo(new WinnerScreenBase("YOU", winner, page));
+                    BordBase.scoreP2++;
+                resetGame();
+            } 
+            if (isDraw() == true) {
+                BordBase.winner = 3;
+                BordBase.page = 4;
+                Navigator.navigateTo(new WinnerScreenBase("YOU", winner, page));
+                resetGame();
+//                isPlayerTurn = !isPlayerTurn;
+            }
+            isPlayerTurn = !isPlayerTurn;
                     });
                 }
             }
@@ -82,7 +100,7 @@ public class OnlineBoard extends BoardUI {
     @Override
     protected void doPlay(Button btn) {
         if (btn.getText().isEmpty()) {
-            if (isPlayerTurn()) {
+            if (bolckBoard) {
                 System.out.println(playerCharacter + " turn");
                 btn.setStyle("-fx-background-color: #FFFFFF; -fx-font-size: 36;");
                 btn.setText(playerCharacter);
@@ -98,7 +116,8 @@ public class OnlineBoard extends BoardUI {
                 String nextStepRequestData = nextStepRequest.toJson();
                 System.out.println("nextStepRequestData " + nextStepRequestData);
                 network.sentMessage(nextStepRequestData);
-                if(isWin()) return; 
+//                if(isWin()) return; 
+                 bolckBoard=false;
                 
             } else {
                 System.out.println(opponentCharacter + " turn");
@@ -128,25 +147,26 @@ public class OnlineBoard extends BoardUI {
             doPlay(btn);
 
             if (isWin()) {
-                if (isPlayerTurn) {
+//                if (isPlayerTurn) {
                     BordBase.winner = 1;
                     BordBase.page = 4;
                     Navigator.navigateTo(new WinnerScreenBase("YOU", winner, page), e);
-                    isPlayerTurn = !isPlayerTurn;
+//                    isPlayerTurn = !isPlayerTurn;
                     BordBase.scoreP1++;
-                } else {
-                    BordBase.winner = 2;
-                    BordBase.page = 4;
-                    Navigator.navigateTo(new WinnerScreenBase("YOU", winner, page), e);
-                    BordBase.scoreP2++;
-                }
+//                } else {
+//                    BordBase.winner = 2;
+//                    BordBase.page = 4;
+//                    Navigator.navigateTo(new WinnerScreenBase("YOU", winner, page), e);
+//                    BordBase.scoreP2++;
+//                }
                 resetGame();
-            } else if (isDraw() == true) {
+            } 
+            if (isDraw() == true) {
                 BordBase.winner = 3;
                 BordBase.page = 4;
                 Navigator.navigateTo(new WinnerScreenBase("YOU", winner, page), e);
                 resetGame();
-                isPlayerTurn = !isPlayerTurn;
+//                isPlayerTurn = !isPlayerTurn;
             }
             scoreBtnX.setText(Integer.toString(scoreP1));
             scoreBtnO.setText(Integer.toString(scoreP2));
